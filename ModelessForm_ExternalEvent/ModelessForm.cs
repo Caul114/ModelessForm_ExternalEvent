@@ -102,7 +102,6 @@ namespace ModelessForm_ExternalEvent
             EnableCommands(false);
         }
 
-
         /// <summary>
         ///   WakeUp -> abilita tutti i controlli
         /// </summary>
@@ -122,12 +121,22 @@ namespace ModelessForm_ExternalEvent
         }
 
         /// <summary>
-        ///   Metodo che riempie la lista
+        ///   Metodo che riempie la ListBox
         /// </summary>
         /// 
         public void ShowListBox1()
         {
             listBox1.DataSource = m_Handler.Stringa;
+        }
+
+        /// <summary>
+        ///   MEtodo che ripulisce la ListBox
+        /// </summary>
+        /// 
+        private void cleanButton_Click(object sender, EventArgs e)
+        {
+            listBox1.DataSource = null;
+            listBox1.Items.Clear();
         }
 
         private void exitButton_Click(object sender, EventArgs e)
@@ -139,5 +148,6 @@ namespace ModelessForm_ExternalEvent
         {
 
         }
+
     }  // class
 }

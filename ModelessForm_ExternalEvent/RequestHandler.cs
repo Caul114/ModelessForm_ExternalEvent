@@ -157,10 +157,7 @@ namespace ModelessForm_ExternalEvent
                     stringhe.Add($"BOLD_Distinta: " + pardistinta.AsString());
                 }
             }
-
             return stringhe;
-
-
         }
     }  // class
 

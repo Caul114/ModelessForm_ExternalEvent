@@ -64,6 +64,7 @@ namespace ModelessForm_ExternalEvent
             this.cleanButton.TabIndex = 3;
             this.cleanButton.Text = "Cancella";
             this.cleanButton.UseVisualStyleBackColor = true;
+            this.cleanButton.Click += new System.EventHandler(this.cleanButton_Click);
             // 
             // listBox1
             // 

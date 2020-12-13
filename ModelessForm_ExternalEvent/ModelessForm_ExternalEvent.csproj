@@ -69,7 +69,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ModelessForm_ExternalEvent.addin">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
