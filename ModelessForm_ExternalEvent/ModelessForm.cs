@@ -112,7 +112,7 @@ namespace ModelessForm_ExternalEvent
         }
 
         /// <summary>
-        ///   Exit - chiude la finestra di dialogo
+        ///   Metodo che cattura un singolo elemento della View
         /// </summary>
         /// 
         private void captureButton_Click(object sender, EventArgs e)
@@ -126,11 +126,11 @@ namespace ModelessForm_ExternalEvent
         /// 
         public void ShowListBox1()
         {
-            listBox1.DataSource = m_Handler.Stringa;
+            listBox1.DataSource = m_Handler.GetStringa;
         }
 
         /// <summary>
-        ///   Metodo che riempie il DataGridView
+        ///   Metodo che riempie la DataGridView
         /// </summary>
         /// 
         public void ShowDataGridView1()
@@ -139,7 +139,7 @@ namespace ModelessForm_ExternalEvent
         }
 
         /// <summary>
-        ///   Metodo che ripulisce la ListBox
+        ///   Metodo che ripulisce la ListBox e la DataGridView
         /// </summary>
         /// 
         private void cleanButton_Click(object sender, EventArgs e)
@@ -151,6 +151,20 @@ namespace ModelessForm_ExternalEvent
             dataGridView1.Refresh();
         }
 
+        private void exportButton_Click(object sender, EventArgs e)
+        {
+            MakeRequest(RequestId.Exp);
+        }
+
+        private void importButton_Click(object sender, EventArgs e)
+        {
+            MakeRequest(RequestId.Imp);
+        }
+
+        /// <summary>
+        ///   Exit - chiude la finestra di dialogo
+        /// </summary>
+        /// 
         private void exitButton_Click(object sender, EventArgs e)
         {
             Close();
@@ -160,6 +174,7 @@ namespace ModelessForm_ExternalEvent
         {
 
         }
+
 
     }  // class
 }

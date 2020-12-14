@@ -34,9 +34,17 @@ namespace ModelessForm_ExternalEvent
         /// </summary>
         None = 0,
         /// <summary>
-        /// "Delete" request
+        /// "Picker" request
         /// </summary>
-        Id = 1,       
+        Id = 1,
+        /// <summary>
+        /// "Export" request
+        /// </summary>
+        Exp = 2,
+        /// <summary>
+        /// "Import" request
+        /// </summary>
+        Imp = 3,
     }
 
     /// <summary>

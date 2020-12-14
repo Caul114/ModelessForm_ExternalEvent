@@ -29,6 +29,7 @@ namespace ModelessForm_ExternalEvent
         /// </summary>
         /// <param name="application"></param>
         /// <returns></returns>
+        
         public Result OnShutdown(UIControlledApplication application)
         {
             if (m_MyForm != null && m_MyForm.Visible)
@@ -82,7 +83,7 @@ namespace ModelessForm_ExternalEvent
         }
 
         /// <summary>
-        ///   Restiuisce la finestra di dialogo.
+        ///   Restituisce la finestra di dialogo.
         /// </summary>
         /// 
         public ModelessForm RetriveForm()

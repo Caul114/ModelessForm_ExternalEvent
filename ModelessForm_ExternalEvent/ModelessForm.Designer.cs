@@ -37,6 +37,8 @@ namespace ModelessForm_ExternalEvent
             this.functionGroupBox2 = new System.Windows.Forms.GroupBox();
             this.exitButton = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.exportButton = new System.Windows.Forms.Button();
+            this.importButton = new System.Windows.Forms.Button();
             this.functionGroupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.functionGroupBox2.SuspendLayout();
@@ -96,6 +98,8 @@ namespace ModelessForm_ExternalEvent
             // 
             // functionGroupBox2
             // 
+            this.functionGroupBox2.Controls.Add(this.importButton);
+            this.functionGroupBox2.Controls.Add(this.exportButton);
             this.functionGroupBox2.Controls.Add(this.exitButton);
             this.functionGroupBox2.Controls.Add(this.dataGridView1);
             this.functionGroupBox2.Location = new System.Drawing.Point(330, 13);
@@ -125,6 +129,26 @@ namespace ModelessForm_ExternalEvent
             this.dataGridView1.Size = new System.Drawing.Size(845, 363);
             this.dataGridView1.TabIndex = 0;
             // 
+            // exportButton
+            // 
+            this.exportButton.Location = new System.Drawing.Point(7, 392);
+            this.exportButton.Name = "exportButton";
+            this.exportButton.Size = new System.Drawing.Size(117, 28);
+            this.exportButton.TabIndex = 4;
+            this.exportButton.Text = "Esporta..";
+            this.exportButton.UseVisualStyleBackColor = true;
+            this.exportButton.Click += new System.EventHandler(this.exportButton_Click);
+            // 
+            // importButton
+            // 
+            this.importButton.Location = new System.Drawing.Point(140, 392);
+            this.importButton.Name = "importButton";
+            this.importButton.Size = new System.Drawing.Size(117, 28);
+            this.importButton.TabIndex = 5;
+            this.importButton.Text = "Importa";
+            this.importButton.UseVisualStyleBackColor = true;
+            this.importButton.Click += new System.EventHandler(this.importButton_Click);
+            // 
             // ModelessForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -152,5 +176,7 @@ namespace ModelessForm_ExternalEvent
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button exitButton;
         private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.Button importButton;
+        private System.Windows.Forms.Button exportButton;
     }
 }

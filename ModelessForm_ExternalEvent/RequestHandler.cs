@@ -27,6 +27,7 @@ using System.Windows.Forms;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using Autodesk.Revit.UI.Selection;
+using ModelessForm_ExternalEvent.ToExcel;
 
 namespace ModelessForm_ExternalEvent
 {
@@ -62,7 +63,7 @@ namespace ModelessForm_ExternalEvent
         /// <summary>
         /// Proprietà pubblica per accedere al valore della richiesta corrente
         /// </summary>
-        public ArrayList Stringa
+        public ArrayList GetStringa
         {
             get { return _result; }
         }
@@ -109,14 +110,27 @@ namespace ModelessForm_ExternalEvent
                             // Metodo per seleziona un oggetto
                             pickedObject = PickObject(uiapp);
                             // Metodo per restituire il singolo parametro alla ListBox
-                            _result = PickSingleObject(uiapp);
+                            _result = PickSingleObject(uiapp, pickedObject);
                             modelessForm = App.thisApp.RetriveForm();
                             modelessForm.ShowListBox1();
                             // Metodo per restituire i valori dei parametri al DataGridView
-                            _parametersElement = GetSingleElement(uiapp);
+                            _parametersElement = GetSingleElement(uiapp, pickedObject);
                             modelessForm.ShowDataGridView1();
                             break;
-                        }                    
+                        }
+                    case RequestId.Exp:
+                        {
+                            // Metodo per esportare i parametri dell'elemento in un foglio Excel
+                            ExportDataToExcel exp = new ExportDataToExcel();
+                            exp.GetExportDataToExcel(uiapp, pickedObject);
+                            break;
+                        }
+                    case RequestId.Imp:
+                        {
+                            // Metodo per importare i parametri dell'elemento da un foglio Excel
+
+                            break;
+                        }
                     default:
                         {
                             // some kind of a warning here should
@@ -182,26 +196,27 @@ namespace ModelessForm_ExternalEvent
         /// </remarks>
         /// <param name="uiapp">L'oggetto Applicazione di Revit</param>m>
         /// 
-        private ArrayList PickSingleObject(UIApplication uiapp)
+        private ArrayList PickSingleObject(UIApplication uiapp, Reference reference)
         {
             // l'ArrayList da restituire
             ArrayList stringhe = new ArrayList();
-
-            // Chiamo l'oggetto catturato
-            Reference reference = pickedObject;
 
             // Chiamo la vista attiva e seleziono gli elementi che mi servono
             UIDocument uidoc = uiapp.ActiveUIDocument;
             ElementId eleId = reference.ElementId;
             Element ele = uidoc.Document.GetElement(eleId);
 
-            if (pickedObject != null)
+            // Prende il valore del parametro
+            if (ele.LookupParameter("BOLD_Distinta") != null)
             {
                 Parameter pardistinta = ele.LookupParameter("BOLD_Distinta");
                 //MessageBox.Show($"BOLD_Distinta: " + pardistinta.AsString(), "Parameter: ");
                 stringhe.Add($"BOLD_Distinta: " + pardistinta.AsString());
             }
-
+            else
+            {
+                stringhe.Add($"BOLD_Distinta: " + "Nessun valore");
+            }
             return stringhe;
         }
 
@@ -212,15 +227,13 @@ namespace ModelessForm_ExternalEvent
         /// </remarks>
         /// <param name="uiapp">L'oggetto Applicazione di Revit</param>m>
         /// 
-        private List<ElementData> GetSingleElement(UIApplication uiapp)
+        private List<ElementData> GetSingleElement(UIApplication uiapp, Reference reference)
         {
             string valueParameter = null;
             List<ElementData> data = new List<ElementData>();
 
-            // Chiamo l'oggetto catturato
-            Reference reference = pickedObject;
 
-            // Chiamo la vista attiva e seleziono gli elementi che mi servono
+            // Chiama la vista attiva e seleziona gli elementi che mi servono
             UIDocument uidoc = uiapp.ActiveUIDocument;
             Document doc = uidoc.Document;
             ElementId eleId = pickedObject.ElementId;
@@ -228,10 +241,11 @@ namespace ModelessForm_ExternalEvent
             ElementId eleTypeId = ele.GetTypeId();
             ElementType eleType = doc.GetElement(eleTypeId) as ElementType;
 
-            // Get the parameter value
+            // Prende il valore del parametro
             if (ele.LookupParameter("BOLD_Distinta") != null)
             {
                 Parameter pardistinta = ele.LookupParameter("BOLD_Distinta");
+                //MessageBox.Show($"BOLD_Distinta: " + pardistinta.AsString(), "Parameter: ");
                 valueParameter = pardistinta.AsString();
             }
             else
@@ -239,7 +253,7 @@ namespace ModelessForm_ExternalEvent
                 valueParameter = "Nessun valore";
             }
 
-            // I fill the single element list
+            // Riempie la lista con i dati dell'elemento
             data.Add(new ElementData(eleId, valueParameter, ele.Name, ele.Category.Name,
                 eleType.FamilyName, eleType.Name, doc.PathName));
 
