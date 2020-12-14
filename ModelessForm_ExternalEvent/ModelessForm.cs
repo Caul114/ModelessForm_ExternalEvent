@@ -130,13 +130,25 @@ namespace ModelessForm_ExternalEvent
         }
 
         /// <summary>
-        ///   MEtodo che ripulisce la ListBox
+        ///   Metodo che riempie il DataGridView
+        /// </summary>
+        /// 
+        public void ShowDataGridView1()
+        {
+            dataGridView1.DataSource = m_Handler.ElementParameters;
+        }
+
+        /// <summary>
+        ///   Metodo che ripulisce la ListBox
         /// </summary>
         /// 
         private void cleanButton_Click(object sender, EventArgs e)
         {
             listBox1.DataSource = null;
             listBox1.Items.Clear();
+            dataGridView1.DataSource = null;
+            dataGridView1.Rows.Clear();
+            dataGridView1.Refresh();
         }
 
         private void exitButton_Click(object sender, EventArgs e)

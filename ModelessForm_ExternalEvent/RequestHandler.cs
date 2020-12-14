@@ -39,24 +39,42 @@ namespace ModelessForm_ExternalEvent
         // Il valore dell'ultima richiesta effettuata dal modulo non modale
         private Request m_request = new Request();
 
-        // Il valore restituito dall'operazione
+        // Il Riferimento all'elemento selezionato
+        Reference pickedObject;
+
+        // Il valore restituito dal metodo per riempire il ListBox
         private ArrayList _result;
+
+        // Il valore restituito dal metodo per riempire il DataGridView
+        private List<ElementData> _parametersElement;
 
         // Un instanza della finestra di dialogo
         private ModelessForm modelessForm;
         
         /// <summary>
-        /// Una proprietà pubblica per accedere al valore della richiesta corrente
+        /// Proprietà pubblica per accedere al valore della richiesta corrente
         /// </summary>
         public Request Request
         {
             get { return m_request; }
         }
 
+        /// <summary>
+        /// Proprietà pubblica per accedere al valore della richiesta corrente
+        /// </summary>
         public ArrayList Stringa
         {
             get { return _result; }
         }
+
+        /// <summary>
+        /// Proprietà pubblica per accedere al valore della richiesta corrente
+        /// </summary>
+        public List<ElementData> ElementParameters
+        {
+            get { return _parametersElement; }
+        }
+
 
         /// <summary>
         ///   Un metodo per identificare questo gestore di eventi esterno
@@ -88,9 +106,15 @@ namespace ModelessForm_ExternalEvent
                         }
                     case RequestId.Id:
                         {
+                            // Metodo per seleziona un oggetto
+                            pickedObject = PickObject(uiapp);
+                            // Metodo per restituire il singolo parametro alla ListBox
                             _result = PickSingleObject(uiapp);
                             modelessForm = App.thisApp.RetriveForm();
                             modelessForm.ShowListBox1();
+                            // Metodo per restituire i valori dei parametri al DataGridView
+                            _parametersElement = GetSingleElement(uiapp);
+                            modelessForm.ShowDataGridView1();
                             break;
                         }                    
                     default:
@@ -109,16 +133,31 @@ namespace ModelessForm_ExternalEvent
             return;
         }
 
-
         /// <summary>
-        ///   La subroutine di modifica della porta principale - chiamata da ogni richiesta
+        ///   La subroutine che cattura un singolo oggetto
         /// </summary>
         /// <remarks>
-        ///   Cerca tutte le porte nella selezione corrente e se le trova applica ad esse l'operazione richiesta
         /// </remarks>
-        /// <param name="uiapp">The Revit application object</param>
-        /// <param name="text">Didascalia della transazione per l'operazione.</param>
-        /// <param name="operation">Un delegato per eseguire l'operazione su un'istanza di una porta.</param>
+        /// <param name="uiapp">L'oggetto Applicazione di Revit</param>m>
+        /// 
+        private Reference PickObject(UIApplication uiapp)
+        {
+            // Get the selected view
+            UIDocument uidoc = uiapp.ActiveUIDocument;
+            Document doc = uidoc.Document;
+            Selection choices = uidoc.Selection;
+
+            // Get the single element
+            Reference pickedObj = uidoc.Selection.PickObject(ObjectType.Element);
+            return pickedObj;
+        }
+
+        /// <summary>
+        ///   La subroutine di selezione di molti elementi
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <param name="uiapp">L'oggetto Applicazione di Revit</param>m>
         /// 
         private void PickMultipleObject(UIApplication uiapp)
         {
@@ -136,29 +175,78 @@ namespace ModelessForm_ExternalEvent
             }
         }
 
+        /// <summary>
+        ///   La subroutine di selezione di un elemento da mostrare in una ListBox
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <param name="uiapp">L'oggetto Applicazione di Revit</param>m>
+        /// 
         private ArrayList PickSingleObject(UIApplication uiapp)
         {
+            // l'ArrayList da restituire
             ArrayList stringhe = new ArrayList();
+
+            // Chiamo l'oggetto catturato
+            Reference reference = pickedObject;
+
+            // Chiamo la vista attiva e seleziono gli elementi che mi servono
             UIDocument uidoc = uiapp.ActiveUIDocument;
-            Selection choices = uidoc.Selection;
+            ElementId eleId = reference.ElementId;
+            Element ele = uidoc.Document.GetElement(eleId);
 
-            // Verifica se c'è qualcosa di selezionato nella view attiva
-
-            if ((uidoc != null) && (choices != null))
+            if (pickedObject != null)
             {
-                Reference pickedObj = uidoc.Selection.PickObject(ObjectType.Element);
-                ElementId eleId = pickedObj.ElementId;
-                Element ele = uidoc.Document.GetElement(eleId);
-
-                if (pickedObj != null)
-                {
-                    Parameter pardistinta = ele.LookupParameter("BOLD_Distinta");
-                    //MessageBox.Show($"BOLD_Distinta: " + pardistinta.AsString(), "Parameter: ");
-                    stringhe.Add($"BOLD_Distinta: " + pardistinta.AsString());
-                }
+                Parameter pardistinta = ele.LookupParameter("BOLD_Distinta");
+                //MessageBox.Show($"BOLD_Distinta: " + pardistinta.AsString(), "Parameter: ");
+                stringhe.Add($"BOLD_Distinta: " + pardistinta.AsString());
             }
+
             return stringhe;
         }
+
+        /// <summary>
+        ///   La subroutine di selezione di un elemento da mostrare in una DataGridView
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <param name="uiapp">L'oggetto Applicazione di Revit</param>m>
+        /// 
+        private List<ElementData> GetSingleElement(UIApplication uiapp)
+        {
+            string valueParameter = null;
+            List<ElementData> data = new List<ElementData>();
+
+            // Chiamo l'oggetto catturato
+            Reference reference = pickedObject;
+
+            // Chiamo la vista attiva e seleziono gli elementi che mi servono
+            UIDocument uidoc = uiapp.ActiveUIDocument;
+            Document doc = uidoc.Document;
+            ElementId eleId = pickedObject.ElementId;
+            Element ele = uidoc.Document.GetElement(eleId);
+            ElementId eleTypeId = ele.GetTypeId();
+            ElementType eleType = doc.GetElement(eleTypeId) as ElementType;
+
+            // Get the parameter value
+            if (ele.LookupParameter("BOLD_Distinta") != null)
+            {
+                Parameter pardistinta = ele.LookupParameter("BOLD_Distinta");
+                valueParameter = pardistinta.AsString();
+            }
+            else
+            {
+                valueParameter = "Nessun valore";
+            }
+
+            // I fill the single element list
+            data.Add(new ElementData(eleId, valueParameter, ele.Name, ele.Category.Name,
+                eleType.FamilyName, eleType.Name, doc.PathName));
+
+            return data;
+        }
+
+
     }  // class
 
 }  // namespace

@@ -100,14 +100,14 @@ namespace ModelessForm_ExternalEvent
             this.functionGroupBox2.Controls.Add(this.dataGridView1);
             this.functionGroupBox2.Location = new System.Drawing.Point(330, 13);
             this.functionGroupBox2.Name = "functionGroupBox2";
-            this.functionGroupBox2.Size = new System.Drawing.Size(587, 426);
+            this.functionGroupBox2.Size = new System.Drawing.Size(859, 426);
             this.functionGroupBox2.TabIndex = 1;
             this.functionGroupBox2.TabStop = false;
             this.functionGroupBox2.Text = "Elenco degli elementi";
             // 
             // exitButton
             // 
-            this.exitButton.Location = new System.Drawing.Point(464, 391);
+            this.exitButton.Location = new System.Drawing.Point(735, 392);
             this.exitButton.Name = "exitButton";
             this.exitButton.Size = new System.Drawing.Size(117, 28);
             this.exitButton.TabIndex = 4;
@@ -122,14 +122,14 @@ namespace ModelessForm_ExternalEvent
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(574, 363);
+            this.dataGridView1.Size = new System.Drawing.Size(845, 363);
             this.dataGridView1.TabIndex = 0;
             // 
             // ModelessForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(929, 451);
+            this.ClientSize = new System.Drawing.Size(1205, 451);
             this.Controls.Add(this.functionGroupBox2);
             this.Controls.Add(this.functionGroupBox1);
             this.Name = "ModelessForm";
