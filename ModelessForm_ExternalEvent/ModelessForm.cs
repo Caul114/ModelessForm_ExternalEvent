@@ -46,7 +46,11 @@ namespace ModelessForm_ExternalEvent
 
             // Imposta l'origine dati della Combobox e la riempie
             List<string> dataBuffer = importData.XlSheets(path);
-            comboBox1.Items.Add(dataBuffer);
+            foreach (var sheet in dataBuffer)
+            {
+                comboBox1.Items.Add(sheet);
+            }
+            
         }
 
         /// <summary>
