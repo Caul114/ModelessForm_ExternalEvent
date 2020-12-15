@@ -58,7 +58,7 @@
     <Compile Include="App.cs" />
     <Compile Include="Command.cs" />
     <Compile Include="ElementData.cs" />
-    <Compile Include="Microsoft\Office\Interop\ImportData.cs" />
+    <Compile Include="DataFromExcel\ImportData.cs" />
     <Compile Include="ModelessForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -111,6 +111,7 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy "$(TargetDir)"."" "$(ProgramData)\Autodesk\Revit\Addins\2019\"</PostBuildEvent>

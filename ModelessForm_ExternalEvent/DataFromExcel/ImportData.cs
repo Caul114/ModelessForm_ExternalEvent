@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Microsoft.Office.Interop
+using Excel = Microsoft.Office.Interop.Excel;
+
+namespace ModelessForm_ExternalEvent.DataFromExcel
 {
     public class ImportData
     {
