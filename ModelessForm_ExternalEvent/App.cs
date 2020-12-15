@@ -79,7 +79,7 @@ namespace ModelessForm_ExternalEvent
                 // La finestra di dialogo diventa il proprietario responsabile della loro disposizione, alla fine.
                 m_MyForm = new ModelessForm(exEvent, handler);
                 m_MyForm.Show();
-                m_MyForm.TopMost = true;
+                //m_MyForm.TopMost = true;
             }
         }
 

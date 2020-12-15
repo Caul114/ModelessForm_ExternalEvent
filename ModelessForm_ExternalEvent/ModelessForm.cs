@@ -11,6 +11,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using Excel = Microsoft.Office.Interop.Excel;
+
 namespace ModelessForm_ExternalEvent
 {
     /// <summary>
@@ -49,8 +51,7 @@ namespace ModelessForm_ExternalEvent
             foreach (var sheet in dataBuffer)
             {
                 comboBox1.Items.Add(sheet);
-            }
-            
+            }            
         }
 
         /// <summary>
@@ -124,6 +125,14 @@ namespace ModelessForm_ExternalEvent
         }
 
         /// <summary>
+        ///   Metodo di interazione con la finestra di dialogo
+        /// </summary>
+        /// 
+        private void ModelessForm_Load(object sender, EventArgs e)
+        {
+        }
+
+        /// <summary>
         ///   Metodo che cattura un singolo elemento della View
         /// </summary>
         /// 
@@ -163,6 +172,10 @@ namespace ModelessForm_ExternalEvent
             dataGridView1.Refresh();
         }
 
+        /// <summary>
+        ///   Metodo che esporta il Contenuto del DataGridView in un foglio Excel
+        /// </summary>
+        /// 
         private void exportButton_Click(object sender, EventArgs e)
         {
             MakeRequest(RequestId.Exp);
@@ -188,9 +201,88 @@ namespace ModelessForm_ExternalEvent
 
         }
 
-        private void ModelessForm_Load(object sender, EventArgs e)
+        private void loadButton_Click(object sender, EventArgs e)
         {
+            // Get the Excel application object.
+            Excel.Application excel_app = new Excel.Application();
 
+            // Make Excel visible (optional).
+            excel_app.Visible = true;
+
+            // Open the workbook read-only.
+            Excel.Workbook workbook = excel_app.Workbooks.Open(
+                path,
+                Type.Missing, true, Type.Missing, Type.Missing,
+                Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+                Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+                Type.Missing, Type.Missing);
+
+            // Get the worksheet of the selected item.
+            int sheetSelected = comboBox1.SelectedIndex + 1;
+            if(sheetSelected > 0)
+            {
+                Excel.Worksheet sheet = (Excel.Worksheet)workbook.Sheets[sheetSelected];
+
+                // Get the used range.
+                Excel.Range used_range = sheet.UsedRange;
+
+                // Get the maximum row and column number.
+                int max_row = used_range.Rows.Count;
+                int max_col = used_range.Columns.Count;
+
+                // Get the sheet's values.
+                object[,] values = (object[,])used_range.Value2;
+
+                // Get the column titles.
+                SetGridColumns(dataGridView1, values, max_col);
+
+                // Get the data.
+                SetGridContents(dataGridView1, values, max_row, max_col);
+
+                // Close the workbook without saving changes.
+                workbook.Close(false, Type.Missing, Type.Missing);
+
+                // Close the Excel server.
+                excel_app.Quit();
+            } 
+            else
+            {
+                // Close the workbook without saving changes.
+                workbook.Close(false, Type.Missing, Type.Missing);
+
+                // Close the Excel server.
+                excel_app.Quit();
+
+                MessageBox.Show("Non hai selezionato alcun documento Excel", "Errore!");
+            }
+        }
+
+        // Set the grid's column names from row 1.
+        private void SetGridColumns(DataGridView dgv,
+            object[,] values, int max_col)
+        {
+            dataGridView1.Columns.Clear();
+
+            // Get the title values.
+            for (int col = 1; col <= max_col; col++)
+            {
+                string title = (string)values[1, col];
+                dgv.Columns.Add("col_" + title, title);
+            }
+        }
+
+        // Set the grid's contents.
+        private void SetGridContents(DataGridView dgv,
+                object[,] values, int max_row, int max_col)
+        {
+            // Copy the values into the grid.
+            for (int row = 2; row <= max_row; row++)
+            {
+                object[] row_values = new object[max_col];
+                for (int col = 1; col <= max_col; col++)
+                    row_values[col - 1] = values[row, col];
+                dgv.Rows.Add(row_values);
+            }
         }
     }  // class
 }
