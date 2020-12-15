@@ -121,8 +121,11 @@ namespace ModelessForm_ExternalEvent
                     case RequestId.Exp:
                         {
                             // Metodo per esportare i parametri dell'elemento in un foglio Excel
-                            ExportDataToExcel exp = new ExportDataToExcel();
-                            exp.GetExportDataToExcel(uiapp, pickedObject);
+                            if(pickedObject != null)
+                            {
+                                ExportDataToExcel exp = new ExportDataToExcel();
+                                exp.GetExportDataToExcel(uiapp, pickedObject);
+                            }                            
                             break;
                         }
                     case RequestId.Imp:
