@@ -30,19 +30,22 @@ namespace ModelessForm_ExternalEvent
         private void InitializeComponent()
         {
             this.functionGroupBox1 = new System.Windows.Forms.GroupBox();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.cleanButton = new System.Windows.Forms.Button();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.captureButton = new System.Windows.Forms.Button();
             this.functionGroupBox2 = new System.Windows.Forms.GroupBox();
+            this.importButton = new System.Windows.Forms.Button();
+            this.exportButton = new System.Windows.Forms.Button();
             this.exitButton = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.exportButton = new System.Windows.Forms.Button();
-            this.importButton = new System.Windows.Forms.Button();
+            this.functionGroupBox3 = new System.Windows.Forms.GroupBox();
             this.functionGroupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.functionGroupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.functionGroupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // functionGroupBox1
@@ -53,14 +56,22 @@ namespace ModelessForm_ExternalEvent
             this.functionGroupBox1.Controls.Add(this.captureButton);
             this.functionGroupBox1.Location = new System.Drawing.Point(13, 13);
             this.functionGroupBox1.Name = "functionGroupBox1";
-            this.functionGroupBox1.Size = new System.Drawing.Size(293, 426);
+            this.functionGroupBox1.Size = new System.Drawing.Size(293, 350);
             this.functionGroupBox1.TabIndex = 0;
             this.functionGroupBox1.TabStop = false;
             this.functionGroupBox1.Text = "Selezione dell\'elemento";
             // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(7, 36);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(280, 24);
+            this.comboBox1.TabIndex = 4;
+            // 
             // cleanButton
             // 
-            this.cleanButton.Location = new System.Drawing.Point(170, 392);
+            this.cleanButton.Location = new System.Drawing.Point(170, 316);
             this.cleanButton.Name = "cleanButton";
             this.cleanButton.Size = new System.Drawing.Size(117, 28);
             this.cleanButton.TabIndex = 3;
@@ -74,7 +85,7 @@ namespace ModelessForm_ExternalEvent
             this.listBox1.ItemHeight = 16;
             this.listBox1.Location = new System.Drawing.Point(7, 237);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(280, 148);
+            this.listBox1.Size = new System.Drawing.Size(280, 68);
             this.listBox1.TabIndex = 2;
             // 
             // pictureBox1
@@ -109,6 +120,26 @@ namespace ModelessForm_ExternalEvent
             this.functionGroupBox2.TabStop = false;
             this.functionGroupBox2.Text = "Elenco degli elementi";
             // 
+            // importButton
+            // 
+            this.importButton.Location = new System.Drawing.Point(140, 392);
+            this.importButton.Name = "importButton";
+            this.importButton.Size = new System.Drawing.Size(117, 28);
+            this.importButton.TabIndex = 5;
+            this.importButton.Text = "Importa";
+            this.importButton.UseVisualStyleBackColor = true;
+            this.importButton.Click += new System.EventHandler(this.importButton_Click);
+            // 
+            // exportButton
+            // 
+            this.exportButton.Location = new System.Drawing.Point(7, 392);
+            this.exportButton.Name = "exportButton";
+            this.exportButton.Size = new System.Drawing.Size(117, 28);
+            this.exportButton.TabIndex = 4;
+            this.exportButton.Text = "Esporta..";
+            this.exportButton.UseVisualStyleBackColor = true;
+            this.exportButton.Click += new System.EventHandler(this.exportButton_Click);
+            // 
             // exitButton
             // 
             this.exitButton.Location = new System.Drawing.Point(735, 392);
@@ -129,39 +160,32 @@ namespace ModelessForm_ExternalEvent
             this.dataGridView1.Size = new System.Drawing.Size(845, 363);
             this.dataGridView1.TabIndex = 0;
             // 
-            // exportButton
+            // functionGroupBox3
             // 
-            this.exportButton.Location = new System.Drawing.Point(7, 392);
-            this.exportButton.Name = "exportButton";
-            this.exportButton.Size = new System.Drawing.Size(117, 28);
-            this.exportButton.TabIndex = 4;
-            this.exportButton.Text = "Esporta..";
-            this.exportButton.UseVisualStyleBackColor = true;
-            this.exportButton.Click += new System.EventHandler(this.exportButton_Click);
-            // 
-            // importButton
-            // 
-            this.importButton.Location = new System.Drawing.Point(140, 392);
-            this.importButton.Name = "importButton";
-            this.importButton.Size = new System.Drawing.Size(117, 28);
-            this.importButton.TabIndex = 5;
-            this.importButton.Text = "Importa";
-            this.importButton.UseVisualStyleBackColor = true;
-            this.importButton.Click += new System.EventHandler(this.importButton_Click);
+            this.functionGroupBox3.Controls.Add(this.comboBox1);
+            this.functionGroupBox3.Location = new System.Drawing.Point(13, 369);
+            this.functionGroupBox3.Name = "functionGroupBox3";
+            this.functionGroupBox3.Size = new System.Drawing.Size(293, 70);
+            this.functionGroupBox3.TabIndex = 2;
+            this.functionGroupBox3.TabStop = false;
+            this.functionGroupBox3.Text = "File Excel da importare";
             // 
             // ModelessForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1205, 451);
+            this.Controls.Add(this.functionGroupBox3);
             this.Controls.Add(this.functionGroupBox2);
             this.Controls.Add(this.functionGroupBox1);
             this.Name = "ModelessForm";
             this.Text = "ModelessForm";
+            this.Load += new System.EventHandler(this.ModelessForm_Load);
             this.functionGroupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.functionGroupBox2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.functionGroupBox3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -178,5 +202,7 @@ namespace ModelessForm_ExternalEvent
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button importButton;
         private System.Windows.Forms.Button exportButton;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.GroupBox functionGroupBox3;
     }
 }

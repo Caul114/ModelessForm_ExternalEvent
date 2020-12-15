@@ -51,7 +51,11 @@ namespace ModelessForm_ExternalEvent
 
         // Un instanza della finestra di dialogo
         private ModelessForm modelessForm;
-        
+
+        // Percorso file excel
+        string path = "C:\\DatiLDB\\ExcelData\\AbacoCells.xlsx";
+        private List<string> _listXlSh;
+
         /// <summary>
         /// Proprietà pubblica per accedere al valore della richiesta corrente
         /// </summary>
@@ -74,6 +78,11 @@ namespace ModelessForm_ExternalEvent
         public List<ElementData> ElementParameters
         {
             get { return _parametersElement; }
+        }
+
+        public List<string> Strings
+        {
+            get { return _listXlSh; }
         }
 
 
@@ -131,7 +140,12 @@ namespace ModelessForm_ExternalEvent
                     case RequestId.Imp:
                         {
                             // Metodo per importare i parametri dell'elemento da un foglio Excel
-
+                            // Metodo per esportare i parametri dell'elemento in un foglio Excel
+                            if (pickedObject != null)
+                            {
+                                ImportDataFromExcel imp = new ImportDataFromExcel();
+                                _listXlSh = imp.XlSheets(path);
+                            }
                             break;
                         }
                     default:

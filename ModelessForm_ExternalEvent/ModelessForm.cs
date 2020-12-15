@@ -1,4 +1,5 @@
 ﻿using Autodesk.Revit.UI;
+using Microsoft.Office.Interop;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -29,6 +30,10 @@ namespace ModelessForm_ExternalEvent
         private RequestHandler m_Handler;
         private ExternalEvent m_ExEvent;
 
+        // Percorso del singolo file excel da importare
+        string path = "C:\\DatiLDB\\ExcelData\\AbacoCells.xlsx";
+        ImportData importData = new ImportData();
+
         /// <summary>
         ///   Costruttore della finestra di dialogo
         /// </summary>
@@ -38,6 +43,10 @@ namespace ModelessForm_ExternalEvent
             InitializeComponent();
             m_Handler = handler;
             m_ExEvent = exEvent;
+
+            // Imposta l'origine dati della Combobox e la riempie
+            List<string> dataBuffer = importData.XlSheets(path);
+            comboBox1.Items.Add(dataBuffer);
         }
 
         /// <summary>
@@ -56,7 +65,6 @@ namespace ModelessForm_ExternalEvent
             // non dimenticare di chiamare la classe base
             base.OnFormClosed(e);
         }
-
 
         /// <summary>
         ///   Attivatore / disattivatore del controllo
@@ -161,6 +169,7 @@ namespace ModelessForm_ExternalEvent
             MakeRequest(RequestId.Imp);
         }
 
+
         /// <summary>
         ///   Exit - chiude la finestra di dialogo
         /// </summary>
@@ -175,6 +184,9 @@ namespace ModelessForm_ExternalEvent
 
         }
 
+        private void ModelessForm_Load(object sender, EventArgs e)
+        {
 
+        }
     }  // class
 }

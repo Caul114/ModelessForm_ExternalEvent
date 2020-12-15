@@ -58,6 +58,7 @@
     <Compile Include="App.cs" />
     <Compile Include="Command.cs" />
     <Compile Include="ElementData.cs" />
+    <Compile Include="Microsoft\Office\Interop\ImportData.cs" />
     <Compile Include="ModelessForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -67,6 +68,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Request.cs" />
     <Compile Include="RequestHandler.cs" />
+    <Compile Include="ToExcel\ImportDataFromExcel.cs" />
     <Compile Include="ToExcel\ExportDataToExcel.cs" />
     <Compile Include="ToExcel\Util.cs" />
   </ItemGroup>

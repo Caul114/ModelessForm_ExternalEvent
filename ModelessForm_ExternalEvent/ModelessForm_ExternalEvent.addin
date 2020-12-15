@@ -1,14 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<RevitAddIns>
-  <AddIn Type="Command">
-    <Text>Command ModelessForm_ExternalEvent</Text>
-    <Description>Some description for ModelessForm_ExternalEvent</Description>
-    <Assembly>ModelessForm_ExternalEvent.dll</Assembly>
-    <FullClassName>ModelessForm_ExternalEvent.Command</FullClassName>
-    <ClientId>7C1FF45D-671D-4A29-BE0C-CF2A4918BBDE</ClientId>
-    <VendorId>BOLDstd</VendorId>
-    <VendorDescription>BOLDstd, http://boldstd.it/ </VendorDescription>
-  </AddIn>
+<RevitAddIns>  
   <AddIn Type="Application">
     <Name>Application ModelessForm_ExternalEvent</Name>
     <Assembly>ModelessForm_ExternalEvent.dll</Assembly>
@@ -17,4 +8,13 @@
     <VendorId>BOLDstd</VendorId>
     <VendorDescription>BOLDstd, http://boldstd.it/ </VendorDescription>
   </AddIn>
+	<AddIn Type="Command">
+		<Text>Command ModelessForm_ExternalEvent</Text>
+		<Description>Some description for ModelessForm_ExternalEvent</Description>
+		<Assembly>ModelessForm_ExternalEvent.dll</Assembly>
+		<FullClassName>ModelessForm_ExternalEvent.Command</FullClassName>
+		<ClientId>7C1FF45D-671D-4A29-BE0C-CF2A4918BBDE</ClientId>
+		<VendorId>BOLDstd</VendorId>
+		<VendorDescription>BOLDstd, http://boldstd.it/ </VendorDescription>
+	</AddIn>	
 </RevitAddIns>
