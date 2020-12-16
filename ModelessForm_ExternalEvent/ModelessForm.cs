@@ -209,8 +209,11 @@ namespace ModelessForm_ExternalEvent
 
         }
 
-        private void loadButton_Click(object sender, EventArgs e)
+        private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
+            string selectedEmployee = (string)comboBox1.SelectedItem;
+            textDistintaExcel.Text = selectedEmployee;
+
             // Ottieni il foglio di lavoro dell'elemento selezionato.
             int sheetSelected = comboBox1.SelectedIndex + 1;
             if (sheetSelected > 0)
@@ -226,8 +229,8 @@ namespace ModelessForm_ExternalEvent
                 // Ottieni l'oggetto dell'applicazione Excel.
                 Excel.Application excel_app = new Excel.Application();
 
-                // Rendi visibile Excel (opzionale).
-                excel_app.Visible = true;
+                //// Rendi visibile Excel (opzionale).
+                //excel_app.Visible = true;
 
                 // Apri la cartella di lavoro in sola lettura.
                 Excel.Workbook workbook = excel_app.Workbooks.Open(
@@ -261,7 +264,7 @@ namespace ModelessForm_ExternalEvent
 
                 // Chiude il server Excel.
                 excel_app.Quit();
-            } 
+            }
             else
             {
                 MessageBox.Show("Non hai selezionato alcun documento Excel.", "Errore!");

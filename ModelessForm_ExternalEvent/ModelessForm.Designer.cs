@@ -30,10 +30,10 @@ namespace ModelessForm_ExternalEvent
         private void InitializeComponent()
         {
             this.functionGroupBox1 = new System.Windows.Forms.GroupBox();
-            this.cleanButton = new System.Windows.Forms.Button();
-            this.listBox1 = new System.Windows.Forms.ListBox();
             this.captureButton = new System.Windows.Forms.Button();
+            this.listBox1 = new System.Windows.Forms.ListBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.cleanButton = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.functionGroupBox2 = new System.Windows.Forms.GroupBox();
             this.importButton = new System.Windows.Forms.Button();
@@ -41,7 +41,8 @@ namespace ModelessForm_ExternalEvent
             this.exitButton = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.functionGroupBox3 = new System.Windows.Forms.GroupBox();
-            this.loadButton = new System.Windows.Forms.Button();
+            this.textDistintaExcel = new System.Windows.Forms.TextBox();
+            this.importDistintaLabel = new System.Windows.Forms.Label();
             this.functionGroupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.functionGroupBox2.SuspendLayout();
@@ -61,25 +62,6 @@ namespace ModelessForm_ExternalEvent
             this.functionGroupBox1.TabStop = false;
             this.functionGroupBox1.Text = "Seleziona un oggetto";
             // 
-            // cleanButton
-            // 
-            this.cleanButton.Location = new System.Drawing.Point(603, 392);
-            this.cleanButton.Name = "cleanButton";
-            this.cleanButton.Size = new System.Drawing.Size(117, 28);
-            this.cleanButton.TabIndex = 3;
-            this.cleanButton.Text = "Cancella";
-            this.cleanButton.UseVisualStyleBackColor = true;
-            this.cleanButton.Click += new System.EventHandler(this.cleanButton_Click);
-            // 
-            // listBox1
-            // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.ItemHeight = 16;
-            this.listBox1.Location = new System.Drawing.Point(7, 70);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(280, 84);
-            this.listBox1.TabIndex = 2;
-            // 
             // captureButton
             // 
             this.captureButton.Location = new System.Drawing.Point(7, 21);
@@ -90,6 +72,15 @@ namespace ModelessForm_ExternalEvent
             this.captureButton.UseVisualStyleBackColor = true;
             this.captureButton.Click += new System.EventHandler(this.captureButton_Click);
             // 
+            // listBox1
+            // 
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.ItemHeight = 16;
+            this.listBox1.Location = new System.Drawing.Point(7, 70);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(280, 84);
+            this.listBox1.TabIndex = 2;
+            // 
             // pictureBox1
             // 
             this.pictureBox1.Location = new System.Drawing.Point(7, 165);
@@ -99,6 +90,16 @@ namespace ModelessForm_ExternalEvent
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
+            // cleanButton
+            // 
+            this.cleanButton.Location = new System.Drawing.Point(603, 392);
+            this.cleanButton.Name = "cleanButton";
+            this.cleanButton.Size = new System.Drawing.Size(117, 28);
+            this.cleanButton.TabIndex = 3;
+            this.cleanButton.Text = "Cancella";
+            this.cleanButton.UseVisualStyleBackColor = true;
+            this.cleanButton.Click += new System.EventHandler(this.cleanButton_Click);
+            // 
             // comboBox1
             // 
             this.comboBox1.FormattingEnabled = true;
@@ -107,6 +108,7 @@ namespace ModelessForm_ExternalEvent
             this.comboBox1.Size = new System.Drawing.Size(280, 24);
             this.comboBox1.TabIndex = 4;
             this.comboBox1.Text = "<- Scegli un File Excel da caricare ->";
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.ComboBox1_SelectedIndexChanged);
             // 
             // functionGroupBox2
             // 
@@ -164,8 +166,9 @@ namespace ModelessForm_ExternalEvent
             // 
             // functionGroupBox3
             // 
+            this.functionGroupBox3.Controls.Add(this.textDistintaExcel);
+            this.functionGroupBox3.Controls.Add(this.importDistintaLabel);
             this.functionGroupBox3.Controls.Add(this.comboBox1);
-            this.functionGroupBox3.Controls.Add(this.loadButton);
             this.functionGroupBox3.Location = new System.Drawing.Point(12, 354);
             this.functionGroupBox3.Name = "functionGroupBox3";
             this.functionGroupBox3.Size = new System.Drawing.Size(293, 85);
@@ -173,15 +176,21 @@ namespace ModelessForm_ExternalEvent
             this.functionGroupBox3.TabStop = false;
             this.functionGroupBox3.Text = "Mostra Distinta";
             // 
-            // loadButton
+            // textDistintaExcel
             // 
-            this.loadButton.Location = new System.Drawing.Point(212, 51);
-            this.loadButton.Name = "loadButton";
-            this.loadButton.Size = new System.Drawing.Size(75, 28);
-            this.loadButton.TabIndex = 5;
-            this.loadButton.Text = "Mostra";
-            this.loadButton.UseVisualStyleBackColor = true;
-            this.loadButton.Click += new System.EventHandler(this.loadButton_Click);
+            this.textDistintaExcel.Location = new System.Drawing.Point(141, 54);
+            this.textDistintaExcel.Name = "textDistintaExcel";
+            this.textDistintaExcel.Size = new System.Drawing.Size(145, 22);
+            this.textDistintaExcel.TabIndex = 6;
+            // 
+            // importDistintaLabel
+            // 
+            this.importDistintaLabel.AutoSize = true;
+            this.importDistintaLabel.Location = new System.Drawing.Point(7, 57);
+            this.importDistintaLabel.Name = "importDistintaLabel";
+            this.importDistintaLabel.Size = new System.Drawing.Size(128, 17);
+            this.importDistintaLabel.TabIndex = 5;
+            this.importDistintaLabel.Text = "Ultima visualizzata:";
             // 
             // ModelessForm
             // 
@@ -192,13 +201,14 @@ namespace ModelessForm_ExternalEvent
             this.Controls.Add(this.functionGroupBox2);
             this.Controls.Add(this.functionGroupBox1);
             this.Name = "ModelessForm";
-            this.Text = "ModelessForm";
+            this.Text = "BOLD DataCell";
             this.Load += new System.EventHandler(this.ModelessForm_Load);
             this.functionGroupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.functionGroupBox2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.functionGroupBox3.ResumeLayout(false);
+            this.functionGroupBox3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -217,6 +227,7 @@ namespace ModelessForm_ExternalEvent
         private System.Windows.Forms.Button exportButton;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.GroupBox functionGroupBox3;
-        private System.Windows.Forms.Button loadButton;
+        private System.Windows.Forms.TextBox textDistintaExcel;
+        private System.Windows.Forms.Label importDistintaLabel;
     }
 }
