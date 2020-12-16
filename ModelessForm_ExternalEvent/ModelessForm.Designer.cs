@@ -51,19 +51,19 @@ namespace ModelessForm_ExternalEvent
             // 
             // functionGroupBox1
             // 
-            this.functionGroupBox1.Controls.Add(this.cleanButton);
-            this.functionGroupBox1.Controls.Add(this.listBox1);
             this.functionGroupBox1.Controls.Add(this.captureButton);
-            this.functionGroupBox1.Location = new System.Drawing.Point(12, 271);
+            this.functionGroupBox1.Controls.Add(this.listBox1);
+            this.functionGroupBox1.Controls.Add(this.pictureBox1);
+            this.functionGroupBox1.Location = new System.Drawing.Point(12, 13);
             this.functionGroupBox1.Name = "functionGroupBox1";
-            this.functionGroupBox1.Size = new System.Drawing.Size(293, 168);
+            this.functionGroupBox1.Size = new System.Drawing.Size(293, 335);
             this.functionGroupBox1.TabIndex = 0;
             this.functionGroupBox1.TabStop = false;
-            this.functionGroupBox1.Text = "Selezione dell\'elemento";
+            this.functionGroupBox1.Text = "Seleziona un oggetto";
             // 
             // cleanButton
             // 
-            this.cleanButton.Location = new System.Drawing.Point(170, 134);
+            this.cleanButton.Location = new System.Drawing.Point(603, 392);
             this.cleanButton.Name = "cleanButton";
             this.cleanButton.Size = new System.Drawing.Size(117, 28);
             this.cleanButton.TabIndex = 3;
@@ -75,14 +75,14 @@ namespace ModelessForm_ExternalEvent
             // 
             this.listBox1.FormattingEnabled = true;
             this.listBox1.ItemHeight = 16;
-            this.listBox1.Location = new System.Drawing.Point(6, 70);
+            this.listBox1.Location = new System.Drawing.Point(7, 70);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(280, 52);
+            this.listBox1.Size = new System.Drawing.Size(280, 84);
             this.listBox1.TabIndex = 2;
             // 
             // captureButton
             // 
-            this.captureButton.Location = new System.Drawing.Point(6, 21);
+            this.captureButton.Location = new System.Drawing.Point(7, 21);
             this.captureButton.Name = "captureButton";
             this.captureButton.Size = new System.Drawing.Size(280, 43);
             this.captureButton.TabIndex = 0;
@@ -92,7 +92,7 @@ namespace ModelessForm_ExternalEvent
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(6, 86);
+            this.pictureBox1.Location = new System.Drawing.Point(7, 165);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(280, 158);
             this.pictureBox1.TabIndex = 1;
@@ -102,7 +102,7 @@ namespace ModelessForm_ExternalEvent
             // comboBox1
             // 
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(7, 22);
+            this.comboBox1.Location = new System.Drawing.Point(6, 21);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(280, 24);
             this.comboBox1.TabIndex = 4;
@@ -110,6 +110,7 @@ namespace ModelessForm_ExternalEvent
             // 
             // functionGroupBox2
             // 
+            this.functionGroupBox2.Controls.Add(this.cleanButton);
             this.functionGroupBox2.Controls.Add(this.importButton);
             this.functionGroupBox2.Controls.Add(this.exportButton);
             this.functionGroupBox2.Controls.Add(this.exitButton);
@@ -119,7 +120,7 @@ namespace ModelessForm_ExternalEvent
             this.functionGroupBox2.Size = new System.Drawing.Size(859, 426);
             this.functionGroupBox2.TabIndex = 1;
             this.functionGroupBox2.TabStop = false;
-            this.functionGroupBox2.Text = "Elenco degli elementi";
+            this.functionGroupBox2.Text = "Parametri della distinta";
             // 
             // importButton
             // 
@@ -165,17 +166,16 @@ namespace ModelessForm_ExternalEvent
             // 
             this.functionGroupBox3.Controls.Add(this.comboBox1);
             this.functionGroupBox3.Controls.Add(this.loadButton);
-            this.functionGroupBox3.Controls.Add(this.pictureBox1);
-            this.functionGroupBox3.Location = new System.Drawing.Point(12, 13);
+            this.functionGroupBox3.Location = new System.Drawing.Point(12, 354);
             this.functionGroupBox3.Name = "functionGroupBox3";
-            this.functionGroupBox3.Size = new System.Drawing.Size(293, 252);
+            this.functionGroupBox3.Size = new System.Drawing.Size(293, 85);
             this.functionGroupBox3.TabIndex = 2;
             this.functionGroupBox3.TabStop = false;
-            this.functionGroupBox3.Text = "Mostra file Excel";
+            this.functionGroupBox3.Text = "Mostra Distinta";
             // 
             // loadButton
             // 
-            this.loadButton.Location = new System.Drawing.Point(212, 52);
+            this.loadButton.Location = new System.Drawing.Point(212, 51);
             this.loadButton.Name = "loadButton";
             this.loadButton.Size = new System.Drawing.Size(75, 28);
             this.loadButton.TabIndex = 5;

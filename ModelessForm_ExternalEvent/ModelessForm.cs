@@ -138,7 +138,14 @@ namespace ModelessForm_ExternalEvent
         /// 
         private void captureButton_Click(object sender, EventArgs e)
         {
-            MakeRequest(RequestId.Id);
+            if (dataGridView1.Columns.Count > 0)
+            {
+                dataGridView1.DataSource = null;
+                dataGridView1.Rows.Clear();
+                dataGridView1.Columns.Clear();
+                dataGridView1.Refresh();
+            }
+                MakeRequest(RequestId.Id);            
         }
 
         /// <summary>
@@ -169,6 +176,7 @@ namespace ModelessForm_ExternalEvent
             listBox1.Items.Clear();
             dataGridView1.DataSource = null;
             dataGridView1.Rows.Clear();
+            dataGridView1.Columns.Clear();
             dataGridView1.Refresh();
         }
 
@@ -203,67 +211,69 @@ namespace ModelessForm_ExternalEvent
 
         private void loadButton_Click(object sender, EventArgs e)
         {
-            // Get the Excel application object.
-            Excel.Application excel_app = new Excel.Application();
-
-            // Make Excel visible (optional).
-            excel_app.Visible = true;
-
-            // Open the workbook read-only.
-            Excel.Workbook workbook = excel_app.Workbooks.Open(
-                path,
-                Type.Missing, true, Type.Missing, Type.Missing,
-                Type.Missing, Type.Missing, Type.Missing, Type.Missing,
-                Type.Missing, Type.Missing, Type.Missing, Type.Missing,
-                Type.Missing, Type.Missing);
-
-            // Get the worksheet of the selected item.
+            // Ottieni il foglio di lavoro dell'elemento selezionato.
             int sheetSelected = comboBox1.SelectedIndex + 1;
-            if(sheetSelected > 0)
+            if (sheetSelected > 0)
             {
+                // Se il DataGridView ha qualche oggetto al suo interno viene ripulito.
+                if (dataGridView1.Columns.Count > 0)
+                {
+                    dataGridView1.DataSource = null;
+                    dataGridView1.Rows.Clear();
+                    dataGridView1.Columns.Clear();
+                    dataGridView1.Refresh();
+                }
+                // Ottieni l'oggetto dell'applicazione Excel.
+                Excel.Application excel_app = new Excel.Application();
+
+                // Rendi visibile Excel (opzionale).
+                excel_app.Visible = true;
+
+                // Apri la cartella di lavoro in sola lettura.
+                Excel.Workbook workbook = excel_app.Workbooks.Open(
+                    path,
+                    Type.Missing, true, Type.Missing, Type.Missing,
+                    Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+                    Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+                    Type.Missing, Type.Missing);
+
+
                 Excel.Worksheet sheet = (Excel.Worksheet)workbook.Sheets[sheetSelected];
 
-                // Get the used range.
+                // Recupera l'intervallo utilizzato.
                 Excel.Range used_range = sheet.UsedRange;
 
-                // Get the maximum row and column number.
+                // Ottieni il numero massimo di righe e colonne.
                 int max_row = used_range.Rows.Count;
                 int max_col = used_range.Columns.Count;
 
-                // Get the sheet's values.
+                // Ottieni i valori del foglio.
                 object[,] values = (object[,])used_range.Value2;
 
-                // Get the column titles.
+                // Ottieni i titoli delle colonne.
                 SetGridColumns(dataGridView1, values, max_col);
 
-                // Get the data.
+                // Recupera i dati.
                 SetGridContents(dataGridView1, values, max_row, max_col);
 
-                // Close the workbook without saving changes.
+                // Chiude la cartella di lavoro senza salvare le modifiche.
                 workbook.Close(false, Type.Missing, Type.Missing);
 
-                // Close the Excel server.
+                // Chiude il server Excel.
                 excel_app.Quit();
             } 
             else
             {
-                // Close the workbook without saving changes.
-                workbook.Close(false, Type.Missing, Type.Missing);
-
-                // Close the Excel server.
-                excel_app.Quit();
-
-                MessageBox.Show("Non hai selezionato alcun documento Excel", "Errore!");
+                MessageBox.Show("Non hai selezionato alcun documento Excel.", "Errore!");
             }
         }
 
-        // Set the grid's column names from row 1.
-        private void SetGridColumns(DataGridView dgv,
-            object[,] values, int max_col)
+        // Imposta i nomi delle colonne della griglia dalla riga 1.
+        private void SetGridColumns(DataGridView dgv, object[,] values, int max_col)
         {
             dataGridView1.Columns.Clear();
 
-            // Get the title values.
+            // Ottieni i valori del titolo.
             for (int col = 1; col <= max_col; col++)
             {
                 string title = (string)values[1, col];
@@ -271,11 +281,10 @@ namespace ModelessForm_ExternalEvent
             }
         }
 
-        // Set the grid's contents.
-        private void SetGridContents(DataGridView dgv,
-                object[,] values, int max_row, int max_col)
+        // Imposta il contenuto della griglia..
+        private void SetGridContents(DataGridView dgv, object[,] values, int max_row, int max_col)
         {
-            // Copy the values into the grid.
+            // Copia i valori nella griglia.
             for (int row = 2; row <= max_row; row++)
             {
                 object[] row_values = new object[max_col];
