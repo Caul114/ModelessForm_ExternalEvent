@@ -22,12 +22,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using Autodesk.Revit.UI.Selection;
-using ModelessForm_ExternalEvent.ToExcel;
+using ModelessForm_ExternalEvent.FromToExcel;
 
 namespace ModelessForm_ExternalEvent
 {
@@ -37,14 +38,18 @@ namespace ModelessForm_ExternalEvent
     /// 
     public class RequestHandler : IExternalEventHandler  // Un'istanza di una classe che implementa questa interfaccia verrà registrata prima con Revit e ogni volta che viene generato l'evento esterno corrispondente, verrà richiamato il metodo Execute di questa interfaccia.
     {
+        #region Private data members
         // Il valore dell'ultima richiesta effettuata dal modulo non modale
         private Request m_request = new Request();
 
-        // Il Riferimento all'elemento selezionato
+        // Il Riferimento all'oggetto selezionato
         Reference pickedObject;
 
-        // Il valore restituito dal metodo per riempire il ListBox
-        private ArrayList _result;
+        // Il valore di BOLD_Distinta
+        private string _result;
+
+        // La lista di stringhe che restituirà i valori da inserire in ListBox
+        private List<string> _logActions;
 
         // Il valore restituito dal metodo per riempire il DataGridView
         private List<ElementData> _parametersElement;
@@ -52,10 +57,15 @@ namespace ModelessForm_ExternalEvent
         // Un instanza della finestra di dialogo
         private ModelessForm modelessForm;
 
-        // Percorso file excel
+        // Un instanza di DataTable
+        private DataTable _table;
+
+        // Percorso file Excel con tutte le Distinte
         string path = "C:\\DatiLDB\\ExcelData\\AbacoCells.xlsx";
         private List<string> _listXlSh;
+        #endregion
 
+        #region class public property
         /// <summary>
         /// Proprietà pubblica per accedere al valore della richiesta corrente
         /// </summary>
@@ -67,24 +77,54 @@ namespace ModelessForm_ExternalEvent
         /// <summary>
         /// Proprietà pubblica per accedere al valore della richiesta corrente
         /// </summary>
-        public ArrayList GetStringa
+        public string GetStringa
         {
             get { return _result; }
         }
 
         /// <summary>
-        /// Proprietà pubblica per accedere al valore della richiesta corrente
+        /// Proprietà pubblica per accedere ai valori della ListBox
         /// </summary>
-        public List<ElementData> ElementParameters
+        public List<string> GetStringhe
         {
-            get { return _parametersElement; }
+            get { return _logActions; }
         }
+
+        /// <summary>
+        /// Proprietà pubblica per accedere ai valori della DataTable
+        /// </summary>
+        public DataTable GetTable
+        {
+            get { return _table; }
+        }
+
+        ///// <summary>
+        ///// Proprietà pubblica per accedere al valore della richiesta corrente
+        ///// </summary>
+        //public List<ElementData> ElementParameters
+        //{
+        //    get { return _parametersElement; }
+        //}
 
         public List<string> Strings
         {
             get { return _listXlSh; }
         }
+        #endregion
 
+        #region class public method
+        /// <summary>
+        /// Costruttore di default di RequestHandler
+        /// </summary>
+        public RequestHandler()
+        {
+            // Costruisce i membri dei dati per le proprietà
+            _logActions = new List<string>();
+            _listXlSh = new List<string>();
+            _parametersElement = new List<ElementData>();
+            _table = new DataTable();
+        }
+        #endregion
 
         /// <summary>
         ///   Un metodo per identificare questo gestore di eventi esterno
@@ -93,7 +133,6 @@ namespace ModelessForm_ExternalEvent
         {
             return "R2014 External Event Sample";
         }
-
 
         /// <summary>
         ///   Il metodo principale del gestore di eventi.
@@ -116,15 +155,23 @@ namespace ModelessForm_ExternalEvent
                         }
                     case RequestId.Id:
                         {
-                            // Metodo per seleziona un oggetto
+                            // Metodo che seleziona un oggetto
                             pickedObject = PickObject(uiapp);
-                            // Metodo per restituire il singolo parametro alla ListBox
-                            _result = PickSingleObject(uiapp, pickedObject);
-                            modelessForm = App.thisApp.RetriveForm();
-                            modelessForm.ShowListBox1();
-                            // Metodo per restituire i valori dei parametri al DataGridView
-                            _parametersElement = GetSingleElement(uiapp, pickedObject);
-                            modelessForm.ShowDataGridView1();
+                            // Metodo che restituisce il singolo parametro alla ListBox
+                            _result = PickBOLD_distinta(uiapp, pickedObject);
+                            if(_result != "Nessun valore" && _result != null)
+                            {
+                                modelessForm = App.thisApp.RetriveForm();
+                                modelessForm.ShowValueBOLD_Distinta();
+                                // Metodo per restituire i valori dei parametri al DataGridView
+                                ImportDataFromExcel import = new ImportDataFromExcel();
+                                _table = import.ReadExcelToDataTable(_result, path, 9, 1);
+                                modelessForm.ShowDataGridView1();
+                            }
+                            else
+                            {
+                                MessageBox.Show("Questo elemento non ha alcun parametro BOLD_Distinta");
+                            }
                             break;
                         }
                     case RequestId.Exp:
@@ -132,26 +179,24 @@ namespace ModelessForm_ExternalEvent
                             // Metodo per esportare i parametri dell'elemento in un foglio Excel
                             if(pickedObject != null)
                             {
-                                ExportDataToExcel exp = new ExportDataToExcel();
-                                exp.GetExportDataToExcel(uiapp, pickedObject);
+                                //ExportDataToExcel exp = new ExportDataToExcel();
+                                //exp.GetExportDataToExcel(uiapp, pickedObject);
                             }                            
                             break;
                         }
                     case RequestId.Imp:
                         {
                             // Metodo per importare i parametri dell'elemento da un foglio Excel
-                            // Metodo per esportare i parametri dell'elemento in un foglio Excel
                             if (pickedObject != null)
                             {
-                                ImportDataFromExcel imp = new ImportDataFromExcel();
-                                _listXlSh = imp.XlSheets(path);
+                                //ImportDataFromExcel imp = new ImportDataFromExcel();
+                                //_listXlSh = imp.XlSheets(path);
                             }
                             break;
                         }
                     default:
                         {
-                            // some kind of a warning here should
-                            // notify us about an unexpected request 
+                            // Una sorta di avviso qui dovrebbe informarci di una richiesta imprevista
                             break;
                         }
                 }
@@ -173,47 +218,24 @@ namespace ModelessForm_ExternalEvent
         /// 
         private Reference PickObject(UIApplication uiapp)
         {
-            // Get the selected view
+            // Ottieni la vista selezionata
             UIDocument uidoc = uiapp.ActiveUIDocument;
             Document doc = uidoc.Document;
             Selection choices = uidoc.Selection;
 
-            // Get the single element
+            // Ottieni il singolo elemento
             Reference pickedObj = uidoc.Selection.PickObject(ObjectType.Element);
             return pickedObj;
         }
 
         /// <summary>
-        ///   La subroutine di selezione di molti elementi
+        ///   La subroutine di selezione di un elemento che mi torna il valore di BOLD_Distinta
         /// </summary>
         /// <remarks>
         /// </remarks>
         /// <param name="uiapp">L'oggetto Applicazione di Revit</param>m>
         /// 
-        private void PickMultipleObject(UIApplication uiapp)
-        {
-            UIDocument uidoc = uiapp.ActiveUIDocument;
-
-            // Verifica se c'è qualcosa di selezionato nella view attiva
-
-            if ((uidoc != null) && (uidoc.Selection != null))
-            {
-                ICollection<ElementId> selElements = uidoc.Selection.GetElementIds();
-                if (selElements.Count > 0)
-                {
-                    // ...                   
-                }
-            }
-        }
-
-        /// <summary>
-        ///   La subroutine di selezione di un elemento da mostrare in una ListBox
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="uiapp">L'oggetto Applicazione di Revit</param>m>
-        /// 
-        private ArrayList PickSingleObject(UIApplication uiapp, Reference reference)
+        private string PickBOLD_distinta(UIApplication uiapp, Reference reference)
         {
             // l'ArrayList da restituire
             ArrayList stringhe = new ArrayList();
@@ -223,18 +245,17 @@ namespace ModelessForm_ExternalEvent
             ElementId eleId = reference.ElementId;
             Element ele = uidoc.Document.GetElement(eleId);
 
-            // Prende il valore del parametro
+            // Restituisce il valore del parametro
             if (ele.LookupParameter("BOLD_Distinta") != null)
             {
                 Parameter pardistinta = ele.LookupParameter("BOLD_Distinta");
-                //MessageBox.Show($"BOLD_Distinta: " + pardistinta.AsString(), "Parameter: ");
-                stringhe.Add($"BOLD_Distinta: " + pardistinta.AsString());
+                _logActions.Add("- Distinta selezionata: " + pardistinta.AsString());                
+                return pardistinta.AsString();
             }
             else
             {
-                stringhe.Add($"BOLD_Distinta: " + "Nessun valore");
-            }
-            return stringhe;
+                return "Nessun valore";
+            }            
         }
 
         /// <summary>
@@ -243,39 +264,38 @@ namespace ModelessForm_ExternalEvent
         /// <remarks>
         /// </remarks>
         /// <param name="uiapp">L'oggetto Applicazione di Revit</param>m>
-        /// 
-        private List<ElementData> GetSingleElement(UIApplication uiapp, Reference reference)
-        {
-            string valueParameter = null;
-            List<ElementData> data = new List<ElementData>();
+        ///// 
+        //private List<ElementData> GetSingleElement(UIApplication uiapp, Reference reference)
+        //{
+        //    string valueParameter = null;
+        //    List<ElementData> data = new List<ElementData>();
 
+        //    // Chiama la vista attiva e seleziona gli elementi che mi servono
+        //    UIDocument uidoc = uiapp.ActiveUIDocument;
+        //    Document doc = uidoc.Document;
+        //    ElementId eleId = pickedObject.ElementId;
+        //    Element ele = uidoc.Document.GetElement(eleId);
+        //    ElementId eleTypeId = ele.GetTypeId();
+        //    ElementType eleType = doc.GetElement(eleTypeId) as ElementType;
 
-            // Chiama la vista attiva e seleziona gli elementi che mi servono
-            UIDocument uidoc = uiapp.ActiveUIDocument;
-            Document doc = uidoc.Document;
-            ElementId eleId = pickedObject.ElementId;
-            Element ele = uidoc.Document.GetElement(eleId);
-            ElementId eleTypeId = ele.GetTypeId();
-            ElementType eleType = doc.GetElement(eleTypeId) as ElementType;
+        //    // Prende il valore del parametro
+        //    if (ele.LookupParameter("BOLD_Distinta") != null)
+        //    {
+        //        Parameter pardistinta = ele.LookupParameter("BOLD_Distinta");
+        //        valueParameter = pardistinta.AsString();
+        //    }
+        //    else
+        //    {
+        //        valueParameter = "Nessun valore";
+        //    }
 
-            // Prende il valore del parametro
-            if (ele.LookupParameter("BOLD_Distinta") != null)
-            {
-                Parameter pardistinta = ele.LookupParameter("BOLD_Distinta");
-                //MessageBox.Show($"BOLD_Distinta: " + pardistinta.AsString(), "Parameter: ");
-                valueParameter = pardistinta.AsString();
-            }
-            else
-            {
-                valueParameter = "Nessun valore";
-            }
+        //    // Riempie la lista con i dati dell'elemento
+        //    data.Add(new ElementData(eleId, valueParameter, ele.Name, ele.Category.Name,
+        //        eleType.FamilyName, eleType.Name, doc.PathName));
+        //    _logActions.Add("- DataGridView mostra le proprietà dell'oggetto selezionato");
 
-            // Riempie la lista con i dati dell'elemento
-            data.Add(new ElementData(eleId, valueParameter, ele.Name, ele.Category.Name,
-                eleType.FamilyName, eleType.Name, doc.PathName));
-
-            return data;
-        }
+        //    return data;
+        //}
 
 
     }  // class

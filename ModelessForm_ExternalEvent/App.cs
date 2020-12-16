@@ -79,7 +79,7 @@ namespace ModelessForm_ExternalEvent
                 // La finestra di dialogo diventa il proprietario responsabile della loro disposizione, alla fine.
                 m_MyForm = new ModelessForm(exEvent, handler);
                 m_MyForm.Show();
-                //m_MyForm.TopMost = true;
+                m_MyForm.TopMost = true;
             }
         }
 
@@ -93,6 +93,15 @@ namespace ModelessForm_ExternalEvent
         }
 
         /// <summary>
+        ///   Rende la finestra di dialogo secondaria
+        /// </summary>
+        /// 
+        public void DontShowForm()
+        {
+            m_MyForm.TopMost = false;
+        }
+
+        /// <summary>
         ///   Riattivare la finestra di dialogo dal suo stato di attesa.
         /// </summary>
         /// 
@@ -101,6 +110,7 @@ namespace ModelessForm_ExternalEvent
             if (m_MyForm != null)
             {
                 m_MyForm.WakeUp();
+                m_MyForm.TopMost = true;
             }
         }
         #endregion

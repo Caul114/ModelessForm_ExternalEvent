@@ -17,6 +17,7 @@ namespace ModelessForm_ExternalEvent.DataFromExcel
             Tuple<Excel.Application, Excel.Workbook> xlDocument = ExcelOpen(xlPercorso);
             Excel.Application xlApp = xlDocument.Item1;
             Excel.Workbook xlwb = xlDocument.Item2;
+            List<string> nameSchedule = new List<string>();
             foreach (Excel.Worksheet xlws in xlApp.Worksheets)
             {
                 _excelSheets.Add(xlws.Name);

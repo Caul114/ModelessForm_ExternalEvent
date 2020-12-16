@@ -43,6 +43,8 @@ namespace ModelessForm_ExternalEvent
             this.functionGroupBox3 = new System.Windows.Forms.GroupBox();
             this.textDistintaExcel = new System.Windows.Forms.TextBox();
             this.importDistintaLabel = new System.Windows.Forms.Label();
+            this.distintaLabel = new System.Windows.Forms.Label();
+            this.distintaTestBox = new System.Windows.Forms.TextBox();
             this.functionGroupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.functionGroupBox2.SuspendLayout();
@@ -52,6 +54,8 @@ namespace ModelessForm_ExternalEvent
             // 
             // functionGroupBox1
             // 
+            this.functionGroupBox1.Controls.Add(this.distintaTestBox);
+            this.functionGroupBox1.Controls.Add(this.distintaLabel);
             this.functionGroupBox1.Controls.Add(this.captureButton);
             this.functionGroupBox1.Controls.Add(this.listBox1);
             this.functionGroupBox1.Controls.Add(this.pictureBox1);
@@ -76,16 +80,16 @@ namespace ModelessForm_ExternalEvent
             // 
             this.listBox1.FormattingEnabled = true;
             this.listBox1.ItemHeight = 16;
-            this.listBox1.Location = new System.Drawing.Point(7, 70);
+            this.listBox1.Location = new System.Drawing.Point(7, 104);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(280, 84);
+            this.listBox1.Size = new System.Drawing.Size(280, 68);
             this.listBox1.TabIndex = 2;
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(7, 165);
+            this.pictureBox1.Location = new System.Drawing.Point(7, 188);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(280, 158);
+            this.pictureBox1.Size = new System.Drawing.Size(280, 135);
             this.pictureBox1.TabIndex = 1;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
@@ -192,6 +196,22 @@ namespace ModelessForm_ExternalEvent
             this.importDistintaLabel.TabIndex = 5;
             this.importDistintaLabel.Text = "Ultima visualizzata:";
             // 
+            // distintaLabel
+            // 
+            this.distintaLabel.AutoSize = true;
+            this.distintaLabel.Location = new System.Drawing.Point(10, 71);
+            this.distintaLabel.Name = "distintaLabel";
+            this.distintaLabel.Size = new System.Drawing.Size(155, 17);
+            this.distintaLabel.TabIndex = 3;
+            this.distintaLabel.Text = "Parametro dell\'oggetto:";
+            // 
+            // distintaTestBox
+            // 
+            this.distintaTestBox.Location = new System.Drawing.Point(172, 71);
+            this.distintaTestBox.Name = "distintaTestBox";
+            this.distintaTestBox.Size = new System.Drawing.Size(115, 22);
+            this.distintaTestBox.TabIndex = 4;
+            // 
             // ModelessForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -204,6 +224,7 @@ namespace ModelessForm_ExternalEvent
             this.Text = "BOLD DataCell";
             this.Load += new System.EventHandler(this.ModelessForm_Load);
             this.functionGroupBox1.ResumeLayout(false);
+            this.functionGroupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.functionGroupBox2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
@@ -229,5 +250,7 @@ namespace ModelessForm_ExternalEvent
         private System.Windows.Forms.GroupBox functionGroupBox3;
         private System.Windows.Forms.TextBox textDistintaExcel;
         private System.Windows.Forms.Label importDistintaLabel;
+        private System.Windows.Forms.TextBox distintaTestBox;
+        private System.Windows.Forms.Label distintaLabel;
     }
 }

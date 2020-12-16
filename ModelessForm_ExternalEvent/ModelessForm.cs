@@ -1,5 +1,6 @@
 ﻿using Autodesk.Revit.UI;
 using ModelessForm_ExternalEvent.DataFromExcel;
+using ModelessForm_ExternalEvent.FromToExcel;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -103,6 +104,7 @@ namespace ModelessForm_ExternalEvent
             m_Handler.Request.Make(request);
             m_ExEvent.Raise();
             DozeOff();
+            App.thisApp.DontShowForm();
         }
 
 
@@ -133,7 +135,7 @@ namespace ModelessForm_ExternalEvent
         }
 
         /// <summary>
-        ///   Metodo che cattura un singolo elemento della View
+        ///   Metodo che cattura un singolo oggetto della View
         /// </summary>
         /// 
         private void captureButton_Click(object sender, EventArgs e)
@@ -152,9 +154,10 @@ namespace ModelessForm_ExternalEvent
         ///   Metodo che riempie la ListBox
         /// </summary>
         /// 
-        public void ShowListBox1()
+        public void ShowValueBOLD_Distinta()
         {
-            listBox1.DataSource = m_Handler.GetStringa;
+            distintaTestBox.Text = m_Handler.GetStringa;
+            //listBox1.DataSource = m_Handler.GetStringhe;
         }
 
         /// <summary>
@@ -163,7 +166,14 @@ namespace ModelessForm_ExternalEvent
         /// 
         public void ShowDataGridView1()
         {
-            dataGridView1.DataSource = m_Handler.ElementParameters;
+            if(m_Handler.GetTable != null)
+            {
+                // Riempie il DataGridView con la Sheet scelta del foglio Excel
+                dataGridView1.DataSource = m_Handler.GetTable;
+
+                // Aggiunge il log dell'azione effettuata sulla ListBox
+                listBox1.DataSource = m_Handler.GetStringhe;
+            }
         }
 
         /// <summary>
