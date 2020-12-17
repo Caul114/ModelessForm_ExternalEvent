@@ -37,6 +37,9 @@ namespace ModelessForm_ExternalEvent
         string path = "C:\\DatiLDB\\ExcelData\\AbacoCells.xlsx";
         ImportData importData = new ImportData();
 
+        // Valore attivo nella ComboBox
+        private string valueActive;
+
         /// <summary>
         ///   Costruttore della finestra di dialogo
         /// </summary>
@@ -156,7 +159,7 @@ namespace ModelessForm_ExternalEvent
         /// 
         public void ShowValueBOLD_Distinta()
         {
-            distintaTestBox.Text = m_Handler.GetDistintaValue;
+            textDistintaPicker.Text = m_Handler.GetDistintaValue;
         }
 
         /// <summary>
@@ -181,7 +184,7 @@ namespace ModelessForm_ExternalEvent
         /// 
         private void cleanButton_Click(object sender, EventArgs e)
         {
-            distintaTestBox.Text = null;
+            textDistintaPicker.Text = null;
             dataGridView1.DataSource = null;
             dataGridView1.Rows.Clear();
             dataGridView1.Columns.Clear();
@@ -216,15 +219,25 @@ namespace ModelessForm_ExternalEvent
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-
         }
 
+        /// <summary>
+        ///   Metodo che sceglie l'elemento attivo nella ComboBox e lo mostra nel DataGridView
+        /// </summary>
+        /// 
         private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            string selectedEmployee = (string)comboBox1.SelectedItem;
-            textDistintaExcel.Text = selectedEmployee;
+            // Chiama questo metodo e modifica il Count
+            MakeRequest(RequestId.ComboBox);
 
-            // Ottieni il foglio di lavoro dell'elemento selezionato.
+            string selectedEmployee = (string)comboBox1.SelectedItem;
+
+            // Assegna al valore attivo nella ComboBox il selectedEmployee
+            valueActive = selectedEmployee;
+
+            textDistintaComboBox.Text = selectedEmployee;
+
+            // Ottiene il foglio di lavoro dell'elemento selezionato.
             int sheetSelected = comboBox1.SelectedIndex + 1;
             if (sheetSelected > 0)
             {
@@ -305,6 +318,38 @@ namespace ModelessForm_ExternalEvent
                     row_values[col - 1] = values[row, col];
                 dgv.Rows.Add(row_values);
             }
+        }    
+
+        /// <summary>
+        ///   Valore attivo nella ComboBox in formato stringa
+        /// </summary>
+        /// 
+        public string ValueSelectedComboBox()
+        {
+            return valueActive;
         }
+
+        //public DataTable GetDataTableFromDataGridSource()
+        //{
+        //    // Crea una DataTable
+        //    DataTable dt = new DataTable();
+
+        //    // Aggiunge le colonne
+        //    foreach (DataGridViewColumn column in dataGridView1.Columns)
+        //    {
+        //        dt.Columns.Add(column.HeaderText, column.ValueType);
+        //    }
+
+        //    // Aggiunge le righe
+        //    foreach (DataGridViewRow row in dataGridView1.Rows)
+        //    {
+        //        dt.Rows.Add();
+        //        foreach (DataGridViewCell cell in row.Cells)
+        //        {
+        //            dt.Rows[dt.Rows.Count - 1][cell.ColumnIndex] = cell.Value.ToString();
+        //        }
+        //    }
+        //    return dt;
+        //}
     }  // class
 }

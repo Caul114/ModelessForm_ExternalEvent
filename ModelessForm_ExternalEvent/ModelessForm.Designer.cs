@@ -30,7 +30,7 @@ namespace ModelessForm_ExternalEvent
         private void InitializeComponent()
         {
             this.functionGroupBox1 = new System.Windows.Forms.GroupBox();
-            this.distintaTestBox = new System.Windows.Forms.TextBox();
+            this.textDistintaPicker = new System.Windows.Forms.TextBox();
             this.distintaLabel = new System.Windows.Forms.Label();
             this.captureButton = new System.Windows.Forms.Button();
             this.listBox1 = new System.Windows.Forms.ListBox();
@@ -43,7 +43,7 @@ namespace ModelessForm_ExternalEvent
             this.exitButton = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.functionGroupBox3 = new System.Windows.Forms.GroupBox();
-            this.textDistintaExcel = new System.Windows.Forms.TextBox();
+            this.textDistintaComboBox = new System.Windows.Forms.TextBox();
             this.importDistintaLabel = new System.Windows.Forms.Label();
             this.functionGroupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -54,7 +54,7 @@ namespace ModelessForm_ExternalEvent
             // 
             // functionGroupBox1
             // 
-            this.functionGroupBox1.Controls.Add(this.distintaTestBox);
+            this.functionGroupBox1.Controls.Add(this.textDistintaPicker);
             this.functionGroupBox1.Controls.Add(this.distintaLabel);
             this.functionGroupBox1.Controls.Add(this.captureButton);
             this.functionGroupBox1.Controls.Add(this.listBox1);
@@ -66,21 +66,21 @@ namespace ModelessForm_ExternalEvent
             this.functionGroupBox1.TabStop = false;
             this.functionGroupBox1.Text = "Seleziona un oggetto";
             // 
-            // distintaTestBox
+            // textDistintaPicker
             // 
-            this.distintaTestBox.Location = new System.Drawing.Point(172, 71);
-            this.distintaTestBox.Name = "distintaTestBox";
-            this.distintaTestBox.Size = new System.Drawing.Size(115, 22);
-            this.distintaTestBox.TabIndex = 4;
+            this.textDistintaPicker.Location = new System.Drawing.Point(172, 71);
+            this.textDistintaPicker.Name = "textDistintaPicker";
+            this.textDistintaPicker.Size = new System.Drawing.Size(115, 22);
+            this.textDistintaPicker.TabIndex = 4;
             // 
             // distintaLabel
             // 
             this.distintaLabel.AutoSize = true;
             this.distintaLabel.Location = new System.Drawing.Point(10, 71);
             this.distintaLabel.Name = "distintaLabel";
-            this.distintaLabel.Size = new System.Drawing.Size(155, 17);
+            this.distintaLabel.Size = new System.Drawing.Size(136, 17);
             this.distintaLabel.TabIndex = 3;
-            this.distintaLabel.Text = "Parametro dell\'oggetto:";
+            this.distintaLabel.Text = "Distinta dell\'oggetto:";
             // 
             // captureButton
             // 
@@ -112,7 +112,7 @@ namespace ModelessForm_ExternalEvent
             // 
             // cleanButton
             // 
-            this.cleanButton.Location = new System.Drawing.Point(603, 392);
+            this.cleanButton.Location = new System.Drawing.Point(601, 392);
             this.cleanButton.Name = "cleanButton";
             this.cleanButton.Size = new System.Drawing.Size(117, 28);
             this.cleanButton.TabIndex = 3;
@@ -146,7 +146,7 @@ namespace ModelessForm_ExternalEvent
             // 
             // importButton
             // 
-            this.importButton.Location = new System.Drawing.Point(140, 392);
+            this.importButton.Location = new System.Drawing.Point(141, 392);
             this.importButton.Name = "importButton";
             this.importButton.Size = new System.Drawing.Size(117, 28);
             this.importButton.TabIndex = 5;
@@ -156,7 +156,7 @@ namespace ModelessForm_ExternalEvent
             // 
             // exportButton
             // 
-            this.exportButton.Location = new System.Drawing.Point(7, 392);
+            this.exportButton.Location = new System.Drawing.Point(6, 392);
             this.exportButton.Name = "exportButton";
             this.exportButton.Size = new System.Drawing.Size(117, 28);
             this.exportButton.TabIndex = 4;
@@ -186,7 +186,7 @@ namespace ModelessForm_ExternalEvent
             // 
             // functionGroupBox3
             // 
-            this.functionGroupBox3.Controls.Add(this.textDistintaExcel);
+            this.functionGroupBox3.Controls.Add(this.textDistintaComboBox);
             this.functionGroupBox3.Controls.Add(this.importDistintaLabel);
             this.functionGroupBox3.Controls.Add(this.comboBox1);
             this.functionGroupBox3.Location = new System.Drawing.Point(12, 354);
@@ -196,12 +196,12 @@ namespace ModelessForm_ExternalEvent
             this.functionGroupBox3.TabStop = false;
             this.functionGroupBox3.Text = "Mostra Distinta";
             // 
-            // textDistintaExcel
+            // textDistintaComboBox
             // 
-            this.textDistintaExcel.Location = new System.Drawing.Point(141, 54);
-            this.textDistintaExcel.Name = "textDistintaExcel";
-            this.textDistintaExcel.Size = new System.Drawing.Size(145, 22);
-            this.textDistintaExcel.TabIndex = 6;
+            this.textDistintaComboBox.Location = new System.Drawing.Point(141, 54);
+            this.textDistintaComboBox.Name = "textDistintaComboBox";
+            this.textDistintaComboBox.Size = new System.Drawing.Size(145, 22);
+            this.textDistintaComboBox.TabIndex = 6;
             // 
             // importDistintaLabel
             // 
@@ -248,9 +248,9 @@ namespace ModelessForm_ExternalEvent
         private System.Windows.Forms.Button exportButton;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.GroupBox functionGroupBox3;
-        private System.Windows.Forms.TextBox textDistintaExcel;
+        private System.Windows.Forms.TextBox textDistintaComboBox;
         private System.Windows.Forms.Label importDistintaLabel;
-        private System.Windows.Forms.TextBox distintaTestBox;
+        private System.Windows.Forms.TextBox textDistintaPicker;
         private System.Windows.Forms.Label distintaLabel;
     }
 }

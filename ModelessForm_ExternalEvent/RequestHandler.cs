@@ -28,6 +28,7 @@ using System.Windows.Forms;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using Autodesk.Revit.UI.Selection;
+using ModelessForm_ExternalEvent.DataFromExcel;
 using ModelessForm_ExternalEvent.FromToExcel;
 using ModelessForm_ExternalEvent.ToExcel;
 
@@ -48,6 +49,13 @@ namespace ModelessForm_ExternalEvent
 
         // Il valore di BOLD_Distinta
         private string _valueDistinta;
+
+        // Il valore selezionato nella ComboBox
+        private string _valueSelectedComboBox;
+
+        // Il valore attivo nella pagina
+        private string _valueActive;
+        int count = 0;
 
         // La lista di stringhe che restituirà i valori da inserire in ListBox
         private ArrayList _logActions;
@@ -152,6 +160,7 @@ namespace ModelessForm_ExternalEvent
                             pickedObject = PickObject(uiapp);
                             // Metodo che restituisce il singolo parametro alla ListBox
                             _valueDistinta = PickBOLD_distinta(uiapp, pickedObject);
+                            count = 1;
                             _logActions.Add("- Distinta selezionata: " + _valueDistinta);
                             // Se il valore della BOLD_Distinta è presente, lo aggiungo alla Form
                             if (_valueDistinta != "Nessun valore" && _valueDistinta != null)
@@ -160,7 +169,7 @@ namespace ModelessForm_ExternalEvent
                                 modelessForm.ShowValueBOLD_Distinta();
                                 // Metodo per restituire i valori dei parametri al DataGridView
                                 ImportDataFromExcel import = new ImportDataFromExcel();
-                                _table = import.ReadExcelToDataTable(_valueDistinta, path, 9, 1);
+                                _table = import.ReadExcelToDataTable(_valueDistinta, path, 10, 1);
                                 modelessForm.ShowDataGridView1();
                             }
                             else
@@ -169,22 +178,38 @@ namespace ModelessForm_ExternalEvent
                             }                            
                             break;
                         }
+                    case RequestId.ComboBox:
+                        {
+                            count = 2;
+                            break;
+                        }
                     case RequestId.Exp:
                         {
                             // Metodo per esportare i parametri dell'elemento in un foglio Excel
-                            if(pickedObject != null)
+                            modelessForm = App.thisApp.RetriveForm();
+                            _valueSelectedComboBox = modelessForm.ValueSelectedComboBox();
+                            if(count == 1)
                             {
-                                ExportDataToExcel exp = new ExportDataToExcel();
-                                bool risp = exp.GetExportDataToExcel(_table, _valueDistinta, path2);
-                                if(risp == true)
-                                {
-                                    MessageBox.Show("File salvato correttamente.");
-                                }
-                                else
-                                {
-                                    MessageBox.Show("Il file non è stato salvato. Verifica l'errore.", "ERRORE!");
-                                }
+                                _valueActive = _valueDistinta;
+                            }
+                            else if(count == 2)
+                            {
+                                _valueActive = _valueSelectedComboBox;
                             }                            
+                            ImportDataFromExcel import = new ImportDataFromExcel();
+                            DataTable tableFromComboBox = import.ReadExcelToDataTable(_valueActive, path, 10, 1);
+
+                            ExportDataToExcel exp = new ExportDataToExcel();
+                            bool risp = exp.GetExportDataToExcel(tableFromComboBox, _valueActive, path2);
+                            if(risp == true)
+                            {
+                                MessageBox.Show("File salvato correttamente.");
+                            }
+                            else
+                            {
+                                MessageBox.Show("Il file non è stato salvato. Verifica l'errore.", "ERRORE!");
+                            }
+                           
                             break;
                         }
                     case RequestId.Imp:
