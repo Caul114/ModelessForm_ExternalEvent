@@ -329,6 +329,16 @@ namespace ModelessForm_ExternalEvent
             return valueActive;
         }
 
+        private void functionGroupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void importDistintaLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
         //public DataTable GetDataTableFromDataGridSource()
         //{
         //    // Crea una DataTable
