@@ -101,10 +101,10 @@ namespace ModelessForm_ExternalEvent
         ///
         private void MakeRequest(RequestId request)
         {
+            App.thisApp.DontShowFormTop();
             m_Handler.Request.Make(request);
             m_ExEvent.Raise();
-            DozeOff();
-            App.thisApp.DontShowForm();
+            DozeOff();            
         }
 
 
@@ -151,13 +151,12 @@ namespace ModelessForm_ExternalEvent
         }
 
         /// <summary>
-        ///   Metodo che riempie la ListBox
+        ///   Metodo che riempie il TextBox Distinta
         /// </summary>
         /// 
         public void ShowValueBOLD_Distinta()
         {
-            distintaTestBox.Text = m_Handler.GetStringa;
-            //listBox1.DataSource = m_Handler.GetStringhe;
+            distintaTestBox.Text = m_Handler.GetDistintaValue;
         }
 
         /// <summary>
@@ -171,23 +170,24 @@ namespace ModelessForm_ExternalEvent
                 // Riempie il DataGridView con la Sheet scelta del foglio Excel
                 dataGridView1.DataSource = m_Handler.GetTable;
 
-                // Aggiunge il log dell'azione effettuata sulla ListBox
-                listBox1.DataSource = m_Handler.GetStringhe;
+                // Aggiunge il log delle azioni effettuate nella ListBox
+                listBox1.DataSource = m_Handler.GetLog;
             }
         }
 
         /// <summary>
-        ///   Metodo che ripulisce la ListBox e la DataGridView
+        ///   Metodo che ripulisce la DataGridView, i TextBox e la ListBox
         /// </summary>
         /// 
         private void cleanButton_Click(object sender, EventArgs e)
         {
-            listBox1.DataSource = null;
-            listBox1.Items.Clear();
+            distintaTestBox.Text = null;
             dataGridView1.DataSource = null;
             dataGridView1.Rows.Clear();
             dataGridView1.Columns.Clear();
             dataGridView1.Refresh();
+            listBox1.DataSource = null;
+            listBox1.Items.Clear();
         }
 
         /// <summary>

@@ -68,7 +68,7 @@ namespace ModelessForm_ExternalEvent.FromToExcel
                 
                 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 MessageBox.Show("L'elemento che hai selezionato non ha una Distinta che gli corrisponda.");
                 return null;

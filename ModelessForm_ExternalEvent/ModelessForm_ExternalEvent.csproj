@@ -58,7 +58,6 @@
   <ItemGroup>
     <Compile Include="App.cs" />
     <Compile Include="Command.cs" />
-    <Compile Include="ElementData.cs" />
     <Compile Include="DataFromExcel\ImportData.cs" />
     <Compile Include="ModelessForm.cs">
       <SubType>Form</SubType>

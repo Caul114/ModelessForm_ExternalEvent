@@ -96,9 +96,18 @@ namespace ModelessForm_ExternalEvent
         ///   Rende la finestra di dialogo secondaria
         /// </summary>
         /// 
-        public void DontShowForm()
+        public void DontShowFormTop()
         {
             m_MyForm.TopMost = false;
+        }
+
+        /// <summary>
+        ///   Rende la finestra di dialogo primaria
+        /// </summary>
+        /// 
+        public void ShowFormTop()
+        {
+            m_MyForm.TopMost = true;
         }
 
         /// <summary>
@@ -109,8 +118,7 @@ namespace ModelessForm_ExternalEvent
         {
             if (m_MyForm != null)
             {
-                m_MyForm.WakeUp();
-                m_MyForm.TopMost = true;
+                m_MyForm.WakeUp();                
             }
         }
         #endregion

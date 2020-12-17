@@ -29,6 +29,7 @@ using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using Autodesk.Revit.UI.Selection;
 using ModelessForm_ExternalEvent.FromToExcel;
+using ModelessForm_ExternalEvent.ToExcel;
 
 namespace ModelessForm_ExternalEvent
 {
@@ -46,22 +47,20 @@ namespace ModelessForm_ExternalEvent
         Reference pickedObject;
 
         // Il valore di BOLD_Distinta
-        private string _result;
+        private string _valueDistinta;
 
         // La lista di stringhe che restituirà i valori da inserire in ListBox
-        private List<string> _logActions;
-
-        // Il valore restituito dal metodo per riempire il DataGridView
-        private List<ElementData> _parametersElement;
+        private ArrayList _logActions;
 
         // Un instanza della finestra di dialogo
         private ModelessForm modelessForm;
 
-        // Un instanza di DataTable
+        // Un instanza di DataTable per riempire il DataGridView
         private DataTable _table;
 
         // Percorso file Excel con tutte le Distinte
         string path = "C:\\DatiLDB\\ExcelData\\AbacoCells.xlsx";
+        string path2 = "C:\\DatiLDB\\ExcelData\\AbacoCellsSalvato.xlsx";
         private List<string> _listXlSh;
         #endregion
 
@@ -77,15 +76,15 @@ namespace ModelessForm_ExternalEvent
         /// <summary>
         /// Proprietà pubblica per accedere al valore della richiesta corrente
         /// </summary>
-        public string GetStringa
+        public string GetDistintaValue
         {
-            get { return _result; }
+            get { return _valueDistinta; }
         }
 
         /// <summary>
         /// Proprietà pubblica per accedere ai valori della ListBox
         /// </summary>
-        public List<string> GetStringhe
+        public ArrayList GetLog
         {
             get { return _logActions; }
         }
@@ -98,14 +97,9 @@ namespace ModelessForm_ExternalEvent
             get { return _table; }
         }
 
-        ///// <summary>
-        ///// Proprietà pubblica per accedere al valore della richiesta corrente
-        ///// </summary>
-        //public List<ElementData> ElementParameters
-        //{
-        //    get { return _parametersElement; }
-        //}
-
+        /// <summary>
+        /// Proprietà pubblica per accedere ai valori della DataTable
+        /// </summary>
         public List<string> Strings
         {
             get { return _listXlSh; }
@@ -119,9 +113,8 @@ namespace ModelessForm_ExternalEvent
         public RequestHandler()
         {
             // Costruisce i membri dei dati per le proprietà
-            _logActions = new List<string>();
+            _logActions = new ArrayList();
             _listXlSh = new List<string>();
-            _parametersElement = new List<ElementData>();
             _table = new DataTable();
         }
         #endregion
@@ -158,20 +151,22 @@ namespace ModelessForm_ExternalEvent
                             // Metodo che seleziona un oggetto
                             pickedObject = PickObject(uiapp);
                             // Metodo che restituisce il singolo parametro alla ListBox
-                            _result = PickBOLD_distinta(uiapp, pickedObject);
-                            if(_result != "Nessun valore" && _result != null)
+                            _valueDistinta = PickBOLD_distinta(uiapp, pickedObject);
+                            _logActions.Add("- Distinta selezionata: " + _valueDistinta);
+                            // Se il valore della BOLD_Distinta è presente, lo aggiungo alla Form
+                            if (_valueDistinta != "Nessun valore" && _valueDistinta != null)
                             {
                                 modelessForm = App.thisApp.RetriveForm();
                                 modelessForm.ShowValueBOLD_Distinta();
                                 // Metodo per restituire i valori dei parametri al DataGridView
                                 ImportDataFromExcel import = new ImportDataFromExcel();
-                                _table = import.ReadExcelToDataTable(_result, path, 9, 1);
+                                _table = import.ReadExcelToDataTable(_valueDistinta, path, 9, 1);
                                 modelessForm.ShowDataGridView1();
                             }
                             else
                             {
                                 MessageBox.Show("Questo elemento non ha alcun parametro BOLD_Distinta");
-                            }
+                            }                            
                             break;
                         }
                     case RequestId.Exp:
@@ -179,8 +174,16 @@ namespace ModelessForm_ExternalEvent
                             // Metodo per esportare i parametri dell'elemento in un foglio Excel
                             if(pickedObject != null)
                             {
-                                //ExportDataToExcel exp = new ExportDataToExcel();
-                                //exp.GetExportDataToExcel(uiapp, pickedObject);
+                                ExportDataToExcel exp = new ExportDataToExcel();
+                                bool risp = exp.GetExportDataToExcel(_table, _valueDistinta, path2);
+                                if(risp == true)
+                                {
+                                    MessageBox.Show("File salvato correttamente.");
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Il file non è stato salvato. Verifica l'errore.", "ERRORE!");
+                                }
                             }                            
                             break;
                         }
@@ -204,6 +207,7 @@ namespace ModelessForm_ExternalEvent
             finally
             {
                 App.thisApp.WakeFormUp();
+                App.thisApp.ShowFormTop();
             }
 
             return;
@@ -249,7 +253,6 @@ namespace ModelessForm_ExternalEvent
             if (ele.LookupParameter("BOLD_Distinta") != null)
             {
                 Parameter pardistinta = ele.LookupParameter("BOLD_Distinta");
-                _logActions.Add("- Distinta selezionata: " + pardistinta.AsString());                
                 return pardistinta.AsString();
             }
             else
@@ -257,47 +260,6 @@ namespace ModelessForm_ExternalEvent
                 return "Nessun valore";
             }            
         }
-
-        /// <summary>
-        ///   La subroutine di selezione di un elemento da mostrare in una DataGridView
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="uiapp">L'oggetto Applicazione di Revit</param>m>
-        ///// 
-        //private List<ElementData> GetSingleElement(UIApplication uiapp, Reference reference)
-        //{
-        //    string valueParameter = null;
-        //    List<ElementData> data = new List<ElementData>();
-
-        //    // Chiama la vista attiva e seleziona gli elementi che mi servono
-        //    UIDocument uidoc = uiapp.ActiveUIDocument;
-        //    Document doc = uidoc.Document;
-        //    ElementId eleId = pickedObject.ElementId;
-        //    Element ele = uidoc.Document.GetElement(eleId);
-        //    ElementId eleTypeId = ele.GetTypeId();
-        //    ElementType eleType = doc.GetElement(eleTypeId) as ElementType;
-
-        //    // Prende il valore del parametro
-        //    if (ele.LookupParameter("BOLD_Distinta") != null)
-        //    {
-        //        Parameter pardistinta = ele.LookupParameter("BOLD_Distinta");
-        //        valueParameter = pardistinta.AsString();
-        //    }
-        //    else
-        //    {
-        //        valueParameter = "Nessun valore";
-        //    }
-
-        //    // Riempie la lista con i dati dell'elemento
-        //    data.Add(new ElementData(eleId, valueParameter, ele.Name, ele.Category.Name,
-        //        eleType.FamilyName, eleType.Name, doc.PathName));
-        //    _logActions.Add("- DataGridView mostra le proprietà dell'oggetto selezionato");
-
-        //    return data;
-        //}
-
-
     }  // class
 
 }  // namespace

@@ -30,6 +30,8 @@ namespace ModelessForm_ExternalEvent
         private void InitializeComponent()
         {
             this.functionGroupBox1 = new System.Windows.Forms.GroupBox();
+            this.distintaTestBox = new System.Windows.Forms.TextBox();
+            this.distintaLabel = new System.Windows.Forms.Label();
             this.captureButton = new System.Windows.Forms.Button();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
@@ -43,8 +45,6 @@ namespace ModelessForm_ExternalEvent
             this.functionGroupBox3 = new System.Windows.Forms.GroupBox();
             this.textDistintaExcel = new System.Windows.Forms.TextBox();
             this.importDistintaLabel = new System.Windows.Forms.Label();
-            this.distintaLabel = new System.Windows.Forms.Label();
-            this.distintaTestBox = new System.Windows.Forms.TextBox();
             this.functionGroupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.functionGroupBox2.SuspendLayout();
@@ -65,6 +65,22 @@ namespace ModelessForm_ExternalEvent
             this.functionGroupBox1.TabIndex = 0;
             this.functionGroupBox1.TabStop = false;
             this.functionGroupBox1.Text = "Seleziona un oggetto";
+            // 
+            // distintaTestBox
+            // 
+            this.distintaTestBox.Location = new System.Drawing.Point(172, 71);
+            this.distintaTestBox.Name = "distintaTestBox";
+            this.distintaTestBox.Size = new System.Drawing.Size(115, 22);
+            this.distintaTestBox.TabIndex = 4;
+            // 
+            // distintaLabel
+            // 
+            this.distintaLabel.AutoSize = true;
+            this.distintaLabel.Location = new System.Drawing.Point(10, 71);
+            this.distintaLabel.Name = "distintaLabel";
+            this.distintaLabel.Size = new System.Drawing.Size(155, 17);
+            this.distintaLabel.TabIndex = 3;
+            this.distintaLabel.Text = "Parametro dell\'oggetto:";
             // 
             // captureButton
             // 
@@ -144,7 +160,7 @@ namespace ModelessForm_ExternalEvent
             this.exportButton.Name = "exportButton";
             this.exportButton.Size = new System.Drawing.Size(117, 28);
             this.exportButton.TabIndex = 4;
-            this.exportButton.Text = "Esporta..";
+            this.exportButton.Text = "Salva";
             this.exportButton.UseVisualStyleBackColor = true;
             this.exportButton.Click += new System.EventHandler(this.exportButton_Click);
             // 
@@ -195,22 +211,6 @@ namespace ModelessForm_ExternalEvent
             this.importDistintaLabel.Size = new System.Drawing.Size(128, 17);
             this.importDistintaLabel.TabIndex = 5;
             this.importDistintaLabel.Text = "Ultima visualizzata:";
-            // 
-            // distintaLabel
-            // 
-            this.distintaLabel.AutoSize = true;
-            this.distintaLabel.Location = new System.Drawing.Point(10, 71);
-            this.distintaLabel.Name = "distintaLabel";
-            this.distintaLabel.Size = new System.Drawing.Size(155, 17);
-            this.distintaLabel.TabIndex = 3;
-            this.distintaLabel.Text = "Parametro dell\'oggetto:";
-            // 
-            // distintaTestBox
-            // 
-            this.distintaTestBox.Location = new System.Drawing.Point(172, 71);
-            this.distintaTestBox.Name = "distintaTestBox";
-            this.distintaTestBox.Size = new System.Drawing.Size(115, 22);
-            this.distintaTestBox.TabIndex = 4;
             // 
             // ModelessForm
             // 
