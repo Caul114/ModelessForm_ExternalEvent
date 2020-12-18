@@ -50,6 +50,12 @@ namespace ModelessForm_ExternalEvent
             m_Handler = handler;
             m_ExEvent = exEvent;
 
+            // Inserisco la immagini selezionate
+            PictureBoxCentral(pathc, widthc, heigthc);
+            PictureBoxDx(pathd, widthd, heigthd);
+            PictureBoxSx(paths, widths, heigths);
+            PictureBoxHigh(pathh, widthh, heigthh);
+
             // Imposta l'origine dati della Combobox e la riempie
             List<string> dataBuffer = importData.XlSheets(path);
             foreach (var sheet in dataBuffer)
@@ -172,10 +178,22 @@ namespace ModelessForm_ExternalEvent
             {
                 // Riempie il DataGridView con la Sheet scelta del foglio Excel
                 dataGridView1.DataSource = m_Handler.GetTable;
-
-                // Aggiunge il log delle azioni effettuate nella ListBox
-                listBox1.DataSource = m_Handler.GetLog;
             }
+        }
+
+        /// <summary>
+        ///   Metodo che riempie la ListBox
+        /// </summary>
+        /// 
+
+        public void ShowListBox1()
+        {
+            // Resetta il contenuto della ListBox
+            listBox1.DataSource = null;
+            listBox1.Items.Clear();
+            // Popola la ListBox con l'ArrayList delle dimensioni
+            ArrayList lista = m_Handler.GetList;
+            listBox1.DataSource = lista;
         }
 
         /// <summary>
@@ -202,11 +220,6 @@ namespace ModelessForm_ExternalEvent
             MakeRequest(RequestId.Exp);
         }
 
-        private void importButton_Click(object sender, EventArgs e)
-        {
-            MakeRequest(RequestId.Imp);
-        }
-
 
         /// <summary>
         ///   Exit - chiude la finestra di dialogo
@@ -217,9 +230,7 @@ namespace ModelessForm_ExternalEvent
             Close();
         }
 
-        private void pictureBox1_Click(object sender, EventArgs e)
-        {
-        }
+        #region ComboBox
 
         /// <summary>
         ///   Metodo che sceglie l'elemento attivo nella ComboBox e lo mostra nel DataGridView
@@ -328,38 +339,110 @@ namespace ModelessForm_ExternalEvent
         {
             return valueActive;
         }
+        #endregion
 
-        private void functionGroupBox1_Enter(object sender, EventArgs e)
+        #region PictureBox
+
+        // Proprietà immagine centrale
+        string pathc = "C:\\Users\\Bold\\Pictures\\Lavoro\\Famiglie progetto EXP\\Prove\\central.png";
+        int widthc = 222;
+        int heigthc = 325;
+
+        // Proprietà immagine destra
+        string pathd = "C:\\Users\\Bold\\Pictures\\Lavoro\\Famiglie progetto EXP\\Prove\\dx.png";
+        int widthd = 65;
+        int heigthd = 325;
+
+        // Proprietà immagine sinistra
+        string paths = "C:\\Users\\Bold\\Pictures\\Lavoro\\Famiglie progetto EXP\\Prove\\sx.png";
+        int widths = 65;
+        int heigths = 325;
+
+        // Proprietà immagine alta
+        string pathh = "C:\\Users\\Bold\\Pictures\\Lavoro\\Famiglie progetto EXP\\Prove\\high.png";
+        int widthh = 222;
+        int heigthh = 25;
+
+
+        private Bitmap MyImage1;
+        private Bitmap MyImage2;
+        private Bitmap MyImage3;
+        private Bitmap MyImage4;
+
+        public void PictureBoxCentral(string fileToDisplay, int xSize, int ySize)
         {
+            // Sets up an image object to be displayed.
+            if (MyImage1 != null)
+            {
+                MyImage1.Dispose();
+            }
 
+            // Set the size of the PictureBox control.
+            //double width = xSize * 84.685 / 100;
+            //double hight = ySize * 84.685 / 100;
+            //pictureBoxCentral.Size = new System.Drawing.Size((int)width, (int)hight);
+            pictureBoxCentral.Size = new System.Drawing.Size(xSize, ySize);
+
+            pictureBoxCentral.SizeMode = PictureBoxSizeMode.StretchImage;
+            MyImage1 = new Bitmap(fileToDisplay);
+            pictureBoxCentral.Image = (Image)MyImage1;
+        }
+        public void PictureBoxDx(string fileToDisplay, int xSize, int ySize)
+        {
+            //Sets up an image object to be displayed.
+            if (MyImage2 != null)
+            {
+                MyImage2.Dispose();
+            }
+            // Set the size of the PictureBox control.
+            //double width = xSize * 84.685 / 100;
+            //double hight = ySize * 84.685 / 100;
+            //pictureBoxDx.Size = new System.Drawing.Size((int)width, (int)hight);
+            pictureBoxDx.Size = new System.Drawing.Size(xSize, ySize);
+
+            pictureBoxDx.SizeMode = PictureBoxSizeMode.StretchImage;
+            MyImage2 = new Bitmap(fileToDisplay);
+            pictureBoxDx.Image = (Image)MyImage2;
         }
 
-        private void importDistintaLabel_Click(object sender, EventArgs e)
+        public void PictureBoxSx(string fileToDisplay, int xSize, int ySize)
         {
+            //Sets up an image object to be displayed.
+            if (MyImage3 != null)
+            {
+                MyImage3.Dispose();
+            }
+            // Set the size of the PictureBox control.
+            //double width = xSize * 84.685 / 100;
+            //double hight = ySize * 84.685 / 100;
+            //pictureBoxSx.Size = new System.Drawing.Size((int)width, (int)hight);
+            pictureBoxSx.Size = new System.Drawing.Size(xSize, ySize);
 
+            pictureBoxSx.SizeMode = PictureBoxSizeMode.StretchImage;
+            MyImage3 = new Bitmap(fileToDisplay);
+            pictureBoxSx.Image = (Image)MyImage3;
         }
 
-        //public DataTable GetDataTableFromDataGridSource()
-        //{
-        //    // Crea una DataTable
-        //    DataTable dt = new DataTable();
+        public void PictureBoxHigh(string fileToDisplay, int xSize, int ySize)
+        {
+            //Sets up an image object to be displayed.
+            if (MyImage4 != null)
+            {
+                MyImage4.Dispose();
+            }
+            // Set the size of the PictureBox control.
+            //double width = xSize * 84.685 / 100;
+            //double hight = ySize * 84.685 / 100;
+            //pictureBoxHigh.Size = new System.Drawing.Size((int)width, (int)hight);
+            pictureBoxHigh.Size = new System.Drawing.Size(xSize, ySize);
 
-        //    // Aggiunge le colonne
-        //    foreach (DataGridViewColumn column in dataGridView1.Columns)
-        //    {
-        //        dt.Columns.Add(column.HeaderText, column.ValueType);
-        //    }
+            pictureBoxHigh.SizeMode = PictureBoxSizeMode.StretchImage;
+            MyImage4 = new Bitmap(fileToDisplay);
+            pictureBoxHigh.Image = (Image)MyImage4;
+        }
 
-        //    // Aggiunge le righe
-        //    foreach (DataGridViewRow row in dataGridView1.Rows)
-        //    {
-        //        dt.Rows.Add();
-        //        foreach (DataGridViewCell cell in row.Cells)
-        //        {
-        //            dt.Rows[dt.Rows.Count - 1][cell.ColumnIndex] = cell.Value.ToString();
-        //        }
-        //    }
-        //    return dt;
-        //}
+        #endregion
+
+
     }  // class
 }

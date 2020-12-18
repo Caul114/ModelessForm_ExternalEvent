@@ -42,13 +42,9 @@ namespace ModelessForm_ExternalEvent
         /// </summary>
         Exp = 2,
         /// <summary>
-        /// "Import" request
+        /// "ComboBox" request
         /// </summary>
-        Imp = 3,
-        /// <summary>
-        /// "Combo" request
-        /// </summary>
-        ComboBox = 4,
+        ComboBox = 3,
     }
 
     /// <summary>

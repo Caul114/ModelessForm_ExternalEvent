@@ -58,7 +58,7 @@ namespace ModelessForm_ExternalEvent
         int count = 0;
 
         // La lista di stringhe che restituirà i valori da inserire in ListBox
-        private ArrayList _logActions;
+        private ArrayList _dimensionsList;
 
         // Un instanza della finestra di dialogo
         private ModelessForm modelessForm;
@@ -72,7 +72,7 @@ namespace ModelessForm_ExternalEvent
         private List<string> _listXlSh;
         #endregion
 
-        #region class public property
+        #region Class public property
         /// <summary>
         /// Proprietà pubblica per accedere al valore della richiesta corrente
         /// </summary>
@@ -92,9 +92,9 @@ namespace ModelessForm_ExternalEvent
         /// <summary>
         /// Proprietà pubblica per accedere ai valori della ListBox
         /// </summary>
-        public ArrayList GetLog
+        public ArrayList GetList
         {
-            get { return _logActions; }
+            get { return _dimensionsList; }
         }
 
         /// <summary>
@@ -114,14 +114,14 @@ namespace ModelessForm_ExternalEvent
         }
         #endregion
 
-        #region class public method
+        #region Class public method
         /// <summary>
         /// Costruttore di default di RequestHandler
         /// </summary>
         public RequestHandler()
         {
             // Costruisce i membri dei dati per le proprietà
-            _logActions = new ArrayList();
+            _dimensionsList = new ArrayList();
             _listXlSh = new List<string>();
             _table = new DataTable();
         }
@@ -156,13 +156,13 @@ namespace ModelessForm_ExternalEvent
                         }
                     case RequestId.Id:
                         {
-                            // Metodo che seleziona un oggetto
+                            // Chiama il metodo che seleziona un oggetto
                             pickedObject = PickObject(uiapp);
-                            // Metodo che restituisce il singolo parametro alla ListBox
+                            // Chiama il metodo che restituisce il valore della BOLD_Distinta
                             _valueDistinta = PickBOLD_distinta(uiapp, pickedObject);
+                            // Cambia il count
                             count = 1;
-                            _logActions.Add("- Distinta selezionata: " + _valueDistinta);
-                            // Se il valore della BOLD_Distinta è presente, lo aggiungo alla Form
+                            // Se il valore della BOLD_Distinta è presente, lo aggiunge alla Form
                             if (_valueDistinta != "Nessun valore" && _valueDistinta != null)
                             {
                                 modelessForm = App.thisApp.RetriveForm();
@@ -171,16 +171,14 @@ namespace ModelessForm_ExternalEvent
                                 ImportDataFromExcel import = new ImportDataFromExcel();
                                 _table = import.ReadExcelToDataTable(_valueDistinta, path, 10, 1);
                                 modelessForm.ShowDataGridView1();
+                                // Chiama il metodo che riempie la ListBox con le dimensioni della Famiglia Cell
+                                _dimensionsList = GetParameters(uiapp, pickedObject);
+                                modelessForm.ShowListBox1();
                             }
                             else
                             {
                                 MessageBox.Show("Questo elemento non ha alcun parametro BOLD_Distinta");
                             }                            
-                            break;
-                        }
-                    case RequestId.ComboBox:
-                        {
-                            count = 2;
                             break;
                         }
                     case RequestId.Exp:
@@ -212,14 +210,9 @@ namespace ModelessForm_ExternalEvent
                            
                             break;
                         }
-                    case RequestId.Imp:
+                    case RequestId.ComboBox:
                         {
-                            // Metodo per importare i parametri dell'elemento da un foglio Excel
-                            if (pickedObject != null)
-                            {
-                                //ImportDataFromExcel imp = new ImportDataFromExcel();
-                                //_listXlSh = imp.XlSheets(path);
-                            }
+                            count = 2;
                             break;
                         }
                     default:
@@ -258,7 +251,7 @@ namespace ModelessForm_ExternalEvent
         }
 
         /// <summary>
-        ///   La subroutine di selezione di un elemento che mi torna il valore di BOLD_Distinta
+        ///   La subroutine di selezione di un elemento che torna il valore stringa di BOLD_Distinta
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -266,9 +259,6 @@ namespace ModelessForm_ExternalEvent
         /// 
         private string PickBOLD_distinta(UIApplication uiapp, Reference reference)
         {
-            // l'ArrayList da restituire
-            ArrayList stringhe = new ArrayList();
-
             // Chiamo la vista attiva e seleziono gli elementi che mi servono
             UIDocument uidoc = uiapp.ActiveUIDocument;
             ElementId eleId = reference.ElementId;
@@ -285,6 +275,101 @@ namespace ModelessForm_ExternalEvent
                 return "Nessun valore";
             }            
         }
+
+        /// <summary>
+        ///   La subroutine che cattura un singolo oggetto
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <param name="uiapp">L'oggetto Applicazione di Revit</param>m>
+        /// 
+        private ArrayList GetParameters(UIApplication uiapp, Reference reference)
+        {
+            // Chiamo la vista attiva e seleziono gli elementi che mi servono
+            UIDocument uidoc = uiapp.ActiveUIDocument;
+            ElementId eleId = reference.ElementId;
+            Element ele = uidoc.Document.GetElement(eleId);
+            return _dimensionsList = GetParamValues(ele);
+        }
+
+        /// <summary>
+        /// Return all the parameter values  
+        /// deemed relevant for the given element
+        /// in string form.
+        /// </summary>
+        ArrayList GetParamValues(Element e)
+        {
+            // Two choices: 
+            // Element.Parameters property -- Retrieves 
+            // a set containing all  the parameters.
+            // GetOrderedParameters method -- Gets the 
+            // visible parameters in order.
+
+            IList<Parameter> ps = e.GetOrderedParameters();
+
+            ArrayList param_values = new ArrayList(ps.Count);
+
+            foreach (Parameter p in ps)
+            {
+                // AsValueString displays the value as the 
+                // user sees it. In some cases, the underlying
+                // database value returned by AsInteger, AsDouble,
+                // etc., may be more relevant.
+
+                param_values.Add(string.Format("{0}\n{1}\n\n",
+                  p.Definition.Name, p.AsValueString()));
+            }
+            return param_values;
+        }
+
+        /// <summary>
+        ///   La subroutine che cattura un singolo oggetto
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <param name="uiapp">L'oggetto Applicazione di Revit</param>m>
+        /// 
+        private ArrayList GetDimensionsList(UIApplication uiapp, Reference reference)
+        {
+            // Instanzio un oggetto ArrayList
+            ArrayList arrayList = new ArrayList();
+
+            // Chiamo la vista attiva e seleziono gli elementi che mi servono
+            UIDocument uidoc = uiapp.ActiveUIDocument;
+            ElementId eleId = reference.ElementId;
+            Element ele = uidoc.Document.GetElement(eleId);
+
+            // Se i parametri Lughezza e Area sono presenti, ricava i loro valori e li aggiunge alla lista, 
+            // altrimenti scrivi una stringa vuota
+            Parameter parLunghezza = ele.LookupParameter("Lunghezza");
+            string value = parLunghezza.AsString();
+            arrayList.Add("Lunghezza:");
+            if (value == null )
+            {
+                arrayList.Add("-----");                
+            }
+            else
+            {
+                arrayList.Add(value);
+            }            
+            arrayList.Add("");
+
+            Parameter parArea = ele.LookupParameter("Area");
+            value = parArea.AsString();
+            arrayList.Add("Area:");
+            if (value == null)
+            {
+                arrayList.Add("-----");
+            }
+            else
+            {
+                arrayList.Add(value);
+            }
+            arrayList.Add("");
+
+            return arrayList;
+        }
+
     }  // class
 
 }  // namespace

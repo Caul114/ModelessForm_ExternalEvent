@@ -64,8 +64,7 @@ namespace ModelessForm_ExternalEvent.FromToExcel
 
                 excelworkBook.Close();
                 excel.Quit();
-                return dataTable;
-                
+                return dataTable;      
                 
             }
             catch (Exception)
