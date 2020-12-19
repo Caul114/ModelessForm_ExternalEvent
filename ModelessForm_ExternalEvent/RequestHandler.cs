@@ -171,7 +171,7 @@ namespace ModelessForm_ExternalEvent
                                 ImportDataFromExcel import = new ImportDataFromExcel();
                                 _table = import.ReadExcelToDataTable(_valueDistinta, path, 10, 1);
                                 modelessForm.ShowDataGridView1();
-                                // Chiama il metodo che riempie la ListBox con le dimensioni della Famiglia Cell
+                                // Chiama il metodo che riempie la ListBox con le Dimensioni dell'oggetto selezionato
                                 _dimensionsList = GetParameters(uiapp, pickedObject);
                                 modelessForm.ShowListBox1();
                             }
@@ -277,7 +277,7 @@ namespace ModelessForm_ExternalEvent
         }
 
         /// <summary>
-        ///   La subroutine che cattura un singolo oggetto
+        ///   La subroutine che restituisce i valori della LISTBOX
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -289,85 +289,56 @@ namespace ModelessForm_ExternalEvent
             UIDocument uidoc = uiapp.ActiveUIDocument;
             ElementId eleId = reference.ElementId;
             Element ele = uidoc.Document.GetElement(eleId);
-            return _dimensionsList = GetParamValues(ele);
+            return _dimensionsList = GetDimensionsList(ele, reference);
         }
 
         /// <summary>
-        /// Return all the parameter values  
-        /// deemed relevant for the given element
-        /// in string form.
-        /// </summary>
-        ArrayList GetParamValues(Element e)
-        {
-            // Two choices: 
-            // Element.Parameters property -- Retrieves 
-            // a set containing all  the parameters.
-            // GetOrderedParameters method -- Gets the 
-            // visible parameters in order.
-
-            IList<Parameter> ps = e.GetOrderedParameters();
-
-            ArrayList param_values = new ArrayList(ps.Count);
-
-            foreach (Parameter p in ps)
-            {
-                // AsValueString displays the value as the 
-                // user sees it. In some cases, the underlying
-                // database value returned by AsInteger, AsDouble,
-                // etc., may be more relevant.
-
-                param_values.Add(string.Format("{0}\n{1}\n\n",
-                  p.Definition.Name, p.AsValueString()));
-            }
-            return param_values;
-        }
-
-        /// <summary>
-        ///   La subroutine che cattura un singolo oggetto
+        ///   La subroutine che cattura i parametri dimensionali dell'oggetto selezionato
         /// </summary>
         /// <remarks>
         /// </remarks>
         /// <param name="uiapp">L'oggetto Applicazione di Revit</param>m>
         /// 
-        private ArrayList GetDimensionsList(UIApplication uiapp, Reference reference)
+        private ArrayList GetDimensionsList(Element ele, Reference reference)
         {
-            // Instanzio un oggetto ArrayList
-            ArrayList arrayList = new ArrayList();
+            // GetOrderedParameters method -- Ottiene i parametri visibili in ordine.
+            IList<Parameter> parIList = ele.GetOrderedParameters();
 
-            // Chiamo la vista attiva e seleziono gli elementi che mi servono
-            UIDocument uidoc = uiapp.ActiveUIDocument;
-            ElementId eleId = reference.ElementId;
-            Element ele = uidoc.Document.GetElement(eleId);
+            // Lista dei nomi dei parametri contenuti nella Partizione Dimensioni
+            List<string> parametriDimensionali = new List<string> {
+                    "Lunghezza",
+                    "Area",
+                    "Volume",
+                    "CellH",
+                    "CellH2",
+                    "CellL",
+                    "CellDxH",
+                    "CellSxH"
+                };
 
-            // Se i parametri Lughezza e Area sono presenti, ricava i loro valori e li aggiunge alla lista, 
-            // altrimenti scrivi una stringa vuota
-            Parameter parLunghezza = ele.LookupParameter("Lunghezza");
-            string value = parLunghezza.AsString();
-            arrayList.Add("Lunghezza:");
-            if (value == null )
+            // Se i parametri dimensionali sono presenti, ricava i loro valori e li aggiunge alla lista, 
+            // altrimenti scrive una stringa vuota
+
+            foreach (Parameter par in parIList)
             {
-                arrayList.Add("-----");                
+                foreach (string str in parametriDimensionali)
+                {
+                    if (par.Definition.Name == str)
+                    {
+                        _dimensionsList.Add(par.Definition.Name + ":");
+                        if (par.AsValueString() == null)
+                        {
+                            _dimensionsList.Add("-----");
+                        }
+                        else
+                        {
+                            _dimensionsList.Add(par.AsValueString());
+                        }
+                        _dimensionsList.Add("");
+                    }
+                }
             }
-            else
-            {
-                arrayList.Add(value);
-            }            
-            arrayList.Add("");
-
-            Parameter parArea = ele.LookupParameter("Area");
-            value = parArea.AsString();
-            arrayList.Add("Area:");
-            if (value == null)
-            {
-                arrayList.Add("-----");
-            }
-            else
-            {
-                arrayList.Add(value);
-            }
-            arrayList.Add("");
-
-            return arrayList;
+            return _dimensionsList;
         }
 
     }  // class

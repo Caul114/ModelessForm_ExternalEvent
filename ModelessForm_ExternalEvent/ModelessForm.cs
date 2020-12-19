@@ -194,6 +194,17 @@ namespace ModelessForm_ExternalEvent
             // Popola la ListBox con l'ArrayList delle dimensioni
             ArrayList lista = m_Handler.GetList;
             listBox1.DataSource = lista;
+            // Seleziona i titoli delle dimensioni con SelectionMode esteso
+            listBox1.SelectionMode = SelectionMode.MultiExtended;
+            int count = 0;
+            for (int i = 0; i < listBox1.Items.Count; i++)
+            {
+                if(i == count)
+                {
+                    listBox1.SetSelected(i, true);
+                    count += 3;
+                }
+            }  
         }
 
         /// <summary>
