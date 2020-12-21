@@ -1,4 +1,7 @@
 ﻿
+using System.Drawing;
+using System.Windows.Forms;
+
 namespace ModelessForm_ExternalEvent
 {
     partial class ModelessForm
@@ -269,6 +272,20 @@ namespace ModelessForm_ExternalEvent
             this.dataGridView1.RowTemplate.Height = 24;
             this.dataGridView1.Size = new System.Drawing.Size(684, 511);
             this.dataGridView1.TabIndex = 0;
+            this.dataGridView1.ColumnHeadersDefaultCellStyle.BackColor = Color.Navy;
+            this.dataGridView1.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            this.dataGridView1.ColumnHeadersDefaultCellStyle.Font =
+                new Font(this.dataGridView1.Font, FontStyle.Bold);
+            this.dataGridView1.AutoSizeRowsMode =
+                DataGridViewAutoSizeRowsMode.DisplayedCellsExceptHeaders;
+            this.dataGridView1.ColumnHeadersBorderStyle =
+                DataGridViewHeaderBorderStyle.Single;
+            this.dataGridView1.CellBorderStyle = DataGridViewCellBorderStyle.Single;
+            this.dataGridView1.GridColor = Color.Black;
+            this.dataGridView1.RowHeadersVisible = false;
+            this.dataGridView1.SelectionMode =
+                DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridView1.MultiSelect = false;
             // 
             // functionGroupBoxListBox
             // 
