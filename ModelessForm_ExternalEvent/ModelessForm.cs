@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -403,11 +404,10 @@ namespace ModelessForm_ExternalEvent
             public int IntegerData2 { get; private set; }
         }
 
-        // riempio una lista con tutti i dati delle immagini del singolo oggetto
-
+        // Riempio una lista con tutti i dati delle immagini del singolo oggetto
         public void SetModifyPicture()
         {
-            PictureBoxCentral(GetDataPictureCentral().StringData, GetDataPictureCentral().IntegerData1, GetDataPictureCentral().IntegerData2);
+            PictureBoxCentral(GetDataPictureCentral().StringData, GetDataPictureCentral().IntegerData1, GetDataPictureCentral().IntegerData2);              
             PictureBoxDx(GetDataPictureDx().StringData, GetDataPictureDx().IntegerData1, GetDataPictureDx().IntegerData2);
             PictureBoxSx(GetDataPictureSx().StringData, GetDataPictureSx().IntegerData1, GetDataPictureSx().IntegerData2);
             PictureBoxHigh(GetDataPictureHigh().StringData, GetDataPictureHigh().IntegerData1, GetDataPictureHigh().IntegerData2);
@@ -473,15 +473,18 @@ namespace ModelessForm_ExternalEvent
             pictureBoxCentral.Size = new System.Drawing.Size(xSize, ySize);
 
             pictureBoxCentral.SizeMode = PictureBoxSizeMode.StretchImage;
-            MyImage1 = new Bitmap(fileToDisplay);
-            if (MyImage1 == null)
+
+            if (File.Exists(fileToDisplay))
             {
-                MessageBox.Show("L'immagine centrale non è stata salvata con un nome corretto");                
+                MyImage1 = new Bitmap(fileToDisplay);
             }
             else
             {
-                pictureBoxCentral.Image = (Image)MyImage1;
+                MessageBox.Show("Si è verificato un errore nel caricamento dell'immagine."
+                    + "\nControlla che il nome dell'immagine sia corretto.");
+                MyImage1 = new Bitmap("C:\\Users\\Bold\\Pictures\\Lavoro\\Famiglie progetto EXP\\Prove\\central.png");
             }
+            pictureBoxCentral.Image = (Image)MyImage1;
         }
         public void PictureBoxDx(string fileToDisplay, int xSize, int ySize)
         {
@@ -497,15 +500,16 @@ namespace ModelessForm_ExternalEvent
             pictureBoxDx.Size = new System.Drawing.Size(xSize, ySize);
 
             pictureBoxDx.SizeMode = PictureBoxSizeMode.StretchImage;
-            MyImage2 = new Bitmap(fileToDisplay);
-            if (MyImage2 == null)
+
+            if (File.Exists(fileToDisplay))
             {
-                MessageBox.Show("L'immagine di destra non è stata salvata con un nome corretto");
+                MyImage2 = new Bitmap(fileToDisplay);
             }
             else
             {
-                pictureBoxDx.Image = (Image)MyImage2;
+                MyImage2 = new Bitmap("C:\\Users\\Bold\\Pictures\\Lavoro\\Famiglie progetto EXP\\Prove\\dx.png");
             }
+            pictureBoxDx.Image = (Image)MyImage2;
         }
 
         public void PictureBoxSx(string fileToDisplay, int xSize, int ySize)
@@ -522,15 +526,16 @@ namespace ModelessForm_ExternalEvent
             pictureBoxSx.Size = new System.Drawing.Size(xSize, ySize);
 
             pictureBoxSx.SizeMode = PictureBoxSizeMode.StretchImage;
-            MyImage3 = new Bitmap(fileToDisplay);
-            if (MyImage3 == null)
+
+            if (File.Exists(fileToDisplay))
             {
-                MessageBox.Show("L'immagine di sinistra non è stata salvata con un nome corretto");
+                MyImage3 = new Bitmap(fileToDisplay);
             }
             else
             {
-                pictureBoxSx.Image = (Image)MyImage3;
+                MyImage3 = new Bitmap("C:\\Users\\Bold\\Pictures\\Lavoro\\Famiglie progetto EXP\\Prove\\sx.png");
             }
+            pictureBoxSx.Image = (Image)MyImage3;
         }
 
         public void PictureBoxHigh(string fileToDisplay, int xSize, int ySize)
@@ -547,15 +552,16 @@ namespace ModelessForm_ExternalEvent
             pictureBoxHigh.Size = new System.Drawing.Size(xSize, ySize);
 
             pictureBoxHigh.SizeMode = PictureBoxSizeMode.StretchImage;
-            MyImage4 = new Bitmap(fileToDisplay);
-            if (MyImage4 == null)
+
+            if (File.Exists(fileToDisplay))
             {
-                MessageBox.Show("L'immagine alta non è stata salvata con un nome corretto");
+                MyImage4 = new Bitmap(fileToDisplay);
             }
             else
             {
-                pictureBoxHigh.Image = (Image)MyImage4;
+                MyImage4 = new Bitmap("C:\\Users\\Bold\\Pictures\\Lavoro\\Famiglie progetto EXP\\Prove\\high.png");
             }
+            pictureBoxHigh.Image = (Image)MyImage4;
         }
         #endregion
 
