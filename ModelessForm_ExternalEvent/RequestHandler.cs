@@ -53,6 +53,9 @@ namespace ModelessForm_ExternalEvent
         // Il valore selezionato nella ComboBox
         private string _valueSelectedComboBox;
 
+        // Il tipo della famiflia in formato stringa
+        private string _familyType;
+
         // Il valore attivo nella pagina
         private string _valueActive;
         int count = 0;
@@ -87,6 +90,14 @@ namespace ModelessForm_ExternalEvent
         public string GetDistintaValue
         {
             get { return _valueDistinta; }
+        }
+
+        /// <summary>
+        /// Proprietà pubblica per accedere al valore della richiesta corrente
+        /// </summary>
+        public string GetFamilyType
+        {
+            get { return _familyType; }
         }
 
         /// <summary>
@@ -162,10 +173,10 @@ namespace ModelessForm_ExternalEvent
                             _valueDistinta = PickBOLD_distinta(uiapp, pickedObject);
                             // Cambia il count
                             count = 1;
+                            modelessForm = App.thisApp.RetriveForm();
                             // Se il valore della BOLD_Distinta è presente, lo aggiunge alla Form
                             if (_valueDistinta != "Nessun valore" && _valueDistinta != null)
-                            {
-                                modelessForm = App.thisApp.RetriveForm();
+                            {                                
                                 modelessForm.ShowValueBOLD_Distinta();
                                 // Metodo per restituire i valori dei parametri al DataGridView
                                 ImportDataFromExcel import = new ImportDataFromExcel();
@@ -174,10 +185,14 @@ namespace ModelessForm_ExternalEvent
                                 // Chiama il metodo che riempie la ListBox con le Dimensioni dell'oggetto selezionato
                                 _dimensionsList = GetParameters(uiapp, pickedObject);
                                 modelessForm.ShowListBox1();
+                                // Chiama il metodo che seleziona il parametro stringa della famiglia scelta
+                                GetTypeParameterOfFamily(uiapp, pickedObject);
+                                modelessForm.SetModifyPicture();
                             }
                             else
                             {
                                 MessageBox.Show("Questo elemento non ha alcun parametro BOLD_Distinta");
+                                modelessForm.CleanAll();
                             }                            
                             break;
                         }
@@ -339,6 +354,39 @@ namespace ModelessForm_ExternalEvent
                 }
             }
             return _dimensionsList;
+        }
+
+
+        /// <summary>
+        ///   La subroutine che cattura il parametro TIPO della FAMIGLIA scelta in formato stringa
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <param name="uiapp">L'oggetto Applicazione di Revit</param>m>
+        /// 
+        private void GetTypeParameterOfFamily(UIApplication uiapp, Reference reference)
+        {
+            // Chiamo la vista attiva e seleziono gli elementi che mi servono
+            UIDocument uidoc = uiapp.ActiveUIDocument;
+            ElementId eleId = reference.ElementId;
+            Element ele = uidoc.Document.GetElement(eleId);
+            _familyType = GetTypeParameterElementType(uiapp, ele);
+        }
+
+        /// <summary>
+        /// Restituisce tutti i valori dei parametri ritenuti rilevanti per l'elemento dato sotto forma di ArrayList.
+        /// </summary>
+        private string GetTypeParameterElementType(UIApplication uiapp, Element e)
+        {
+            ParameterSet ps = e.Parameters;
+
+            string singleString = null;
+            foreach (Parameter param in ps)
+            {
+                if (param.Definition.Name == "Tipo")
+                    singleString = param.AsValueString();
+            }
+            return singleString;
         }
 
     }  // class

@@ -40,6 +40,9 @@ namespace ModelessForm_ExternalEvent
         // Valore attivo nella ComboBox
         private string valueActive;
 
+        // Valore booleano di errore
+        bool error = false;
+
         /// <summary>
         ///   Costruttore della finestra di dialogo
         /// </summary>
@@ -50,18 +53,15 @@ namespace ModelessForm_ExternalEvent
             m_Handler = handler;
             m_ExEvent = exEvent;
 
-            // Inserisco la immagini selezionate
-            PictureBoxCentral(pathc, widthc, heigthc);
-            PictureBoxDx(pathd, widthd, heigthd);
-            PictureBoxSx(paths, widths, heigths);
-            PictureBoxHigh(pathh, widthh, heigthh);
+            // Inserisco le immagini selezionate
+            SetModifyPicture();
 
             // Imposta l'origine dati della Combobox e la riempie
             List<string> dataBuffer = importData.XlSheets(path);
             foreach (var sheet in dataBuffer)
             {
                 comboBox1.Items.Add(sheet);
-            }            
+            }
         }
 
         /// <summary>
@@ -208,7 +208,7 @@ namespace ModelessForm_ExternalEvent
         }
 
         /// <summary>
-        ///   Metodo che ripulisce la DataGridView, i TextBox e la ListBox
+        ///   Metodo collegato al pulsante Cancella, che ripulisce la DataGridView, i TextBox e la ListBox
         /// </summary>
         /// 
         private void cleanButton_Click(object sender, EventArgs e)
@@ -220,6 +220,23 @@ namespace ModelessForm_ExternalEvent
             dataGridView1.Refresh();
             listBox1.DataSource = null;
             listBox1.Items.Clear();
+        }
+
+        /// <summary>
+        ///   Metodo che ripulisce la DataGridView, i TextBox e la ListBox
+        /// </summary>
+        /// 
+        public void CleanAll()
+        {
+            textDistintaPicker.Text = null;
+            dataGridView1.DataSource = null;
+            dataGridView1.Rows.Clear();
+            dataGridView1.Columns.Clear();
+            dataGridView1.Refresh();
+            listBox1.DataSource = null;
+            listBox1.Items.Clear();
+            error = true;
+            SetModifyPicture();
         }
 
         /// <summary>
@@ -354,26 +371,87 @@ namespace ModelessForm_ExternalEvent
 
         #region PictureBox
 
-        // Proprietà immagine centrale
-        string pathc = "C:\\Users\\Bold\\Pictures\\Lavoro\\Famiglie progetto EXP\\Prove\\central.png";
-        int widthc = 222;
-        int heigthc = 325;
+        // Recupera il valore stringa del tipo della famiglia dall'elemento selezionato
+        private string GetPathModifier()
+        {
+            string familyType = m_Handler.GetFamilyType;
+            if(familyType == null)
+            {
+                return "";
+            }
+            else if(error)
+            {
+                return "";
+            }
+            else
+            {
+                return familyType + " - ";
+            }
+        }
 
-        // Proprietà immagine destra
-        string pathd = "C:\\Users\\Bold\\Pictures\\Lavoro\\Famiglie progetto EXP\\Prove\\dx.png";
-        int widthd = 65;
-        int heigthd = 325;
+        // Implemento una classe che mi permetta di creare una lista per le caratteristiche delle immagini
+        public struct DataPicture
+        {
+            public DataPicture(string strValue, int intValue1, int intValue2)
+            {
+                StringData = strValue;
+                IntegerData1 = intValue1;
+                IntegerData2 = intValue2;
+            }
+            public string StringData { get; private set; }
+            public int IntegerData1 { get; private set; }
+            public int IntegerData2 { get; private set; }
+        }
 
-        // Proprietà immagine sinistra
-        string paths = "C:\\Users\\Bold\\Pictures\\Lavoro\\Famiglie progetto EXP\\Prove\\sx.png";
-        int widths = 65;
-        int heigths = 325;
+        // riempio una lista con tutti i dati delle immagini del singolo oggetto
 
-        // Proprietà immagine alta
-        string pathh = "C:\\Users\\Bold\\Pictures\\Lavoro\\Famiglie progetto EXP\\Prove\\high.png";
-        int widthh = 222;
-        int heigthh = 25;
+        public void SetModifyPicture()
+        {
+            PictureBoxCentral(GetDataPictureCentral().StringData, GetDataPictureCentral().IntegerData1, GetDataPictureCentral().IntegerData2);
+            PictureBoxDx(GetDataPictureDx().StringData, GetDataPictureDx().IntegerData1, GetDataPictureDx().IntegerData2);
+            PictureBoxSx(GetDataPictureSx().StringData, GetDataPictureSx().IntegerData1, GetDataPictureSx().IntegerData2);
+            PictureBoxHigh(GetDataPictureHigh().StringData, GetDataPictureHigh().IntegerData1, GetDataPictureHigh().IntegerData2);
+            error = false;
+        }
+        public DataPicture GetDataPictureCentral()
+        {
+            // Proprietà immagine centrale
+            string pathc = "C:\\Users\\Bold\\Pictures\\Lavoro\\Famiglie progetto EXP\\Prove\\" + GetPathModifier() + "central.png";
+            int widthc = 222;
+            int heigthc = 325;
+            var data = new DataPicture(pathc, widthc, heigthc);
+            return data;
+        }
 
+        public DataPicture GetDataPictureDx()
+        {
+            // Proprietà immagine destra
+            string pathd = "C:\\Users\\Bold\\Pictures\\Lavoro\\Famiglie progetto EXP\\Prove\\" + GetPathModifier() + "dx.png";
+            int widthd = 65;
+            int heigthd = 325;
+            var data = new DataPicture(pathd, widthd, heigthd);
+            return data;
+        }
+
+        public DataPicture GetDataPictureSx()
+        {
+            // Proprietà immagine sinistra
+            string paths = "C:\\Users\\Bold\\Pictures\\Lavoro\\Famiglie progetto EXP\\Prove\\" + GetPathModifier() + "sx.png";
+            int widths = 65;
+            int heigths = 325;
+            var data = new DataPicture(paths, widths, heigths);
+            return data;
+        }
+
+        public DataPicture GetDataPictureHigh()
+        {
+            // Proprietà immagine alta
+            string pathh = "C:\\Users\\Bold\\Pictures\\Lavoro\\Famiglie progetto EXP\\Prove\\" + GetPathModifier() + "high.png";
+            int widthh = 222;
+            int heigthh = 25;
+            var data = new DataPicture(pathh, widthh, heigthh);
+            return data;
+        }        
 
         private Bitmap MyImage1;
         private Bitmap MyImage2;
@@ -396,7 +474,14 @@ namespace ModelessForm_ExternalEvent
 
             pictureBoxCentral.SizeMode = PictureBoxSizeMode.StretchImage;
             MyImage1 = new Bitmap(fileToDisplay);
-            pictureBoxCentral.Image = (Image)MyImage1;
+            if (MyImage1 == null)
+            {
+                MessageBox.Show("L'immagine centrale non è stata salvata con un nome corretto");                
+            }
+            else
+            {
+                pictureBoxCentral.Image = (Image)MyImage1;
+            }
         }
         public void PictureBoxDx(string fileToDisplay, int xSize, int ySize)
         {
@@ -413,7 +498,14 @@ namespace ModelessForm_ExternalEvent
 
             pictureBoxDx.SizeMode = PictureBoxSizeMode.StretchImage;
             MyImage2 = new Bitmap(fileToDisplay);
-            pictureBoxDx.Image = (Image)MyImage2;
+            if (MyImage2 == null)
+            {
+                MessageBox.Show("L'immagine di destra non è stata salvata con un nome corretto");
+            }
+            else
+            {
+                pictureBoxDx.Image = (Image)MyImage2;
+            }
         }
 
         public void PictureBoxSx(string fileToDisplay, int xSize, int ySize)
@@ -431,7 +523,14 @@ namespace ModelessForm_ExternalEvent
 
             pictureBoxSx.SizeMode = PictureBoxSizeMode.StretchImage;
             MyImage3 = new Bitmap(fileToDisplay);
-            pictureBoxSx.Image = (Image)MyImage3;
+            if (MyImage3 == null)
+            {
+                MessageBox.Show("L'immagine di sinistra non è stata salvata con un nome corretto");
+            }
+            else
+            {
+                pictureBoxSx.Image = (Image)MyImage3;
+            }
         }
 
         public void PictureBoxHigh(string fileToDisplay, int xSize, int ySize)
@@ -449,9 +548,15 @@ namespace ModelessForm_ExternalEvent
 
             pictureBoxHigh.SizeMode = PictureBoxSizeMode.StretchImage;
             MyImage4 = new Bitmap(fileToDisplay);
-            pictureBoxHigh.Image = (Image)MyImage4;
+            if (MyImage4 == null)
+            {
+                MessageBox.Show("L'immagine alta non è stata salvata con un nome corretto");
+            }
+            else
+            {
+                pictureBoxHigh.Image = (Image)MyImage4;
+            }
         }
-
         #endregion
 
 

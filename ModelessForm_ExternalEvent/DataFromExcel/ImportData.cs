@@ -81,7 +81,7 @@ namespace ModelessForm_ExternalEvent.DataFromExcel
                 }
                 xlApp.Workbooks.Close();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //lblError.Text = ex.Message;
             }
