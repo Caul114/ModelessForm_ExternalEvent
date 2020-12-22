@@ -386,7 +386,7 @@ namespace ModelessForm_ExternalEvent
             }
             else
             {
-                return familyType + " - ";
+                return familyType;
             }
         }
 
@@ -416,7 +416,7 @@ namespace ModelessForm_ExternalEvent
         public DataPicture GetDataPictureCentral()
         {
             // Proprietà immagine centrale
-            string pathc = "C:\\Users\\Bold\\Pictures\\Lavoro\\Famiglie progetto EXP\\Prove\\" + GetPathModifier() + "central.png";
+            string pathc = "C:\\Users\\Bold\\Desktop\\BOLD_Images\\" + GetPathModifier() + "_F.png";
             int widthc = 222;
             int heigthc = 325;
             var data = new DataPicture(pathc, widthc, heigthc);
@@ -426,7 +426,7 @@ namespace ModelessForm_ExternalEvent
         public DataPicture GetDataPictureDx()
         {
             // Proprietà immagine destra
-            string pathd = "C:\\Users\\Bold\\Pictures\\Lavoro\\Famiglie progetto EXP\\Prove\\" + GetPathModifier() + "dx.png";
+            string pathd = "C:\\Users\\Bold\\Desktop\\BOLD_Images\\" + GetPathModifier() + "_D.png";
             int widthd = 65;
             int heigthd = 325;
             var data = new DataPicture(pathd, widthd, heigthd);
@@ -436,7 +436,7 @@ namespace ModelessForm_ExternalEvent
         public DataPicture GetDataPictureSx()
         {
             // Proprietà immagine sinistra
-            string paths = "C:\\Users\\Bold\\Pictures\\Lavoro\\Famiglie progetto EXP\\Prove\\" + GetPathModifier() + "sx.png";
+            string paths = "C:\\Users\\Bold\\Desktop\\BOLD_Images\\" + GetPathModifier() + "_S.png";
             int widths = 65;
             int heigths = 325;
             var data = new DataPicture(paths, widths, heigths);
@@ -446,7 +446,7 @@ namespace ModelessForm_ExternalEvent
         public DataPicture GetDataPictureHigh()
         {
             // Proprietà immagine alta
-            string pathh = "C:\\Users\\Bold\\Pictures\\Lavoro\\Famiglie progetto EXP\\Prove\\" + GetPathModifier() + "high.png";
+            string pathh = "C:\\Users\\Bold\\Desktop\\BOLD_Images\\" + GetPathModifier() + "_P.png";
             int widthh = 222;
             int heigthh = 25;
             var data = new DataPicture(pathh, widthh, heigthh);
@@ -467,9 +467,6 @@ namespace ModelessForm_ExternalEvent
             }
 
             // Set the size of the PictureBox control.
-            //double width = xSize * 84.685 / 100;
-            //double hight = ySize * 84.685 / 100;
-            //pictureBoxCentral.Size = new System.Drawing.Size((int)width, (int)hight);
             pictureBoxCentral.Size = new System.Drawing.Size(xSize, ySize);
 
             pictureBoxCentral.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -482,7 +479,7 @@ namespace ModelessForm_ExternalEvent
             {
                 MessageBox.Show("Si è verificato un errore nel caricamento dell'immagine."
                     + "\nControlla che il nome dell'immagine sia corretto.");
-                MyImage1 = new Bitmap("C:\\Users\\Bold\\Pictures\\Lavoro\\Famiglie progetto EXP\\Prove\\central.png");
+                MyImage1 = new Bitmap("C:\\Users\\Bold\\Desktop\\BOLD_Images\\_F.png");
             }
             pictureBoxCentral.Image = (Image)MyImage1;
         }
@@ -494,9 +491,6 @@ namespace ModelessForm_ExternalEvent
                 MyImage2.Dispose();
             }
             // Set the size of the PictureBox control.
-            //double width = xSize * 84.685 / 100;
-            //double hight = ySize * 84.685 / 100;
-            //pictureBoxDx.Size = new System.Drawing.Size((int)width, (int)hight);
             pictureBoxDx.Size = new System.Drawing.Size(xSize, ySize);
 
             pictureBoxDx.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -507,7 +501,7 @@ namespace ModelessForm_ExternalEvent
             }
             else
             {
-                MyImage2 = new Bitmap("C:\\Users\\Bold\\Pictures\\Lavoro\\Famiglie progetto EXP\\Prove\\dx.png");
+                MyImage2 = new Bitmap("C:\\Users\\Bold\\Desktop\\BOLD_Images\\_D.png");
             }
             pictureBoxDx.Image = (Image)MyImage2;
         }
@@ -520,9 +514,6 @@ namespace ModelessForm_ExternalEvent
                 MyImage3.Dispose();
             }
             // Set the size of the PictureBox control.
-            //double width = xSize * 84.685 / 100;
-            //double hight = ySize * 84.685 / 100;
-            //pictureBoxSx.Size = new System.Drawing.Size((int)width, (int)hight);
             pictureBoxSx.Size = new System.Drawing.Size(xSize, ySize);
 
             pictureBoxSx.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -533,7 +524,7 @@ namespace ModelessForm_ExternalEvent
             }
             else
             {
-                MyImage3 = new Bitmap("C:\\Users\\Bold\\Pictures\\Lavoro\\Famiglie progetto EXP\\Prove\\sx.png");
+                MyImage3 = new Bitmap("C:\\Users\\Bold\\Desktop\\BOLD_Images\\_S.png");
             }
             pictureBoxSx.Image = (Image)MyImage3;
         }
@@ -546,9 +537,6 @@ namespace ModelessForm_ExternalEvent
                 MyImage4.Dispose();
             }
             // Set the size of the PictureBox control.
-            //double width = xSize * 84.685 / 100;
-            //double hight = ySize * 84.685 / 100;
-            //pictureBoxHigh.Size = new System.Drawing.Size((int)width, (int)hight);
             pictureBoxHigh.Size = new System.Drawing.Size(xSize, ySize);
 
             pictureBoxHigh.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -559,7 +547,7 @@ namespace ModelessForm_ExternalEvent
             }
             else
             {
-                MyImage4 = new Bitmap("C:\\Users\\Bold\\Pictures\\Lavoro\\Famiglie progetto EXP\\Prove\\high.png");
+                MyImage4 = new Bitmap("C:\\Users\\Bold\\Desktop\\BOLD_Images\\_P.png");
             }
             pictureBoxHigh.Image = (Image)MyImage4;
         }

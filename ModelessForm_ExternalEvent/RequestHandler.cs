@@ -383,7 +383,7 @@ namespace ModelessForm_ExternalEvent
             string singleString = null;
             foreach (Parameter param in ps)
             {
-                if (param.Definition.Name == "Tipo")
+                if (param.Definition.Name == "Famiglia")
                     singleString = param.AsValueString();
             }
             return singleString;
