@@ -11,6 +11,9 @@ namespace ModelessForm_ExternalEvent.FromToExcel
 {
     public class ImportDataFromExcel
     {
+        // Un instanza della finestra di dialogo
+        private ModelessForm modelessForm;
+
         /// <summary>
         /// Metodo per importare un file da Excel
         /// </summary>
@@ -70,6 +73,10 @@ namespace ModelessForm_ExternalEvent.FromToExcel
             catch (Exception)
             {
                 MessageBox.Show("L'elemento che hai selezionato non ha una Distinta che gli corrisponda.");
+                // Cancella il contenuto della ModelessForm chiamando il metodo corrispondente
+                modelessForm = App.thisApp.RetriveForm();
+                modelessForm.CleanAll();
+
                 return null;
             }
             finally

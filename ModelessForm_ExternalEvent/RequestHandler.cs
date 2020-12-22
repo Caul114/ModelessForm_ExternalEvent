@@ -178,20 +178,21 @@ namespace ModelessForm_ExternalEvent
                             if (_valueDistinta != "Nessun valore" && _valueDistinta != null)
                             {                                
                                 modelessForm.ShowValueBOLD_Distinta();
-                                // Metodo per restituire i valori dei parametri al DataGridView
-                                ImportDataFromExcel import = new ImportDataFromExcel();
-                                _table = import.ReadExcelToDataTable(_valueDistinta, path, 10, 1);
-                                modelessForm.ShowDataGridView1();
-                                // Chiama il metodo che riempie la ListBox con le Dimensioni dell'oggetto selezionato
-                                _dimensionsList = GetParameters(uiapp, pickedObject);
-                                modelessForm.ShowListBox1();
-                                // Chiama il metodo che seleziona il parametro stringa della famiglia scelta
+                                // Chiama il metodo che seleziona il parametro stringa della famiglia scelta e riempie il PictureBox
                                 GetTypeParameterOfFamily(uiapp, pickedObject);
                                 modelessForm.SetModifyPicture();
+                                // Chiama il metodo che seleziona le Dimensioni dell'oggetto selezionato e riempie la ListBox
+                                _dimensionsList = GetParameters(uiapp, pickedObject);
+                                modelessForm.ShowListBox1();
+                                // Chiama il metodo che seleziona la Distinta collegata all'oggetto selezionato
+                                // e la restituisce nel DataGridView. Se non c'è, cancella tutto.
+                                ImportDataFromExcel import = new ImportDataFromExcel();
+                                _table = import.ReadExcelToDataTable(_valueDistinta, path, 1, 1);
+                                modelessForm.ShowDataGridView1();
                             }
                             else
                             {
-                                MessageBox.Show("Questo elemento non ha alcun parametro BOLD_Distinta");
+                                MessageBox.Show("Questo elemento non ha un valore BOLD_Distinta. Aggiungilo.");
                                 modelessForm.CleanAll();
                             }                            
                             break;
@@ -210,7 +211,7 @@ namespace ModelessForm_ExternalEvent
                                 _valueActive = _valueSelectedComboBox;
                             }                            
                             ImportDataFromExcel import = new ImportDataFromExcel();
-                            DataTable tableFromComboBox = import.ReadExcelToDataTable(_valueActive, path, 10, 1);
+                            DataTable tableFromComboBox = import.ReadExcelToDataTable(_valueActive, path, 1, 1);
 
                             ExportDataToExcel exp = new ExportDataToExcel();
                             bool risp = exp.GetExportDataToExcel(tableFromComboBox, _valueActive, path2);
