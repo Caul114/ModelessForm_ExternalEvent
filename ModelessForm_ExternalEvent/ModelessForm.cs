@@ -186,7 +186,6 @@ namespace ModelessForm_ExternalEvent
         ///   Metodo che riempie la ListBox
         /// </summary>
         /// 
-
         public void ShowListBox1()
         {
             // Resetta il contenuto della ListBox
@@ -209,18 +208,23 @@ namespace ModelessForm_ExternalEvent
         }
 
         /// <summary>
-        ///   Metodo collegato al pulsante Cancella, che ripulisce la DataGridView, i TextBox e la ListBox
+        ///   Metodo collegato al pulsante Cancella tutto, che ripulisce la DataGridView, i TextBox e la ListBox
         /// </summary>
         /// 
         private void cleanButton_Click(object sender, EventArgs e)
         {
             textDistintaPicker.Text = null;
+            nameFamilyTextBox.Text = null;
+            textDistintaComboBox.Text = null;
             dataGridView1.DataSource = null;
             dataGridView1.Rows.Clear();
             dataGridView1.Columns.Clear();
             dataGridView1.Refresh();
             listBox1.DataSource = null;
             listBox1.Items.Clear();
+            comboBox1.Text = "<- Scegli un File Excel da caricare ->";
+            error = true;
+            SetModifyPicture();
         }
 
         /// <summary>
@@ -230,12 +234,15 @@ namespace ModelessForm_ExternalEvent
         public void CleanAll()
         {
             textDistintaPicker.Text = null;
+            nameFamilyTextBox.Text = null;
+            textDistintaComboBox.Text = null;
             dataGridView1.DataSource = null;
             dataGridView1.Rows.Clear();
             dataGridView1.Columns.Clear();
             dataGridView1.Refresh();
             listBox1.DataSource = null;
             listBox1.Items.Clear();
+            comboBox1.Text = "<- Scegli un File Excel da caricare ->";
             error = true;
             SetModifyPicture();
         }
@@ -246,7 +253,10 @@ namespace ModelessForm_ExternalEvent
         /// 
         private void exportButton_Click(object sender, EventArgs e)
         {
-            MakeRequest(RequestId.Exp);
+            if(dataGridView1.DataSource != null)
+            {
+                MakeRequest(RequestId.Exp);
+            }
         }
 
 
@@ -270,12 +280,12 @@ namespace ModelessForm_ExternalEvent
             // Chiama questo metodo e modifica il Count
             MakeRequest(RequestId.ComboBox);
 
-            string selectedEmployee = (string)comboBox1.SelectedItem;
+            string selectedItem = (string)comboBox1.SelectedItem;
 
             // Assegna al valore attivo nella ComboBox il selectedEmployee
-            valueActive = selectedEmployee;
+            valueActive = selectedItem;
 
-            textDistintaComboBox.Text = selectedEmployee;
+            textDistintaComboBox.Text = selectedItem;
 
             // Ottiene il foglio di lavoro dell'elemento selezionato.
             int sheetSelected = comboBox1.SelectedIndex + 1;
@@ -302,7 +312,6 @@ namespace ModelessForm_ExternalEvent
                     Type.Missing, Type.Missing, Type.Missing, Type.Missing,
                     Type.Missing, Type.Missing, Type.Missing, Type.Missing,
                     Type.Missing, Type.Missing);
-
 
                 Excel.Worksheet sheet = (Excel.Worksheet)workbook.Sheets[sheetSelected];
 
@@ -386,6 +395,7 @@ namespace ModelessForm_ExternalEvent
             }
             else
             {
+                nameFamilyTextBox.Text = m_Handler.GetFamilyType;
                 return familyType;
             }
         }
@@ -480,6 +490,7 @@ namespace ModelessForm_ExternalEvent
                 MessageBox.Show("Si è verificato un errore nel caricamento dell'immagine."
                     + "\nControlla che il nome dell'immagine sia corretto.");
                 MyImage1 = new Bitmap("C:\\Users\\Bold\\Desktop\\BOLD_Images\\_F.png");
+                nameFamilyTextBox.Text = null;
             }
             pictureBoxCentral.Image = (Image)MyImage1;
         }
@@ -502,6 +513,7 @@ namespace ModelessForm_ExternalEvent
             else
             {
                 MyImage2 = new Bitmap("C:\\Users\\Bold\\Desktop\\BOLD_Images\\_D.png");
+                nameFamilyTextBox.Text = null;
             }
             pictureBoxDx.Image = (Image)MyImage2;
         }
@@ -525,6 +537,7 @@ namespace ModelessForm_ExternalEvent
             else
             {
                 MyImage3 = new Bitmap("C:\\Users\\Bold\\Desktop\\BOLD_Images\\_S.png");
+                nameFamilyTextBox.Text = null;
             }
             pictureBoxSx.Image = (Image)MyImage3;
         }
@@ -548,6 +561,7 @@ namespace ModelessForm_ExternalEvent
             else
             {
                 MyImage4 = new Bitmap("C:\\Users\\Bold\\Desktop\\BOLD_Images\\_P.png");
+                nameFamilyTextBox.Text = null;
             }
             pictureBoxHigh.Image = (Image)MyImage4;
         }
