@@ -24,6 +24,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
@@ -53,7 +54,7 @@ namespace ModelessForm_ExternalEvent
         // Il valore selezionato nella ComboBox
         private string _valueSelectedComboBox;
 
-        // Il tipo della famiflia in formato stringa
+        // Il tipo della famiglia in formato stringa
         private string _familyType;
 
         // Il valore attivo nella pagina
@@ -317,44 +318,96 @@ namespace ModelessForm_ExternalEvent
         /// 
         private ArrayList GetDimensionsList(Element ele, Reference reference)
         {
-            // GetOrderedParameters method -- Ottiene i parametri visibili in ordine.
-            IList<Parameter> parIList = ele.GetOrderedParameters();
+            // Ottiene tutti i Paramtetri contenuti nei singoli Gruppi di Paramtetri
+            Dictionary<BuiltInParameterGroup, List<BuiltInParameter>> dict = GroupBuiltInParameters(ele);
+            // Estrae i parametri che appartengono a Dimensions
+            List<Parameter> pList = ParametersInGroup(ele, BuiltInParameterGroup.PG_GEOMETRY);
+            // Li ordina in modo crescente
+            List<Parameter> pListOrdered = pList.OrderBy(x => x.Definition.Name).ToList();
 
-            // Lista dei nomi dei parametri contenuti nella Partizione Dimensioni
-            List<string> parametriDimensionali = new List<string> {
-                    "Lunghezza",
-                    "Area",
-                    "Volume",
-                    "CellH",
-                    "CellH2",
-                    "CellL",
-                    "CellDxH",
-                    "CellSxH"
-                };
-
+            
             // Se i parametri dimensionali sono presenti, ricava i loro valori e li aggiunge alla lista, 
             // altrimenti scrive una stringa vuota
-
-            foreach (Parameter par in parIList)
+            string ctrl = "";
+            foreach (Parameter par in pListOrdered)
             {
-                foreach (string str in parametriDimensionali)
+                // Se il nome del parametro è già presente o uguale a BOLD_Distinta, salta a quello dopo
+                if (par.Definition.Name != ctrl && par.Definition.Name != "BOLD_Distinta")
                 {
-                    if (par.Definition.Name == str)
+                    _dimensionsList.Add(par.Definition.Name + ":");
+                    if (par.AsValueString() == null)
                     {
-                        _dimensionsList.Add(par.Definition.Name + ":");
-                        if (par.AsValueString() == null)
-                        {
-                            _dimensionsList.Add("-----");
-                        }
-                        else
-                        {
-                            _dimensionsList.Add(par.AsValueString());
-                        }
-                        _dimensionsList.Add("");
+                        _dimensionsList.Add("-----");
                     }
+                    else if (par.Definition.Name == "Area")
+                    {
+                        // Converte il valore in modo che sia cooretto
+                        double MyString = par.AsDouble();
+                        double newvalueMyString = UnitUtils.ConvertFromInternalUnits(MyString, DisplayUnitType.DUT_SQUARE_METERS);
+                        _dimensionsList.Add(newvalueMyString + " m^2");
+                    }
+                    else
+                    {
+                        _dimensionsList.Add(par.AsValueString());
+                    }
+                    _dimensionsList.Add("");
+
+                    ctrl = par.Definition.Name;
                 }
+                else { continue; }
             }
             return _dimensionsList;
+        }
+
+        public static Dictionary<BuiltInParameterGroup, List<BuiltInParameter>> GroupBuiltInParameters(Element e)
+        {
+            Dictionary<BuiltInParameterGroup, List<BuiltInParameter>> dict =
+                new Dictionary<BuiltInParameterGroup, List<BuiltInParameter>>();
+
+            foreach (Parameter p in e.Parameters)
+            {
+                if (p.IsShared)
+                    continue;
+
+                if (p.Definition == null)
+                    break;
+
+                if (!dict.ContainsKey(p.Definition.ParameterGroup))
+                {
+                    dict.Add(p.Definition.ParameterGroup, new List<BuiltInParameter>());
+                }
+
+                BuiltInParameter biParam = (p.Definition as InternalDefinition).BuiltInParameter;
+                if (!dict[p.Definition.ParameterGroup].Contains(biParam))
+                {
+                    dict[p.Definition.ParameterGroup].Add(biParam);
+                }
+            }
+            return dict;
+        }
+
+        public static List<Parameter> ParametersInGroup(Element e, BuiltInParameterGroup g)
+        {
+            Dictionary<BuiltInParameterGroup, List<Parameter>> groupDict = GroupParameters(e);
+            return groupDict.Keys.Contains(g) ? groupDict[g] : null;
+        }
+
+        public static Dictionary<BuiltInParameterGroup, List<Parameter>> GroupParameters(Element e)
+        {
+            Dictionary<BuiltInParameterGroup, List<Parameter>> dict =
+                new Dictionary<BuiltInParameterGroup, List<Parameter>>();
+
+            foreach (Parameter p in e.Parameters)
+            {
+                if (!dict.ContainsKey(p.Definition.ParameterGroup))
+                {
+                    dict.Add(p.Definition.ParameterGroup, new List<Parameter>());
+                }
+
+                dict[p.Definition.ParameterGroup].Add(p);
+            }
+
+            return dict;
         }
 
 
