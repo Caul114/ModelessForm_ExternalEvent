@@ -6,7 +6,10 @@ using Autodesk.Revit.UI;
 using Microsoft.Office.Interop;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
+using System.Windows.Media.Imaging;
 
 #endregion
 
@@ -27,22 +30,6 @@ namespace ModelessForm_ExternalEvent
 
         #region IExternalApplication Members
         /// <summary>
-        /// Implementa l'evento OnShutDown
-        /// </summary>
-        /// <param name="application"></param>
-        /// <returns></returns>
-        
-        public Result OnShutdown(UIControlledApplication application)
-        {
-            if (m_MyForm != null && m_MyForm.Visible)
-            {
-                m_MyForm.Close();
-            }
-
-            return Result.Succeeded;
-        }
-
-        /// <summary>
         /// Implementa l'evento OnStartup
         /// </summary>
         /// <param name="application"></param>
@@ -53,6 +40,39 @@ namespace ModelessForm_ExternalEvent
 
             thisApp = this;  // accesso statico a questa istanza dell'applicazione
 
+            // Metodo per aggiungere un Tab e un RibbonPanel
+            RibbonPanel ribbonPanel = RibbonPanel(application);
+            string thisAssemblyPath = Assembly.GetExecutingAssembly().Location;
+
+            // Creazione del Button da inserire nel Tab
+            if(ribbonPanel.AddItem(
+                new PushButtonData("ModelessForm_ExternalEvent", "DataCell", thisAssemblyPath, "ModelessForm_ExternalEvent.Command"))
+                is PushButton button)
+            {
+                // ToolTip mostrato
+                button.ToolTip = "Mostra i parametri delle finestre";
+                // Icona del Button
+                Uri uriImage = new Uri("C:\\DatiLDB\\Progetti\\13.Winform\\ModelessForm_ExternalEvent - 2021\\ModelessForm_ExternalEvent\\Resources\\revit_small.png");
+                BitmapImage image = new BitmapImage(uriImage);
+                button.LargeImage = image;
+            };
+
+
+            return Result.Succeeded;
+        }
+
+        /// <summary>
+        /// Implementa l'evento OnShutDown
+        /// </summary>
+        /// <param name="application"></param>
+        /// <returns></returns>
+
+        public Result OnShutdown(UIControlledApplication application)
+        {
+            if (m_MyForm != null && m_MyForm.Visible)
+            {
+                m_MyForm.Close();
+            }
 
             return Result.Succeeded;
         }
@@ -123,5 +143,49 @@ namespace ModelessForm_ExternalEvent
             }
         }
         #endregion
+
+        #region Ribbon Panel
+
+        public RibbonPanel RibbonPanel(UIControlledApplication uiapp)
+        {
+            // Nome del Tab
+            string tab = "Bold";
+
+            // Dichiara e inizializza un RibbonPanel vuoto
+            RibbonPanel ribbonPanel = null;
+
+            // Prova a creare un Ribbon Tab
+            try
+            {
+                uiapp.CreateRibbonTab(tab);
+            }
+            catch (Exception ex)
+            {
+                Utils.HandleError(ex);
+            }
+
+            // Prova a creare un RibbonPanel
+            try
+            {
+                RibbonPanel panel = uiapp.CreateRibbonPanel(tab, "Utilities");
+            }
+            catch (Exception ex)
+            {
+                Utils.HandleError(ex);
+            }
+
+            // Verifica se il tab del Panel esiste gia'
+            List<RibbonPanel> panels = uiapp.GetRibbonPanels(tab);
+            foreach (RibbonPanel p in panels.Where(x => x.Name == "Utilities"))
+            {
+                ribbonPanel = p;
+            }
+
+            return ribbonPanel;
+        }
+
+        #endregion
+
+
     }
 }
