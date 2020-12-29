@@ -32,16 +32,16 @@ namespace ModelessForm_ExternalEvent
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.functionGroupBox1 = new System.Windows.Forms.GroupBox();
             this.imageFamilyGroupBox = new System.Windows.Forms.GroupBox();
+            this.nameFamilyTextBox = new System.Windows.Forms.TextBox();
+            this.nameFamilyLabel = new System.Windows.Forms.Label();
             this.pictureBoxHigh = new System.Windows.Forms.PictureBox();
             this.pictureBoxDx = new System.Windows.Forms.PictureBox();
             this.pictureBoxSx = new System.Windows.Forms.PictureBox();
             this.pictureBoxCentral = new System.Windows.Forms.PictureBox();
             this.captureButton = new System.Windows.Forms.Button();
-            this.textDistintaPicker = new System.Windows.Forms.TextBox();
-            this.distintaLabel = new System.Windows.Forms.Label();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.cleanButton = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
@@ -50,13 +50,16 @@ namespace ModelessForm_ExternalEvent
             this.functionGroupBox4 = new System.Windows.Forms.GroupBox();
             this.exportButton = new System.Windows.Forms.Button();
             this.exitButton = new System.Windows.Forms.Button();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.functionGroupBox3 = new System.Windows.Forms.GroupBox();
-            this.buttonModifica = new System.Windows.Forms.Button();
+            this.excelDistintaButton = new System.Windows.Forms.Button();
             this.textDistintaComboBox = new System.Windows.Forms.TextBox();
             this.importDistintaLabel = new System.Windows.Forms.Label();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.nameFamilyLabel = new System.Windows.Forms.Label();
-            this.nameFamilyTextBox = new System.Windows.Forms.TextBox();
+            this.uploadExcelOpenFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.imagesButton = new System.Windows.Forms.Button();
+            this.imagesTextBox = new System.Windows.Forms.TextBox();
+            this.imagesLabel = new System.Windows.Forms.Label();
+            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.functionGroupBox1.SuspendLayout();
             this.imageFamilyGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxHigh)).BeginInit();
@@ -66,16 +69,14 @@ namespace ModelessForm_ExternalEvent
             this.functionGroupBox2.SuspendLayout();
             this.functionGroupBoxListBox.SuspendLayout();
             this.functionGroupBox4.SuspendLayout();
-            this.functionGroupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.functionGroupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // functionGroupBox1
             // 
             this.functionGroupBox1.Controls.Add(this.imageFamilyGroupBox);
             this.functionGroupBox1.Controls.Add(this.captureButton);
-            this.functionGroupBox1.Controls.Add(this.textDistintaPicker);
-            this.functionGroupBox1.Controls.Add(this.distintaLabel);
             this.functionGroupBox1.Location = new System.Drawing.Point(12, 13);
             this.functionGroupBox1.Name = "functionGroupBox1";
             this.functionGroupBox1.Size = new System.Drawing.Size(435, 605);
@@ -85,18 +86,37 @@ namespace ModelessForm_ExternalEvent
             // 
             // imageFamilyGroupBox
             // 
+            this.imageFamilyGroupBox.Controls.Add(this.imagesTextBox);
+            this.imageFamilyGroupBox.Controls.Add(this.imagesLabel);
+            this.imageFamilyGroupBox.Controls.Add(this.imagesButton);
             this.imageFamilyGroupBox.Controls.Add(this.nameFamilyTextBox);
             this.imageFamilyGroupBox.Controls.Add(this.nameFamilyLabel);
             this.imageFamilyGroupBox.Controls.Add(this.pictureBoxHigh);
             this.imageFamilyGroupBox.Controls.Add(this.pictureBoxDx);
             this.imageFamilyGroupBox.Controls.Add(this.pictureBoxSx);
             this.imageFamilyGroupBox.Controls.Add(this.pictureBoxCentral);
-            this.imageFamilyGroupBox.Location = new System.Drawing.Point(10, 126);
+            this.imageFamilyGroupBox.Location = new System.Drawing.Point(6, 79);
             this.imageFamilyGroupBox.Name = "imageFamilyGroupBox";
-            this.imageFamilyGroupBox.Size = new System.Drawing.Size(415, 466);
+            this.imageFamilyGroupBox.Size = new System.Drawing.Size(423, 513);
             this.imageFamilyGroupBox.TabIndex = 9;
             this.imageFamilyGroupBox.TabStop = false;
             this.imageFamilyGroupBox.Text = "Famiglia dell\'oggetto selezionato";
+            // 
+            // nameFamilyTextBox
+            // 
+            this.nameFamilyTextBox.Location = new System.Drawing.Point(227, 30);
+            this.nameFamilyTextBox.Name = "nameFamilyTextBox";
+            this.nameFamilyTextBox.Size = new System.Drawing.Size(179, 22);
+            this.nameFamilyTextBox.TabIndex = 10;
+            // 
+            // nameFamilyLabel
+            // 
+            this.nameFamilyLabel.AutoSize = true;
+            this.nameFamilyLabel.Location = new System.Drawing.Point(6, 33);
+            this.nameFamilyLabel.Name = "nameFamilyLabel";
+            this.nameFamilyLabel.Size = new System.Drawing.Size(215, 17);
+            this.nameFamilyLabel.TabIndex = 10;
+            this.nameFamilyLabel.Text = "Nome della Famiglia selezionata:";
             // 
             // pictureBoxHigh
             // 
@@ -140,22 +160,6 @@ namespace ModelessForm_ExternalEvent
             this.captureButton.UseVisualStyleBackColor = true;
             this.captureButton.Click += new System.EventHandler(this.captureButton_Click);
             // 
-            // textDistintaPicker
-            // 
-            this.textDistintaPicker.Location = new System.Drawing.Point(237, 81);
-            this.textDistintaPicker.Name = "textDistintaPicker";
-            this.textDistintaPicker.Size = new System.Drawing.Size(115, 22);
-            this.textDistintaPicker.TabIndex = 4;
-            // 
-            // distintaLabel
-            // 
-            this.distintaLabel.AutoSize = true;
-            this.distintaLabel.Location = new System.Drawing.Point(19, 84);
-            this.distintaLabel.Name = "distintaLabel";
-            this.distintaLabel.Size = new System.Drawing.Size(212, 17);
-            this.distintaLabel.TabIndex = 3;
-            this.distintaLabel.Text = "Distinta dell\'oggetto selezionato:";
-            // 
             // listBox1
             // 
             this.listBox1.FormattingEnabled = true;
@@ -180,9 +184,9 @@ namespace ModelessForm_ExternalEvent
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Location = new System.Drawing.Point(12, 21);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(244, 24);
+            this.comboBox1.Size = new System.Drawing.Size(262, 24);
             this.comboBox1.TabIndex = 4;
-            this.comboBox1.Text = "<- Scegli un File Excel da caricare ->";
+            this.comboBox1.Text = "<- Scegli una pagina del foglio Excel ->";
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.ComboBox1_SelectedIndexChanged);
             // 
             // functionGroupBox2
@@ -239,9 +243,33 @@ namespace ModelessForm_ExternalEvent
             this.exitButton.UseVisualStyleBackColor = true;
             this.exitButton.Click += new System.EventHandler(this.exitButton_Click);
             // 
+            // dataGridView1
+            // 
+            this.dataGridView1.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCellsExceptHeaders;
+            this.dataGridView1.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.Navy;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.GridColor = System.Drawing.Color.Black;
+            this.dataGridView1.Location = new System.Drawing.Point(7, 26);
+            this.dataGridView1.MultiSelect = false;
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.RowHeadersVisible = false;
+            this.dataGridView1.RowHeadersWidth = 51;
+            this.dataGridView1.RowTemplate.Height = 24;
+            this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridView1.Size = new System.Drawing.Size(684, 499);
+            this.dataGridView1.TabIndex = 0;
+            // 
             // functionGroupBox3
             // 
-            this.functionGroupBox3.Controls.Add(this.buttonModifica);
+            this.functionGroupBox3.Controls.Add(this.excelDistintaButton);
             this.functionGroupBox3.Controls.Add(this.textDistintaComboBox);
             this.functionGroupBox3.Controls.Add(this.importDistintaLabel);
             this.functionGroupBox3.Controls.Add(this.comboBox1);
@@ -252,14 +280,15 @@ namespace ModelessForm_ExternalEvent
             this.functionGroupBox3.TabStop = false;
             this.functionGroupBox3.Text = "Mostra Distinta";
             // 
-            // buttonModifica
+            // excelDistintaButton
             // 
-            this.buttonModifica.Location = new System.Drawing.Point(262, 21);
-            this.buttonModifica.Name = "buttonModifica";
-            this.buttonModifica.Size = new System.Drawing.Size(118, 24);
-            this.buttonModifica.TabIndex = 7;
-            this.buttonModifica.Text = "Carica il File";
-            this.buttonModifica.UseVisualStyleBackColor = true;
+            this.excelDistintaButton.Location = new System.Drawing.Point(290, 20);
+            this.excelDistintaButton.Name = "excelDistintaButton";
+            this.excelDistintaButton.Size = new System.Drawing.Size(118, 25);
+            this.excelDistintaButton.TabIndex = 7;
+            this.excelDistintaButton.Text = "Carica il File";
+            this.excelDistintaButton.UseVisualStyleBackColor = true;
+            this.excelDistintaButton.Click += new System.EventHandler(this.excelDistintaButton_Click);
             // 
             // textDistintaComboBox
             // 
@@ -277,45 +306,41 @@ namespace ModelessForm_ExternalEvent
             this.importDistintaLabel.TabIndex = 5;
             this.importDistintaLabel.Text = "Ultima visualizzata:";
             // 
-            // dataGridView1
+            // uploadExcelOpenFileDialog
             // 
-            this.dataGridView1.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCellsExceptHeaders;
-            this.dataGridView1.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.Navy;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.GridColor = System.Drawing.Color.Black;
-            this.dataGridView1.Location = new System.Drawing.Point(7, 26);
-            this.dataGridView1.MultiSelect = false;
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.RowHeadersWidth = 51;
-            this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(684, 499);
-            this.dataGridView1.TabIndex = 0;
+            this.uploadExcelOpenFileDialog.FileName = "AbacoCells";
+            this.uploadExcelOpenFileDialog.DefaultExt = ".xlsx";
+            this.uploadExcelOpenFileDialog.Filter = "File Excel (*.xlsx)|*.xlsx";
             // 
-            // nameFamilyLabel
+            // imagesButton
             // 
-            this.nameFamilyLabel.AutoSize = true;
-            this.nameFamilyLabel.Location = new System.Drawing.Point(6, 33);
-            this.nameFamilyLabel.Name = "nameFamilyLabel";
-            this.nameFamilyLabel.Size = new System.Drawing.Size(215, 17);
-            this.nameFamilyLabel.TabIndex = 10;
-            this.nameFamilyLabel.Text = "Nome della Famiglia selezionata:";
+            this.imagesButton.Location = new System.Drawing.Point(293, 478);
+            this.imagesButton.Name = "imagesButton";
+            this.imagesButton.Size = new System.Drawing.Size(118, 25);
+            this.imagesButton.TabIndex = 8;
+            this.imagesButton.Text = "Carica Immagini";
+            this.imagesButton.UseVisualStyleBackColor = true;
+            this.imagesButton.Click += new System.EventHandler(this.imagesButton_Click);
             // 
-            // nameFamilyTextBox
+            // imagesTextBox
             // 
-            this.nameFamilyTextBox.Location = new System.Drawing.Point(227, 30);
-            this.nameFamilyTextBox.Name = "nameFamilyTextBox";
-            this.nameFamilyTextBox.Size = new System.Drawing.Size(179, 22);
-            this.nameFamilyTextBox.TabIndex = 10;
+            this.imagesTextBox.Location = new System.Drawing.Point(123, 479);
+            this.imagesTextBox.Name = "imagesTextBox";
+            this.imagesTextBox.Size = new System.Drawing.Size(164, 22);
+            this.imagesTextBox.TabIndex = 11;
+            // 
+            // imagesLabel
+            // 
+            this.imagesLabel.AutoSize = true;
+            this.imagesLabel.Location = new System.Drawing.Point(6, 480);
+            this.imagesLabel.Name = "imagesLabel";
+            this.imagesLabel.Size = new System.Drawing.Size(119, 17);
+            this.imagesLabel.TabIndex = 12;
+            this.imagesLabel.Text = "Cartella Immagini:";
+            // 
+            // folderBrowserDialog1
+            // 
+            this.folderBrowserDialog1.Description = "Scegli la Directory da cui vuoi attingere le immagini.";
             // 
             // ModelessForm
             // 
@@ -329,7 +354,6 @@ namespace ModelessForm_ExternalEvent
             this.Text = "BOLD DataCell";
             this.Load += new System.EventHandler(this.ModelessForm_Load);
             this.functionGroupBox1.ResumeLayout(false);
-            this.functionGroupBox1.PerformLayout();
             this.imageFamilyGroupBox.ResumeLayout(false);
             this.imageFamilyGroupBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxHigh)).EndInit();
@@ -339,9 +363,9 @@ namespace ModelessForm_ExternalEvent
             this.functionGroupBox2.ResumeLayout(false);
             this.functionGroupBoxListBox.ResumeLayout(false);
             this.functionGroupBox4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.functionGroupBox3.ResumeLayout(false);
             this.functionGroupBox3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -360,9 +384,7 @@ namespace ModelessForm_ExternalEvent
         private System.Windows.Forms.GroupBox functionGroupBox3;
         private System.Windows.Forms.TextBox textDistintaComboBox;
         private System.Windows.Forms.Label importDistintaLabel;
-        private System.Windows.Forms.TextBox textDistintaPicker;
-        private System.Windows.Forms.Label distintaLabel;
-        private System.Windows.Forms.Button buttonModifica;
+        private System.Windows.Forms.Button excelDistintaButton;
         private System.Windows.Forms.GroupBox functionGroupBox4;
         private System.Windows.Forms.PictureBox pictureBoxHigh;
         private System.Windows.Forms.PictureBox pictureBoxDx;
@@ -372,5 +394,10 @@ namespace ModelessForm_ExternalEvent
         private System.Windows.Forms.GroupBox functionGroupBoxListBox;
         private TextBox nameFamilyTextBox;
         private Label nameFamilyLabel;
+        private OpenFileDialog uploadExcelOpenFileDialog;
+        private TextBox imagesTextBox;
+        private Label imagesLabel;
+        private Button imagesButton;
+        private FolderBrowserDialog folderBrowserDialog1;
     }
 }

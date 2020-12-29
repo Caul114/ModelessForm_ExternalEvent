@@ -177,8 +177,7 @@ namespace ModelessForm_ExternalEvent
                             modelessForm = App.thisApp.RetriveForm();
                             // Se il valore della BOLD_Distinta è presente, lo aggiunge alla Form
                             if (_valueDistinta != "Nessun valore" && _valueDistinta != null)
-                            {                                
-                                modelessForm.ShowValueBOLD_Distinta();
+                            {   
                                 // Chiama il metodo che seleziona il parametro stringa della famiglia scelta e riempie il PictureBox
                                 GetTypeParameterOfFamily(uiapp, pickedObject);
                                 modelessForm.SetModifyPicture();
@@ -318,7 +317,7 @@ namespace ModelessForm_ExternalEvent
         /// 
         private ArrayList GetDimensionsList(Element ele, Reference reference)
         {
-            // Ottiene tutti i Paramtetri contenuti nei singoli Gruppi di Paramtetri
+            // Ottiene tutti i Paramtetri contenuti nei singoli Gruppi di Parametri
             Dictionary<BuiltInParameterGroup, List<BuiltInParameter>> dict = GroupBuiltInParameters(ele);
             // Estrae i parametri che appartengono a Dimensions
             List<Parameter> pList = ParametersInGroup(ele, BuiltInParameterGroup.PG_GEOMETRY);

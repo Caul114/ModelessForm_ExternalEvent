@@ -9,6 +9,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -34,15 +35,23 @@ namespace ModelessForm_ExternalEvent
         private RequestHandler m_Handler;
         private ExternalEvent m_ExEvent;
 
-        // Percorso del singolo file excel da importare
-        string path = "C:\\DatiLDB\\ExcelData\\AbacoCells.xlsx";
+        // Percorso del singolo file excel da importare di default
+        string pathExcel = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\DataCell_Bold_utilities\\AbacoCells.xlsx";
         ImportData importData = new ImportData();
+
+        // Percorso della cartella Immagini di default
+        string folderNameDefault = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\DataCell_Bold_utilities\\Images";
+        string folderNameActual = "";        
+        string folderName = "";
 
         // Valore attivo nella ComboBox
         private string valueActive;
 
         // Valore booleano di errore
         bool error = false;
+
+        // Valore booleano per impostare le nuove immagini
+        bool newImages = false;
 
         /// <summary>
         ///   Costruttore della finestra di dialogo
@@ -55,10 +64,12 @@ namespace ModelessForm_ExternalEvent
             m_ExEvent = exEvent;
 
             // Inserisco le immagini selezionate
+            folderNameActual = folderNameDefault;
             SetModifyPicture();
+            imagesTextBox.Text = folderNameDefault;
 
             // Imposta l'origine dati della Combobox e la riempie
-            List<string> dataBuffer = importData.XlSheets(path);
+            List<string> dataBuffer = importData.XlSheets(pathExcel);
             foreach (var sheet in dataBuffer)
             {
                 comboBox1.Items.Add(sheet);
@@ -160,14 +171,6 @@ namespace ModelessForm_ExternalEvent
                 MakeRequest(RequestId.Id);            
         }
 
-        /// <summary>
-        ///   Metodo che riempie il TextBox Distinta
-        /// </summary>
-        /// 
-        public void ShowValueBOLD_Distinta()
-        {
-            textDistintaPicker.Text = m_Handler.GetDistintaValue;
-        }
 
         /// <summary>
         ///   Metodo che riempie la DataGridView
@@ -213,7 +216,6 @@ namespace ModelessForm_ExternalEvent
         /// 
         private void cleanButton_Click(object sender, EventArgs e)
         {
-            textDistintaPicker.Text = null;
             nameFamilyTextBox.Text = null;
             textDistintaComboBox.Text = null;
             dataGridView1.DataSource = null;
@@ -222,7 +224,7 @@ namespace ModelessForm_ExternalEvent
             dataGridView1.Refresh();
             listBox1.DataSource = null;
             listBox1.Items.Clear();
-            comboBox1.Text = "<- Scegli un File Excel da caricare ->";
+            comboBox1.Text = "<- Scegli una pagina del foglio Excel ->";
             error = true;
             SetModifyPicture();
         }
@@ -233,7 +235,6 @@ namespace ModelessForm_ExternalEvent
         /// 
         public void CleanAll()
         {
-            textDistintaPicker.Text = null;
             nameFamilyTextBox.Text = null;
             textDistintaComboBox.Text = null;
             dataGridView1.DataSource = null;
@@ -242,7 +243,7 @@ namespace ModelessForm_ExternalEvent
             dataGridView1.Refresh();
             listBox1.DataSource = null;
             listBox1.Items.Clear();
-            comboBox1.Text = "<- Scegli un File Excel da caricare ->";
+            comboBox1.Text = "<- Scegli una pagina del foglio Excel ->";
             error = true;
             SetModifyPicture();
         }
@@ -270,6 +271,43 @@ namespace ModelessForm_ExternalEvent
         }
 
         #region ComboBox
+
+        /// <summary>
+        ///   Metodo che permette di scegliere il file Excel da caricare nella ComboBox
+        /// </summary>
+        ///
+        private void excelDistintaButton_Click(object sender, EventArgs e)
+        {
+            if (uploadExcelOpenFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    // Imposto il nuovo Path del documento da aprire
+                    pathExcel = uploadExcelOpenFileDialog.FileName;
+
+                    // Cancella il contenuto della ComboBox e della DataGrid
+                    comboBox1.Items.Clear();
+                    comboBox1.Text = "<- Scegli una pagina del foglio Excel ->";
+                    dataGridView1.DataSource = null;
+                    dataGridView1.Rows.Clear();
+                    dataGridView1.Columns.Clear();
+                    dataGridView1.Refresh();
+
+                    // Imposta l'origine dati della Combobox e la riempie con il nuovo documento Excel
+                    ImportData newData = new ImportData();
+                    List<string> dataBuffer = newData.XlSheets(pathExcel);
+                    foreach (var sheet in dataBuffer)
+                    {
+                        comboBox1.Items.Add(sheet);
+                    }
+                }
+                catch (SecurityException ex)
+                {
+                    MessageBox.Show($"Security error.\n\nError message: {ex.Message}\n\n" +
+                            $"Details:\n\n{ex.StackTrace}");
+                }
+            }
+        }
 
         /// <summary>
         ///   Metodo che sceglie l'elemento attivo nella ComboBox e lo mostra nel DataGridView
@@ -307,7 +345,7 @@ namespace ModelessForm_ExternalEvent
 
                 // Apri la cartella di lavoro in sola lettura.
                 Excel.Workbook workbook = excel_app.Workbooks.Open(
-                    path,
+                    pathExcel,
                     Type.Missing, true, Type.Missing, Type.Missing,
                     Type.Missing, Type.Missing, Type.Missing, Type.Missing,
                     Type.Missing, Type.Missing, Type.Missing, Type.Missing,
@@ -381,10 +419,40 @@ namespace ModelessForm_ExternalEvent
 
         #region PictureBox
 
+        /// <summary>
+        ///   Metodo che permette di caricare la cartella delle immagini
+        /// </summary>
+        /// 
+        private void imagesButton_Click(object sender, EventArgs e)
+        {
+            // Mostra la FolderBrowserDialog.
+            DialogResult result = folderBrowserDialog1.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                // Imposta il nuovo Path
+                folderName = folderBrowserDialog1.SelectedPath;
+                folderNameActual = folderName;
+                imagesTextBox.Text = folderName;
+
+                // Carica le nuove immagini
+                newImages = true;
+                SetModifyPicture();
+            }
+            // Cancel button was pressed.
+            else if (result == DialogResult.Cancel)
+            {
+                return;
+            }
+        }
+
         // Recupera il valore stringa del tipo della famiglia dall'elemento selezionato
         private string GetPathModifier()
         {
-            string familyType = m_Handler.GetFamilyType;
+            string familyType = "";
+            if(newImages)
+            {
+                return "";
+            }
             if(familyType == null)
             {
                 return "";
@@ -395,7 +463,8 @@ namespace ModelessForm_ExternalEvent
             }
             else
             {
-                nameFamilyTextBox.Text = m_Handler.GetFamilyType;
+                familyType = m_Handler.GetFamilyType;
+                nameFamilyTextBox.Text = familyType;
                 return familyType;
             }
         }
@@ -426,7 +495,7 @@ namespace ModelessForm_ExternalEvent
         public DataPicture GetDataPictureCentral()
         {
             // Proprietà immagine centrale
-            string pathc = "C:\\Users\\Bold\\Desktop\\BOLD_Images\\" + GetPathModifier() + "_F.png";
+            string pathc = folderNameActual + "\\" + GetPathModifier() + "_F.png";
             int widthc = 222;
             int heigthc = 325;
             var data = new DataPicture(pathc, widthc, heigthc);
@@ -436,7 +505,7 @@ namespace ModelessForm_ExternalEvent
         public DataPicture GetDataPictureDx()
         {
             // Proprietà immagine destra
-            string pathd = "C:\\Users\\Bold\\Desktop\\BOLD_Images\\" + GetPathModifier() + "_D.png";
+            string pathd = folderNameActual + "\\" + GetPathModifier() + "_D.png";
             int widthd = 65;
             int heigthd = 325;
             var data = new DataPicture(pathd, widthd, heigthd);
@@ -446,7 +515,7 @@ namespace ModelessForm_ExternalEvent
         public DataPicture GetDataPictureSx()
         {
             // Proprietà immagine sinistra
-            string paths = "C:\\Users\\Bold\\Desktop\\BOLD_Images\\" + GetPathModifier() + "_S.png";
+            string paths = folderNameActual + "\\" + GetPathModifier() + "_S.png";
             int widths = 65;
             int heigths = 325;
             var data = new DataPicture(paths, widths, heigths);
@@ -456,7 +525,7 @@ namespace ModelessForm_ExternalEvent
         public DataPicture GetDataPictureHigh()
         {
             // Proprietà immagine alta
-            string pathh = "C:\\Users\\Bold\\Desktop\\BOLD_Images\\" + GetPathModifier() + "_P.png";
+            string pathh = folderNameActual + "\\" + GetPathModifier() + "_P.png";
             int widthh = 222;
             int heigthh = 25;
             var data = new DataPicture(pathh, widthh, heigthh);
@@ -488,8 +557,12 @@ namespace ModelessForm_ExternalEvent
             else
             {
                 MessageBox.Show("Si è verificato un errore nel caricamento dell'immagine."
-                    + "\nControlla che il nome dell'immagine sia corretto.");
-                MyImage1 = new Bitmap("C:\\Users\\Bold\\Desktop\\BOLD_Images\\_F.png");
+                    + "\nControlla che il nome dell'immagine o il percorso di caricamento siano corretti.");
+
+                folderNameActual = folderNameDefault;
+                imagesTextBox.Text = folderNameDefault;
+
+                MyImage1 = new Bitmap(folderNameActual + "\\_F.png");
                 nameFamilyTextBox.Text = null;
             }
             pictureBoxCentral.Image = (Image)MyImage1;
@@ -512,7 +585,8 @@ namespace ModelessForm_ExternalEvent
             }
             else
             {
-                MyImage2 = new Bitmap("C:\\Users\\Bold\\Desktop\\BOLD_Images\\_D.png");
+                folderNameActual = folderNameDefault;
+                MyImage2 = new Bitmap(folderNameActual + "\\_D.png");
                 nameFamilyTextBox.Text = null;
             }
             pictureBoxDx.Image = (Image)MyImage2;
@@ -536,7 +610,8 @@ namespace ModelessForm_ExternalEvent
             }
             else
             {
-                MyImage3 = new Bitmap("C:\\Users\\Bold\\Desktop\\BOLD_Images\\_S.png");
+                folderNameActual = folderNameDefault;
+                MyImage3 = new Bitmap(folderNameActual + "\\_S.png");
                 nameFamilyTextBox.Text = null;
             }
             pictureBoxSx.Image = (Image)MyImage3;
@@ -560,11 +635,17 @@ namespace ModelessForm_ExternalEvent
             }
             else
             {
-                MyImage4 = new Bitmap("C:\\Users\\Bold\\Desktop\\BOLD_Images\\_P.png");
+                folderNameActual = folderNameDefault;
+                MyImage4 = new Bitmap(folderNameActual + "\\_P.png");
                 nameFamilyTextBox.Text = null;
             }
             pictureBoxHigh.Image = (Image)MyImage4;
+
+            // Rendo newImages false, in modo da poter modificare nuovamente le immagini quando si sceglie un oggetto
+            newImages = false;
         }
+
+
         #endregion
 
 
