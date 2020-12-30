@@ -71,7 +71,7 @@ namespace ModelessForm_ExternalEvent
         private DataTable _table;
 
         // Percorso file Excel con tutte le Distinte
-        string path = "C:\\DatiLDB\\ExcelData\\AbacoCells.xlsx";
+        string path = "";
         string path2 = "C:\\DatiLDB\\ExcelData\\AbacoCellsSalvato.xlsx";
         private List<string> _listXlSh;
         #endregion
@@ -186,9 +186,8 @@ namespace ModelessForm_ExternalEvent
                                 modelessForm.ShowListBox1();
                                 // Chiama il metodo che seleziona la Distinta collegata all'oggetto selezionato
                                 // e la restituisce nel DataGridView. Se non c'è, cancella tutto.
-                                ImportDataFromExcel import = new ImportDataFromExcel();
-                                _table = import.ReadExcelToDataTable(_valueDistinta, path, 1, 1);
-                                modelessForm.ShowDataGridView1();
+                                path = modelessForm.GetExcelDirectoryPath() + "\\AbacoCells.xlsx";
+                                modelessForm.GetDataFromExcel(_valueDistinta, path);
                             }
                             else
                             {
@@ -211,9 +210,11 @@ namespace ModelessForm_ExternalEvent
                                 _valueActive = _valueSelectedComboBox;
                             }                            
                             ImportDataFromExcel import = new ImportDataFromExcel();
+                            path = modelessForm.GetExcelDirectoryPath() + "\\AbacoCells.xlsx";
                             DataTable tableFromComboBox = import.ReadExcelToDataTable(_valueActive, path, 1, 1);
 
                             ExportDataToExcel exp = new ExportDataToExcel();
+                            path2 = modelessForm.GetExcelDirectoryPath() + "\\AbacoCellsSalvato.xlsx";
                             bool risp = exp.GetExportDataToExcel(tableFromComboBox, _valueActive, path2);
                             if(risp == true)
                             {

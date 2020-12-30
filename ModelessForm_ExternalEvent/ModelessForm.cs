@@ -159,6 +159,18 @@ namespace ModelessForm_ExternalEvent
         }
 
         /// <summary>
+        ///   Metodo che restituisce il Directory Path dei file Excel
+        /// </summary>
+        /// 
+        public string GetExcelDirectoryPath()
+        {
+            string directoryName = Path.GetDirectoryName(pathExcel);
+            return directoryName;
+        }
+
+        #region Capture Button
+
+        /// <summary>
         ///   Metodo che cattura un singolo oggetto della View
         /// </summary>
         /// 
@@ -174,44 +186,25 @@ namespace ModelessForm_ExternalEvent
                 MakeRequest(RequestId.Id);            
         }
 
+        #endregion
+
+        #region Export Excel
 
         /// <summary>
-        ///   Metodo che riempie la DataGridView
+        ///   Metodo che esporta il Contenuto del DataGridView in un foglio Excel
         /// </summary>
         /// 
-        public void ShowDataGridView1()
+        private void exportButton_Click(object sender, EventArgs e)
         {
-            if(m_Handler.GetTable != null)
+            if (dataGridView1.Rows.Count > 0)
             {
-                // Riempie il DataGridView con la Sheet scelta del foglio Excel
-                dataGridView1.DataSource = m_Handler.GetTable;
+                MakeRequest(RequestId.Exp);
             }
         }
 
-        /// <summary>
-        ///   Metodo che riempie la ListBox
-        /// </summary>
-        /// 
-        public void ShowListBox1()
-        {
-            // Resetta il contenuto della ListBox
-            listBox1.DataSource = null;
-            listBox1.Items.Clear();
-            // Popola la ListBox con l'ArrayList delle dimensioni
-            ArrayList lista = m_Handler.GetList;
-            listBox1.DataSource = lista;
-            // Seleziona i titoli delle dimensioni con SelectionMode esteso
-            listBox1.SelectionMode = SelectionMode.MultiExtended;
-            int count = 0;
-            for (int i = 0; i < listBox1.Items.Count; i++)
-            {
-                if(i == count)
-                {
-                    listBox1.SetSelected(i, true);
-                    count += 3;
-                }
-            }  
-        }
+        #endregion
+
+        #region Cancel
 
         /// <summary>
         ///   Metodo collegato al pulsante Cancella tutto, che ripulisce la DataGridView, i TextBox e la ListBox
@@ -251,27 +244,36 @@ namespace ModelessForm_ExternalEvent
             SetModifyPicture();
         }
 
+        #endregion
+
+        #region ListBox
+
         /// <summary>
-        ///   Metodo che esporta il Contenuto del DataGridView in un foglio Excel
+        ///   Metodo che riempie la ListBox
         /// </summary>
         /// 
-        private void exportButton_Click(object sender, EventArgs e)
+        public void ShowListBox1()
         {
-            if(dataGridView1.DataSource != null)
+            // Resetta il contenuto della ListBox
+            listBox1.DataSource = null;
+            listBox1.Items.Clear();
+            // Popola la ListBox con l'ArrayList delle dimensioni
+            ArrayList lista = m_Handler.GetList;
+            listBox1.DataSource = lista;
+            // Seleziona i titoli delle dimensioni con SelectionMode esteso
+            listBox1.SelectionMode = SelectionMode.MultiExtended;
+            int count = 0;
+            for (int i = 0; i < listBox1.Items.Count; i++)
             {
-                MakeRequest(RequestId.Exp);
+                if (i == count)
+                {
+                    listBox1.SetSelected(i, true);
+                    count += 3;
+                }
             }
         }
 
-
-        /// <summary>
-        ///   Exit - chiude la finestra di dialogo
-        /// </summary>
-        /// 
-        private void exitButton_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
+        #endregion
 
         #region ComboBox
 
@@ -321,70 +323,73 @@ namespace ModelessForm_ExternalEvent
             // Chiama questo metodo e modifica il Count
             MakeRequest(RequestId.ComboBox);
 
+            // Ottiene la stringa selezionata nella ComboBox
             string selectedItem = (string)comboBox1.SelectedItem;
 
+            // Chiama il metodo che importa la pagina scelta del file Excel
+            GetDataFromExcel(selectedItem, pathExcel);
+        }
+
+        /// <summary>
+        ///   Metodo che importa il foglio Excel
+        /// </summary>
+        /// 
+        public void GetDataFromExcel(string selectedItem, string path)
+        {
             // Assegna al valore attivo nella ComboBox il selectedEmployee
             valueActive = selectedItem;
 
+            // Assegna il valore attivo nella ComboBox al TextBox della distinta
             textDistintaComboBox.Text = selectedItem;
 
-            // Ottiene il foglio di lavoro dell'elemento selezionato.
-            int sheetSelected = comboBox1.SelectedIndex + 1;
-            if (sheetSelected > 0)
+            // Se il DataGridView ha qualche oggetto al suo interno viene ripulito.
+            if (dataGridView1.Columns.Count > 0)
             {
-                // Se il DataGridView ha qualche oggetto al suo interno viene ripulito.
-                if (dataGridView1.Columns.Count > 0)
-                {
-                    dataGridView1.DataSource = null;
-                    dataGridView1.Rows.Clear();
-                    dataGridView1.Columns.Clear();
-                    dataGridView1.Refresh();
-                }
-                // Ottieni l'oggetto dell'applicazione Excel.
-                Excel.Application excel_app = new Excel.Application();
-
-                //// Rendi visibile Excel (opzionale).
-                //excel_app.Visible = true;
-
-                // Apri la cartella di lavoro in sola lettura.
-                Excel.Workbook workbook = excel_app.Workbooks.Open(
-                    pathExcel,
-                    Type.Missing, true, Type.Missing, Type.Missing,
-                    Type.Missing, Type.Missing, Type.Missing, Type.Missing,
-                    Type.Missing, Type.Missing, Type.Missing, Type.Missing,
-                    Type.Missing, Type.Missing);
-
-                Excel.Worksheet sheet = (Excel.Worksheet)workbook.Sheets[sheetSelected];
-
-                // Recupera l'intervallo utilizzato.
-                Excel.Range used_range = sheet.UsedRange;
-
-                // Ottieni il numero massimo di righe e colonne.
-                int max_row = used_range.Rows.Count;
-                int max_col = used_range.Columns.Count;
-
-                // Ottieni i valori del foglio.
-                object[,] values = (object[,])used_range.Value2;
-
-                // Ottieni i titoli delle colonne.
-                SetGridColumns(dataGridView1, values, max_col);
-
-                // Recupera i dati.
-                SetGridContents(dataGridView1, values, max_row, max_col);
-
-                // Chiude la cartella di lavoro senza salvare le modifiche.
-                workbook.Close(false, Type.Missing, Type.Missing);
-
-                // Chiude il server Excel.
-                excel_app.Quit();
+                dataGridView1.DataSource = null;
+                dataGridView1.Rows.Clear();
+                dataGridView1.Columns.Clear();
+                dataGridView1.Refresh();
             }
-            else
-            {
-                MessageBox.Show("Non hai selezionato alcun documento Excel.", "Errore!");
-            }
+            // Ottieni l'oggetto dell'applicazione Excel.
+            Excel.Application excel_app = new Excel.Application();
+
+            // Apri la cartella di lavoro in sola lettura.
+            Excel.Workbook workbook = excel_app.Workbooks.Open(
+                path,
+                Type.Missing, true, Type.Missing, Type.Missing,
+                Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+                Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+                Type.Missing, Type.Missing);
+
+            Excel.Worksheet sheet = (Excel.Worksheet)workbook.Worksheets.Item[selectedItem];
+
+            // Recupera l'intervallo utilizzato.
+            Excel.Range used_range = sheet.UsedRange;
+
+            // Ottieni il numero massimo di righe e colonne.
+            int max_row = used_range.Rows.Count;
+            int max_col = used_range.Columns.Count;
+
+            // Ottieni i valori del foglio.
+            object[,] values = (object[,])used_range.Value2;
+
+            // Ottieni i titoli delle colonne.
+            SetGridColumns(dataGridView1, values, max_col);
+
+            // Recupera i dati.
+            SetGridContents(dataGridView1, values, max_row, max_col);
+
+            // Chiude la cartella di lavoro senza salvare le modifiche.
+            workbook.Close(false, Type.Missing, Type.Missing);
+
+            // Chiude il server Excel.
+            excel_app.Quit();
         }
 
-        // Imposta i nomi delle colonne della griglia dalla riga 1.
+        /// <summary>
+        ///   Metodo che imposta i nomi delle colonne della griglia dalla riga 1
+        /// </summary>
+        /// 
         private void SetGridColumns(DataGridView dgv, object[,] values, int max_col)
         {
             dataGridView1.Columns.Clear();
@@ -397,8 +402,11 @@ namespace ModelessForm_ExternalEvent
             }
         }
 
-        // Imposta il contenuto della griglia..
-        private void SetGridContents(DataGridView dgv, object[,] values, int max_row, int max_col)
+        /// <summary>
+        ///   Metodo che imposta il contenuto della griglia
+        /// </summary>
+        /// 
+       private void SetGridContents(DataGridView dgv, object[,] values, int max_row, int max_col)
         {
             // Copia i valori nella griglia.
             for (int row = 2; row <= max_row; row++)
@@ -663,6 +671,14 @@ namespace ModelessForm_ExternalEvent
 
         #endregion
 
+        /// <summary>
+        ///   Exit - chiude la finestra di dialogo
+        /// </summary>
+        /// 
+        private void exitButton_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
 
     }  // class
 }

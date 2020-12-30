@@ -32,9 +32,12 @@ namespace ModelessForm_ExternalEvent
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.functionGroupBox1 = new System.Windows.Forms.GroupBox();
             this.imageFamilyGroupBox = new System.Windows.Forms.GroupBox();
+            this.imagesTextBox = new System.Windows.Forms.TextBox();
+            this.imagesLabel = new System.Windows.Forms.Label();
+            this.imagesButton = new System.Windows.Forms.Button();
             this.nameFamilyTextBox = new System.Windows.Forms.TextBox();
             this.nameFamilyLabel = new System.Windows.Forms.Label();
             this.pictureBoxHigh = new System.Windows.Forms.PictureBox();
@@ -56,9 +59,6 @@ namespace ModelessForm_ExternalEvent
             this.textDistintaComboBox = new System.Windows.Forms.TextBox();
             this.importDistintaLabel = new System.Windows.Forms.Label();
             this.uploadExcelOpenFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.imagesButton = new System.Windows.Forms.Button();
-            this.imagesTextBox = new System.Windows.Forms.TextBox();
-            this.imagesLabel = new System.Windows.Forms.Label();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.functionGroupBox1.SuspendLayout();
             this.imageFamilyGroupBox.SuspendLayout();
@@ -101,6 +101,32 @@ namespace ModelessForm_ExternalEvent
             this.imageFamilyGroupBox.TabIndex = 9;
             this.imageFamilyGroupBox.TabStop = false;
             this.imageFamilyGroupBox.Text = "Famiglia dell\'oggetto selezionato";
+            // 
+            // imagesTextBox
+            // 
+            this.imagesTextBox.Location = new System.Drawing.Point(123, 479);
+            this.imagesTextBox.Name = "imagesTextBox";
+            this.imagesTextBox.Size = new System.Drawing.Size(164, 22);
+            this.imagesTextBox.TabIndex = 11;
+            // 
+            // imagesLabel
+            // 
+            this.imagesLabel.AutoSize = true;
+            this.imagesLabel.Location = new System.Drawing.Point(6, 480);
+            this.imagesLabel.Name = "imagesLabel";
+            this.imagesLabel.Size = new System.Drawing.Size(119, 17);
+            this.imagesLabel.TabIndex = 12;
+            this.imagesLabel.Text = "Cartella Immagini:";
+            // 
+            // imagesButton
+            // 
+            this.imagesButton.Location = new System.Drawing.Point(293, 478);
+            this.imagesButton.Name = "imagesButton";
+            this.imagesButton.Size = new System.Drawing.Size(118, 25);
+            this.imagesButton.TabIndex = 8;
+            this.imagesButton.Text = "Carica Immagini";
+            this.imagesButton.UseVisualStyleBackColor = true;
+            this.imagesButton.Click += new System.EventHandler(this.imagesButton_Click);
             // 
             // nameFamilyTextBox
             // 
@@ -199,7 +225,7 @@ namespace ModelessForm_ExternalEvent
             this.functionGroupBox2.Size = new System.Drawing.Size(857, 538);
             this.functionGroupBox2.TabIndex = 1;
             this.functionGroupBox2.TabStop = false;
-            this.functionGroupBox2.Text = "Parametri della distinta";
+            this.functionGroupBox2.Text = "Parametri della Distinta";
             // 
             // functionGroupBoxListBox
             // 
@@ -247,14 +273,14 @@ namespace ModelessForm_ExternalEvent
             // 
             this.dataGridView1.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCellsExceptHeaders;
             this.dataGridView1.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.Navy;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Navy;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.GridColor = System.Drawing.Color.Black;
             this.dataGridView1.Location = new System.Drawing.Point(7, 26);
@@ -302,41 +328,15 @@ namespace ModelessForm_ExternalEvent
             this.importDistintaLabel.AutoSize = true;
             this.importDistintaLabel.Location = new System.Drawing.Point(559, 25);
             this.importDistintaLabel.Name = "importDistintaLabel";
-            this.importDistintaLabel.Size = new System.Drawing.Size(128, 17);
+            this.importDistintaLabel.Size = new System.Drawing.Size(224, 21);
             this.importDistintaLabel.TabIndex = 5;
-            this.importDistintaLabel.Text = "Ultima visualizzata:";
+            this.importDistintaLabel.Text = "Ultima Distinta visualizzata:";
             // 
             // uploadExcelOpenFileDialog
             // 
+            this.uploadExcelOpenFileDialog.DefaultExt = "xlsx";
             this.uploadExcelOpenFileDialog.FileName = "AbacoCells";
-            this.uploadExcelOpenFileDialog.DefaultExt = ".xlsx";
             this.uploadExcelOpenFileDialog.Filter = "File Excel (*.xlsx)|*.xlsx";
-            // 
-            // imagesButton
-            // 
-            this.imagesButton.Location = new System.Drawing.Point(293, 478);
-            this.imagesButton.Name = "imagesButton";
-            this.imagesButton.Size = new System.Drawing.Size(118, 25);
-            this.imagesButton.TabIndex = 8;
-            this.imagesButton.Text = "Carica Immagini";
-            this.imagesButton.UseVisualStyleBackColor = true;
-            this.imagesButton.Click += new System.EventHandler(this.imagesButton_Click);
-            // 
-            // imagesTextBox
-            // 
-            this.imagesTextBox.Location = new System.Drawing.Point(123, 479);
-            this.imagesTextBox.Name = "imagesTextBox";
-            this.imagesTextBox.Size = new System.Drawing.Size(164, 22);
-            this.imagesTextBox.TabIndex = 11;
-            // 
-            // imagesLabel
-            // 
-            this.imagesLabel.AutoSize = true;
-            this.imagesLabel.Location = new System.Drawing.Point(6, 480);
-            this.imagesLabel.Name = "imagesLabel";
-            this.imagesLabel.Size = new System.Drawing.Size(119, 17);
-            this.imagesLabel.TabIndex = 12;
-            this.imagesLabel.Text = "Cartella Immagini:";
             // 
             // folderBrowserDialog1
             // 
