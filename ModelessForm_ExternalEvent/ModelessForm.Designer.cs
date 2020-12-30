@@ -347,6 +347,7 @@ namespace ModelessForm_ExternalEvent
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1316, 630);
+            this.MaximizeBox = false;
             this.Controls.Add(this.functionGroupBox2);
             this.Controls.Add(this.functionGroupBox1);
             this.Controls.Add(this.functionGroupBox3);

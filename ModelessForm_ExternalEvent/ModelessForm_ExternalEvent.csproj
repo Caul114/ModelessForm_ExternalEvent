@@ -66,8 +66,7 @@
     <NoWarn>0168</NoWarn>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>
-    </ApplicationIcon>
+    <ApplicationIcon>revitIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
@@ -110,6 +109,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\code-small.png" />
+    <Content Include="Resources\revitIcon.ico" />
     <Content Include="Resources\revit_small.png" />
     <Content Include="revitIcon.ico" />
   </ItemGroup>
