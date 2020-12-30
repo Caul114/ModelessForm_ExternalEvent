@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
+using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace ModelessForm_ExternalEvent.DataFromExcel
 {
     public class ImportData
     {
-
         #region Private data members
         private List<string> _excelSheets = new List<string>();       // Proprietà privata di una lista di stringhe
         #endregion
@@ -22,15 +23,24 @@ namespace ModelessForm_ExternalEvent.DataFromExcel
 
         public List<string> XlSheets(string xlPercorso)
         {
-            Tuple<Excel.Application, Excel.Workbook> xlDocument = ExcelOpen(xlPercorso);
-            Excel.Application xlApp = xlDocument.Item1;
-            Excel.Workbook xlwb = xlDocument.Item2;
-            List<string> nameSchedule = new List<string>();
-            foreach (Excel.Worksheet xlws in xlApp.Worksheets)
+            if(File.Exists(xlPercorso))
             {
-                _excelSheets.Add(xlws.Name);
+                Tuple<Excel.Application, Excel.Workbook> xlDocument = ExcelOpen(xlPercorso);
+                Excel.Application xlApp = xlDocument.Item1;
+                Excel.Workbook xlwb = xlDocument.Item2;
+                List<string> nameSchedule = new List<string>();
+                foreach (Excel.Worksheet xlws in xlApp.Worksheets)
+                {
+                    _excelSheets.Add(xlws.Name);
+                }
+                return _excelSheets;
             }
-            return _excelSheets;
+            else
+            {
+                MessageBox.Show("Si è verificato un errore nel caricamento del file Excel."
+                     + "\nControlla che il file Excel abbia il nome corretto o che sia posizionato nella cartella corretta.");
+                return _excelSheets;
+            }
         }
 
         public DataTable SingleSheet(string xlPercorso, string nameSheet)

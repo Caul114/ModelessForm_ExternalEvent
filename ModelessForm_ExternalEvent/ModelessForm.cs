@@ -70,9 +70,12 @@ namespace ModelessForm_ExternalEvent
 
             // Imposta l'origine dati della Combobox e la riempie
             List<string> dataBuffer = importData.XlSheets(pathExcel);
-            foreach (var sheet in dataBuffer)
+            if(dataBuffer != null)
             {
-                comboBox1.Items.Add(sheet);
+                foreach (var sheet in dataBuffer)
+                {
+                    comboBox1.Items.Add(sheet);
+                }
             }
         }
 
@@ -557,13 +560,16 @@ namespace ModelessForm_ExternalEvent
             else
             {
                 MessageBox.Show("Si è verificato un errore nel caricamento dell'immagine."
-                    + "\nControlla che il nome dell'immagine o il percorso di caricamento siano corretti.");
+                    + "\nControlla che i nomi o il percorso di caricamento delle immagini siano corretti.");
 
-                folderNameActual = folderNameDefault;
-                imagesTextBox.Text = folderNameDefault;
+                if(MyImage1 != null)
+                {
+                    folderNameActual = folderNameDefault;
+                    imagesTextBox.Text = folderNameDefault;
 
-                MyImage1 = new Bitmap(folderNameActual + "\\_F.png");
-                nameFamilyTextBox.Text = null;
+                    MyImage1 = new Bitmap(folderNameActual + "\\_F.png");
+                    nameFamilyTextBox.Text = null;
+                }
             }
             pictureBoxCentral.Image = (Image)MyImage1;
         }
@@ -585,9 +591,12 @@ namespace ModelessForm_ExternalEvent
             }
             else
             {
-                folderNameActual = folderNameDefault;
-                MyImage2 = new Bitmap(folderNameActual + "\\_D.png");
-                nameFamilyTextBox.Text = null;
+                if (MyImage2 != null)
+                {
+                    folderNameActual = folderNameDefault;
+                    MyImage2 = new Bitmap(folderNameActual + "\\_D.png");
+                    nameFamilyTextBox.Text = null;
+                }
             }
             pictureBoxDx.Image = (Image)MyImage2;
         }
@@ -610,9 +619,12 @@ namespace ModelessForm_ExternalEvent
             }
             else
             {
-                folderNameActual = folderNameDefault;
-                MyImage3 = new Bitmap(folderNameActual + "\\_S.png");
-                nameFamilyTextBox.Text = null;
+                if (MyImage3 != null)
+                {
+                    folderNameActual = folderNameDefault;
+                    MyImage3 = new Bitmap(folderNameActual + "\\_S.png");
+                    nameFamilyTextBox.Text = null;
+                }                    
             }
             pictureBoxSx.Image = (Image)MyImage3;
         }
@@ -635,9 +647,12 @@ namespace ModelessForm_ExternalEvent
             }
             else
             {
-                folderNameActual = folderNameDefault;
-                MyImage4 = new Bitmap(folderNameActual + "\\_P.png");
-                nameFamilyTextBox.Text = null;
+                if (MyImage4 != null)
+                {
+                    folderNameActual = folderNameDefault;
+                    MyImage4 = new Bitmap(folderNameActual + "\\_P.png");
+                    nameFamilyTextBox.Text = null;
+                }                    
             }
             pictureBoxHigh.Image = (Image)MyImage4;
 
