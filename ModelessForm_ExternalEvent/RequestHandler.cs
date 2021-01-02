@@ -30,8 +30,6 @@ using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using Autodesk.Revit.UI.Selection;
 using ModelessForm_ExternalEvent.DataFromExcel;
-using ModelessForm_ExternalEvent.FromToExcel;
-using ModelessForm_ExternalEvent.ToExcel;
 
 namespace ModelessForm_ExternalEvent
 {
@@ -195,38 +193,7 @@ namespace ModelessForm_ExternalEvent
                                 modelessForm.CleanAll();
                             }                            
                             break;
-                        }
-                    case RequestId.Exp:
-                        {
-                            // Metodo per esportare i parametri dell'elemento in un foglio Excel
-                            modelessForm = App.thisApp.RetriveForm();
-                            _valueSelectedComboBox = modelessForm.ValueSelectedComboBox();
-                            if(count == 1)
-                            {
-                                _valueActive = _valueDistinta;
-                            }
-                            else if(count == 2)
-                            {
-                                _valueActive = _valueSelectedComboBox;
-                            }                            
-                            ImportDataFromExcel import = new ImportDataFromExcel();
-                            path = modelessForm.GetExcelDirectoryPath() + "\\AbacoCells.xlsx";
-                            DataTable tableFromComboBox = import.ReadExcelToDataTable(_valueActive, path, 1, 1);
-
-                            ExportDataToExcel exp = new ExportDataToExcel();
-                            path2 = modelessForm.GetExcelDirectoryPath() + "\\AbacoCellsSalvato.xlsx";
-                            bool risp = exp.GetExportDataToExcel(tableFromComboBox, _valueActive, path2);
-                            if(risp == true)
-                            {
-                                MessageBox.Show("File salvato correttamente.");
-                            }
-                            else
-                            {
-                                MessageBox.Show("Il file non è stato salvato. Verifica l'errore.", "ERRORE!");
-                            }
-                           
-                            break;
-                        }
+                        }                   
                     case RequestId.ComboBox:
                         {
                             count = 2;

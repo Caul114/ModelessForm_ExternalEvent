@@ -1,11 +1,11 @@
 ﻿using Autodesk.Revit.UI;
 using ModelessForm_ExternalEvent.DataFromExcel;
-using ModelessForm_ExternalEvent.FromToExcel;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -52,6 +52,9 @@ namespace ModelessForm_ExternalEvent
 
         // Valore booleano per impostare le nuove immagini
         bool newImages = false;
+
+        // Valore Hashtable per la chiusura dei processi Excel
+        Hashtable myHashtable;
 
         /// <summary>
         ///   Costruttore della finestra di dialogo
@@ -191,14 +194,76 @@ namespace ModelessForm_ExternalEvent
         #region Export Excel
 
         /// <summary>
-        ///   Metodo che esporta il Contenuto del DataGridView in un foglio Excel
+        ///   Metodo che chiama il salvataggio del contenuto del DataGridView
         /// </summary>
         /// 
-        private void exportButton_Click(object sender, EventArgs e)
+        private void saveExcelDistintabutton_Click(object sender, EventArgs e)
         {
-            if (dataGridView1.Rows.Count > 0)
+            ExportExcel(pathExcel, dataGridView1);
+        }
+
+        /// <summary>
+        ///   Metodo che salva il Contenuto del DataGridView
+        /// </summary>
+        /// 
+        public void ExportExcel(string fileName, DataGridView myDGV)
+        {
+            // Ottiene la stringa selezionata nella ComboBox
+            string selectedItem = (string)comboBox1.SelectedItem;
+
+            if (myDGV.Rows.Count > 0)
             {
-                MakeRequest(RequestId.Exp);
+                Excel.Application xlApp = new Excel.Application();
+                if (xlApp == null)
+                {
+                    MessageBox.Show("Non puoi creare un documento Excel." +
+                        "\n Il tuo PC potrebbe non essere abilitato per il salvataggio di un file Excel.");
+                    return;
+                }
+
+                Excel.Workbooks workbooks = xlApp.Workbooks;
+                Excel.Workbook workbook = workbooks.Open(fileName);
+                Excel.Worksheet worksheet = (Excel.Worksheet)workbook.Worksheets.Item[selectedItem];
+
+                for (int i = 0; i < myDGV.ColumnCount; i++)
+                {
+                    worksheet.Cells[1, i + 1] = myDGV.Columns[i].HeaderText;
+                }
+
+                for (int r = 0; r < myDGV.Rows.Count; r++)
+                {
+                    for (int i = 0; i < myDGV.ColumnCount; i++)
+                    {
+                        worksheet.Cells[r + 2, i + 1] = myDGV.Rows[r].Cells[i].Value;
+                    }
+                    Application.DoEvents();
+                }
+                worksheet.Columns.EntireColumn.AutoFit();
+
+                if (fileName != "")
+                {
+                    try
+                    {
+                        workbook.Save();
+                        MessageBox.Show("Salvataggio riuscito.", "Avviso", MessageBoxButtons.OK);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Errore di esportazione!\n" + ex.Message);
+                    }
+                }
+
+                workbook.Close(0);
+                xlApp.Quit();
+
+                // Chiude tutti i processi Excel ancora attivi
+                KillExcel();
+
+                GC.Collect();
+            }
+            else
+            {
+                MessageBox.Show("Non hai caricato alcun file.\nSalvataggio non riuscito.", "Avviso", MessageBoxButtons.OK);
             }
         }
 
@@ -333,7 +398,7 @@ namespace ModelessForm_ExternalEvent
         /// <summary>
         ///   Metodo che importa il foglio Excel
         /// </summary>
-        /// 
+        ///         
         public void GetDataFromExcel(string selectedItem, string path)
         {
             // Assegna al valore attivo nella ComboBox il selectedEmployee
@@ -384,8 +449,29 @@ namespace ModelessForm_ExternalEvent
 
             // Chiude il server Excel.
             excel_app.Quit();
+
+            // Chiude tutti i processi Excel ancora attivi
+            KillExcel();
+
+            // Forza il Garbage Collector a ripulire
+            GC.Collect();
         }
 
+        /// <summary>
+        ///   Metodo che chiude tutti i processi Excel attivi
+        /// 
+        static void KillExcel()
+        {
+            Process[] AllProcesses = Process.GetProcessesByName("excel");
+
+            // check to kill the right process
+            foreach (Process ExcelProcess in AllProcesses)
+            {
+                //if (myHashtable.ContainsKey(ExcelProcess.Id) == true)
+                    ExcelProcess.Kill();
+            }
+            AllProcesses = null;
+        }
         /// <summary>
         ///   Metodo che imposta i nomi delle colonne della griglia dalla riga 1
         /// </summary>
@@ -679,6 +765,7 @@ namespace ModelessForm_ExternalEvent
         {
             Close();
         }
+
 
     }  // class
 }

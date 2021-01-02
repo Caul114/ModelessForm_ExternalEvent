@@ -38,13 +38,9 @@ namespace ModelessForm_ExternalEvent
         /// </summary>
         Id = 1,
         /// <summary>
-        /// "Export" request
-        /// </summary>
-        Exp = 2,
-        /// <summary>
         /// "ComboBox" request
         /// </summary>
-        ComboBox = 3,
+        ComboBox = 2,
     }
 
     /// <summary>

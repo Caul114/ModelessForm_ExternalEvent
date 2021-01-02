@@ -52,7 +52,7 @@ namespace ModelessForm_ExternalEvent
                 // ToolTip mostrato
                 button.ToolTip = "Mostra i parametri delle finestre";
                 // Icona del Button
-                Uri uriImage = new Uri("C:\\DatiLDB\\Progetti\\13.Winform\\ModelessForm_ExternalEvent - 2021\\ModelessForm_ExternalEvent\\Resources\\revit_small.png");
+                Uri uriImage = new Uri("C:\\DatiLDB\\Progetti_REVIT\\13.Winform\\ModelessForm_ExternalEvent - 2021\\ModelessForm_ExternalEvent\\Resources\\revit_small.png");
                 BitmapImage image = new BitmapImage(uriImage);
                 button.LargeImage = image;
             };
