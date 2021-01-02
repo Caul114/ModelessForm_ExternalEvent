@@ -169,13 +169,15 @@ namespace ModelessForm_ExternalEvent
                             // Chiama il metodo che seleziona un oggetto
                             pickedObject = PickObject(uiapp);
                             // Chiama il metodo che restituisce il valore della BOLD_Distinta
-                            _valueDistinta = PickBOLD_distinta(uiapp, pickedObject);
+                            _valueDistinta = PickBOLD_distinta(uiapp, pickedObject);                            
                             // Cambia il count
                             count = 1;
                             modelessForm = App.thisApp.RetriveForm();
                             // Se il valore della BOLD_Distinta è presente, lo aggiunge alla Form
                             if (_valueDistinta != "Nessun valore" && _valueDistinta != null)
                             {   
+                                // Imposta il valore della Distinta per la Form
+                                modelessForm.valueDistintaFromCaptureButton();
                                 // Chiama il metodo che seleziona il parametro stringa della famiglia scelta e riempie il PictureBox
                                 GetTypeParameterOfFamily(uiapp, pickedObject);
                                 modelessForm.SetModifyPicture();

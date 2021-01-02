@@ -47,14 +47,14 @@ namespace ModelessForm_ExternalEvent
         // Valore attivo nella ComboBox
         private string valueActive;
 
+        // Valore della Distinta presente nella DataGridView
+        private string valueDistintaActive;
+
         // Valore booleano di errore
         bool error = false;
 
         // Valore booleano per impostare le nuove immagini
         bool newImages = false;
-
-        // Valore Hashtable per la chiusura dei processi Excel
-        Hashtable myHashtable;
 
         /// <summary>
         ///   Costruttore della finestra di dialogo
@@ -171,6 +171,7 @@ namespace ModelessForm_ExternalEvent
             return directoryName;
         }
 
+        
         #region Capture Button
 
         /// <summary>
@@ -186,9 +187,17 @@ namespace ModelessForm_ExternalEvent
                 dataGridView1.Columns.Clear();
                 dataGridView1.Refresh();
             }
-                MakeRequest(RequestId.Id);            
+            MakeRequest(RequestId.Id);
         }
 
+        /// <summary>
+        ///   Metodo che imposta il valore della distinta presente del DataGrid in base alla selezione del Button
+        /// </summary>
+        /// 
+        public void valueDistintaFromCaptureButton()
+        {
+            valueDistintaActive = m_Handler.GetDistintaValue;
+        }
         #endregion
 
         #region Export Excel
@@ -199,18 +208,16 @@ namespace ModelessForm_ExternalEvent
         /// 
         private void saveExcelDistintabutton_Click(object sender, EventArgs e)
         {
-            ExportExcel(pathExcel, dataGridView1);
+            string sheet = valueDistintaActive;
+            ExportExcel(pathExcel, sheet, dataGridView1);
         }
 
         /// <summary>
         ///   Metodo che salva il Contenuto del DataGridView
         /// </summary>
         /// 
-        public void ExportExcel(string fileName, DataGridView myDGV)
+        public void ExportExcel(string fileName, string sheetDistinta,DataGridView myDGV)
         {
-            // Ottiene la stringa selezionata nella ComboBox
-            string selectedItem = (string)comboBox1.SelectedItem;
-
             if (myDGV.Rows.Count > 0)
             {
                 Excel.Application xlApp = new Excel.Application();
@@ -223,7 +230,7 @@ namespace ModelessForm_ExternalEvent
 
                 Excel.Workbooks workbooks = xlApp.Workbooks;
                 Excel.Workbook workbook = workbooks.Open(fileName);
-                Excel.Worksheet worksheet = (Excel.Worksheet)workbook.Worksheets.Item[selectedItem];
+                Excel.Worksheet worksheet = (Excel.Worksheet)workbook.Worksheets.Item[sheetDistinta];
 
                 for (int i = 0; i < myDGV.ColumnCount; i++)
                 {
@@ -390,6 +397,7 @@ namespace ModelessForm_ExternalEvent
 
             // Ottiene la stringa selezionata nella ComboBox
             string selectedItem = (string)comboBox1.SelectedItem;
+            valueDistintaActive = selectedItem;
 
             // Chiama il metodo che importa la pagina scelta del file Excel
             GetDataFromExcel(selectedItem, pathExcel);
