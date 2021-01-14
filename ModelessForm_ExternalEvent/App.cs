@@ -100,7 +100,7 @@ namespace ModelessForm_ExternalEvent
                 // La finestra di dialogo diventa il proprietario responsabile della loro disposizione, alla fine.
                 m_MyForm = new ModelessForm(exEvent, handler);
                 m_MyForm.Show();
-                m_MyForm.TopMost = true;
+                m_MyForm.BringToFront();
             }
         }
 
@@ -119,6 +119,7 @@ namespace ModelessForm_ExternalEvent
         /// 
         public void DontShowFormTop()
         {
+            //m_MyForm.WindowState = FormWindowState.Minimized;
             m_MyForm.TopMost = false;
         }
 
@@ -128,6 +129,7 @@ namespace ModelessForm_ExternalEvent
         /// 
         public void ShowFormTop()
         {
+            //m_MyForm.WindowState = FormWindowState.Normal;
             m_MyForm.TopMost = true;
         }
 

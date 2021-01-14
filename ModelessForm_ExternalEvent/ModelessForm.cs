@@ -35,12 +35,15 @@ namespace ModelessForm_ExternalEvent
         private RequestHandler m_Handler;
         private ExternalEvent m_ExEvent;
 
+        // Dichiaro una seconda Form per la lente d'ingrandimento
+        private MagnifyingGlass magnifyingGlass;
+
         // Percorso del singolo file excel da importare di default
-        string pathExcel = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\DataCell_Bold_utilities\\AbacoCells.xlsx";
+        string pathExcel = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Bold Software\DataCell\AbacoCells.xlsx";
         ImportData importData = new ImportData();
 
         // Percorso della cartella Immagini di default
-        string folderNameDefault = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\DataCell_Bold_utilities\\Images";
+        string folderNameDefault = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Bold Software\DataCell\Images";
         string folderNameActual = "";        
         string folderName = "";
 
@@ -65,6 +68,9 @@ namespace ModelessForm_ExternalEvent
             InitializeComponent();
             m_Handler = handler;
             m_ExEvent = exEvent;
+
+            // Definico i colori di alcune forme
+            captureButton.BackColor = Color.DodgerBlue;
 
             // Inserisco le immagini selezionate
             folderNameActual = folderNameDefault;
@@ -180,6 +186,7 @@ namespace ModelessForm_ExternalEvent
         /// 
         private void captureButton_Click(object sender, EventArgs e)
         {
+
             if (dataGridView1.Columns.Count > 0)
             {
                 dataGridView1.DataSource = null;
@@ -224,7 +231,7 @@ namespace ModelessForm_ExternalEvent
                 if (xlApp == null)
                 {
                     MessageBox.Show("Non puoi creare un documento Excel." +
-                        "\n Il tuo PC potrebbe non essere abilitato per il salvataggio di un file Excel.");
+                        "\nIl tuo PC potrebbe non essere abilitato per il salvataggio di un file Excel.");
                     return;
                 }
 
@@ -610,7 +617,7 @@ namespace ModelessForm_ExternalEvent
         public DataPicture GetDataPictureDx()
         {
             // Proprietà immagine destra
-            string pathd = folderNameActual + "\\" + GetPathModifier() + "_D.png";
+            string pathd = folderNameActual + "\\" + GetPathModifier() + "_R.png";
             int widthd = 65;
             int heigthd = 325;
             var data = new DataPicture(pathd, widthd, heigthd);
@@ -620,7 +627,7 @@ namespace ModelessForm_ExternalEvent
         public DataPicture GetDataPictureSx()
         {
             // Proprietà immagine sinistra
-            string paths = folderNameActual + "\\" + GetPathModifier() + "_S.png";
+            string paths = folderNameActual + "\\" + GetPathModifier() + "_L.png";
             int widths = 65;
             int heigths = 325;
             var data = new DataPicture(paths, widths, heigths);
@@ -650,10 +657,10 @@ namespace ModelessForm_ExternalEvent
                 MyImage1.Dispose();
             }
 
-            // Set the size of the PictureBox control.
-            pictureBoxCentral.Size = new System.Drawing.Size(xSize, ySize);
+            //// Set the size of the PictureBox control.
+            //pictureBoxCentral.Size = new System.Drawing.Size(xSize, ySize);
 
-            pictureBoxCentral.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBoxCentral.SizeMode = PictureBoxSizeMode.Zoom;
 
             if (File.Exists(fileToDisplay))
             {
@@ -682,10 +689,10 @@ namespace ModelessForm_ExternalEvent
             {
                 MyImage2.Dispose();
             }
-            // Set the size of the PictureBox control.
-            pictureBoxDx.Size = new System.Drawing.Size(xSize, ySize);
+            //// Set the size of the PictureBox control.
+            //pictureBoxDx.Size = new System.Drawing.Size(xSize, ySize);
 
-            pictureBoxDx.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBoxDx.SizeMode = PictureBoxSizeMode.Zoom;
 
             if (File.Exists(fileToDisplay))
             {
@@ -696,7 +703,7 @@ namespace ModelessForm_ExternalEvent
                 if (MyImage2 != null)
                 {
                     folderNameActual = folderNameDefault;
-                    MyImage2 = new Bitmap(folderNameActual + "\\_D.png");
+                    MyImage2 = new Bitmap(folderNameActual + "\\_R.png");
                     nameFamilyTextBox.Text = null;
                 }
             }
@@ -710,10 +717,10 @@ namespace ModelessForm_ExternalEvent
             {
                 MyImage3.Dispose();
             }
-            // Set the size of the PictureBox control.
-            pictureBoxSx.Size = new System.Drawing.Size(xSize, ySize);
+            //// Set the size of the PictureBox control.
+            //pictureBoxSx.Size = new System.Drawing.Size(xSize, ySize);
 
-            pictureBoxSx.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBoxSx.SizeMode = PictureBoxSizeMode.Zoom;
 
             if (File.Exists(fileToDisplay))
             {
@@ -724,7 +731,7 @@ namespace ModelessForm_ExternalEvent
                 if (MyImage3 != null)
                 {
                     folderNameActual = folderNameDefault;
-                    MyImage3 = new Bitmap(folderNameActual + "\\_S.png");
+                    MyImage3 = new Bitmap(folderNameActual + "\\_L.png");
                     nameFamilyTextBox.Text = null;
                 }                    
             }
@@ -738,10 +745,10 @@ namespace ModelessForm_ExternalEvent
             {
                 MyImage4.Dispose();
             }
-            // Set the size of the PictureBox control.
-            pictureBoxHigh.Size = new System.Drawing.Size(xSize, ySize);
+            //// Set the size of the PictureBox control.
+            //pictureBoxHigh.Size = new System.Drawing.Size(xSize, ySize);
 
-            pictureBoxHigh.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBoxHigh.SizeMode = PictureBoxSizeMode.Zoom;
 
             if (File.Exists(fileToDisplay))
             {
@@ -761,9 +768,32 @@ namespace ModelessForm_ExternalEvent
             // Rendo newImages false, in modo da poter modificare nuovamente le immagini quando si sceglie un oggetto
             newImages = false;
         }
-
-
         #endregion
+
+        /// <summary>
+        ///   Attiva la Form della lente d'ingrandimento.
+        /// </summary>
+        /// 
+        private void magnifyingGlassButton_Click(object sender, EventArgs e)
+        {
+            magnifyingGlass = new MagnifyingGlass();
+            magnifyingGlass.Show();
+            this.SendToBack();
+            magnifyingGlass.TopMost = true;
+        }
+
+        /// <summary>
+        ///   Forza la chiusura della Form della lente d'ingrandimento.
+        /// </summary>
+        /// 
+        private void magnifyingGlassCloseButton_Click(object sender, EventArgs e)
+        {
+            if (magnifyingGlass != null && magnifyingGlass.Visible)
+            {
+                this.BringToFront();
+                magnifyingGlass.Close();
+            }
+        }
 
         /// <summary>
         ///   Exit - chiude la finestra di dialogo

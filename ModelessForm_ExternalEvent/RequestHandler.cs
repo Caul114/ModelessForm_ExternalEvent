@@ -70,7 +70,6 @@ namespace ModelessForm_ExternalEvent
 
         // Percorso file Excel con tutte le Distinte
         string path = "";
-        string path2 = "C:\\DatiLDB\\ExcelData\\AbacoCellsSalvato.xlsx";
         private List<string> _listXlSh;
         #endregion
 
@@ -275,7 +274,7 @@ namespace ModelessForm_ExternalEvent
             UIDocument uidoc = uiapp.ActiveUIDocument;
             ElementId eleId = reference.ElementId;
             Element ele = uidoc.Document.GetElement(eleId);
-            return _dimensionsList = GetDimensionsList(ele, reference);
+            return _dimensionsList = GetDimensionsList(uiapp, ele, reference);
         }
 
         /// <summary>
@@ -285,16 +284,23 @@ namespace ModelessForm_ExternalEvent
         /// </remarks>
         /// <param name="uiapp">L'oggetto Applicazione di Revit</param>m>
         /// 
-        private ArrayList GetDimensionsList(Element ele, Reference reference)
+        private ArrayList GetDimensionsList(UIApplication uiapp, Element ele, Reference reference)
         {
             // Ottiene tutti i Paramtetri contenuti nei singoli Gruppi di Parametri
             Dictionary<BuiltInParameterGroup, List<BuiltInParameter>> dict = GroupBuiltInParameters(ele);
             // Estrae i parametri che appartengono a Dimensions
             List<Parameter> pList = ParametersInGroup(ele, BuiltInParameterGroup.PG_GEOMETRY);
+
+            // Cattura i due parametri delle Type Properties
+            List<Parameter> pListTypeProperties = GetDimensionsTypeProperties(uiapp, reference);
+            foreach (Parameter item in pListTypeProperties)
+            {
+                pList.Add(item);
+            }
+
             // Li ordina in modo crescente
             List<Parameter> pListOrdered = pList.OrderBy(x => x.Definition.Name).ToList();
 
-            
             // Se i parametri dimensionali sono presenti, ricava i loro valori e li aggiunge alla lista, 
             // altrimenti scrive una stringa vuota
             string ctrl = "";
@@ -310,7 +316,7 @@ namespace ModelessForm_ExternalEvent
                     }
                     else if (par.Definition.Name == "Area")
                     {
-                        // Converte il valore in modo che sia cooretto
+                        // Converte il valore in modo che sia corretto
                         double MyString = par.AsDouble();
                         double newvalueMyString = UnitUtils.ConvertFromInternalUnits(MyString, DisplayUnitType.DUT_SQUARE_METERS);
                         _dimensionsList.Add(newvalueMyString + " m^2");
@@ -328,7 +334,7 @@ namespace ModelessForm_ExternalEvent
             return _dimensionsList;
         }
 
-        public static Dictionary<BuiltInParameterGroup, List<BuiltInParameter>> GroupBuiltInParameters(Element e)
+        private static Dictionary<BuiltInParameterGroup, List<BuiltInParameter>> GroupBuiltInParameters(Element e)
         {
             Dictionary<BuiltInParameterGroup, List<BuiltInParameter>> dict =
                 new Dictionary<BuiltInParameterGroup, List<BuiltInParameter>>();
@@ -355,13 +361,13 @@ namespace ModelessForm_ExternalEvent
             return dict;
         }
 
-        public static List<Parameter> ParametersInGroup(Element e, BuiltInParameterGroup g)
+        private static List<Parameter> ParametersInGroup(Element e, BuiltInParameterGroup g)
         {
             Dictionary<BuiltInParameterGroup, List<Parameter>> groupDict = GroupParameters(e);
             return groupDict.Keys.Contains(g) ? groupDict[g] : null;
         }
 
-        public static Dictionary<BuiltInParameterGroup, List<Parameter>> GroupParameters(Element e)
+        private static Dictionary<BuiltInParameterGroup, List<Parameter>> GroupParameters(Element e)
         {
             Dictionary<BuiltInParameterGroup, List<Parameter>> dict =
                 new Dictionary<BuiltInParameterGroup, List<Parameter>>();
@@ -379,14 +385,41 @@ namespace ModelessForm_ExternalEvent
             return dict;
         }
 
+        /// <summary>
+        ///   La subroutine che cattura il parametro TYPE PROPERTIES della FAMIGLIA scelta in formato lista di parametri
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <param name="uiapp">L'oggetto Applicazione di Revit</param>
+        private static List<Parameter> GetDimensionsTypeProperties(UIApplication uiapp, Reference reference)
+        {
+            List<Parameter> listParameter = new List<Parameter>();
+
+            UIDocument uidoc = uiapp.ActiveUIDocument;
+            Document doc = uidoc.Document;
+
+            ElementId eleId = reference.ElementId;
+            Element ele = doc.GetElement(eleId);
+            ElementType eleType = doc.GetElement(ele.GetTypeId()) as ElementType;
+            ParameterSet parameterSet = eleType.Parameters;
+
+            foreach (Parameter par in parameterSet)
+            {
+                if(par.Definition.Name == "CellSp" || par.Definition.Name == "DistanceLevel")
+                {
+                    listParameter.Add(par);
+                }
+            }
+            return listParameter;
+        }
+
 
         /// <summary>
         ///   La subroutine che cattura il parametro TIPO della FAMIGLIA scelta in formato stringa
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="uiapp">L'oggetto Applicazione di Revit</param>m>
-        /// 
+        /// <param name="uiapp">L'oggetto Applicazione di Revit</param>
         private void GetTypeParameterOfFamily(UIApplication uiapp, Reference reference)
         {
             // Chiamo la vista attiva e seleziono gli elementi che mi servono
@@ -397,7 +430,7 @@ namespace ModelessForm_ExternalEvent
         }
 
         /// <summary>
-        /// Restituisce tutti i valori dei parametri ritenuti rilevanti per l'elemento dato sotto forma di ArrayList.
+        /// Restituisce il valore in formato stringa della FAMIGLIA
         /// </summary>
         private string GetTypeParameterElementType(UIApplication uiapp, Element e)
         {
@@ -406,7 +439,7 @@ namespace ModelessForm_ExternalEvent
             string singleString = null;
             foreach (Parameter param in ps)
             {
-                if (param.Definition.Name == "Famiglia")
+                if (param.Definition.Name == "Family" || param.Definition.Name == "Famiglia")
                     singleString = param.AsValueString();
             }
             return singleString;

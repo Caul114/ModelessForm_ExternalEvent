@@ -90,6 +90,12 @@
     <Compile Include="App.cs" />
     <Compile Include="Command.cs" />
     <Compile Include="DataFromExcel\ImportData.cs" />
+    <Compile Include="MagnifyingGlass.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MagnifyingGlass.Designer.cs">
+      <DependentUpon>MagnifyingGlass.cs</DependentUpon>
+    </Compile>
     <Compile Include="ModelessForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -111,6 +117,9 @@
     <Content Include="revitIcon.ico" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="MagnifyingGlass.resx">
+      <DependentUpon>MagnifyingGlass.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ModelessForm.resx">
       <DependentUpon>ModelessForm.cs</DependentUpon>
     </EmbeddedResource>
