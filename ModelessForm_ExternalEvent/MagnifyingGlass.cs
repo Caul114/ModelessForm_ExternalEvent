@@ -59,8 +59,8 @@ namespace ModelessForm_ExternalEvent
             pathp.AddEllipse(rectp);
             panel1.Region = new Region(pathp);
 
-            // La lente segue il mouse
-            this.Location = new Point(Cursor.Position.X, Cursor.Position.Y);
+            // La lente segue il mouse - qui viene stabilita la sua posizione rispetto al mouse
+            this.Location = new Point((Cursor.Position.X + 80), Cursor.Position.Y / 2);
         }
 
         private void panel1_MouseMove(object sender, MouseEventArgs e)
