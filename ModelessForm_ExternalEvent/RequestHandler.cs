@@ -174,7 +174,9 @@ namespace ModelessForm_ExternalEvent
                             modelessForm = App.thisApp.RetriveForm();
                             // Se il valore della BOLD_Distinta è presente, lo aggiunge alla Form
                             if (_valueDistinta != "Nessun valore" && _valueDistinta != null)
-                            {   
+                            {
+                                // Cancello tutti i valori presenti nell'ArrayList
+                                _dimensionsList.Clear();
                                 // Imposta il valore della Distinta per la Form
                                 modelessForm.valueDistintaFromCaptureButton();
                                 // Chiama il metodo che seleziona il parametro stringa della famiglia scelta e riempie il PictureBox
