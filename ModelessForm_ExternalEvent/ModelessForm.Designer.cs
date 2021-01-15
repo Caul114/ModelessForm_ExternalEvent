@@ -68,12 +68,13 @@ namespace ModelessForm_ExternalEvent
             this.exitButton = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.functionGroupBox3 = new System.Windows.Forms.GroupBox();
-            this.saveExcelDistintabutton = new System.Windows.Forms.Button();
             this.excelDistintaButton = new System.Windows.Forms.Button();
             this.textDistintaComboBox = new System.Windows.Forms.TextBox();
             this.importDistintaLabel = new System.Windows.Forms.Label();
             this.uploadExcelOpenFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.saveExcelDistintabutton = new System.Windows.Forms.Button();
+            this.openExcelDistintaButton = new System.Windows.Forms.Button();
             this.functionGroupBox1.SuspendLayout();
             this.imageFamilyGroupBox.SuspendLayout();
             this.magnifyingGlassGroupBox.SuspendLayout();
@@ -442,6 +443,7 @@ namespace ModelessForm_ExternalEvent
             // 
             // functionGroupBox3
             // 
+            this.functionGroupBox3.Controls.Add(this.openExcelDistintaButton);
             this.functionGroupBox3.Controls.Add(this.saveExcelDistintabutton);
             this.functionGroupBox3.Controls.Add(this.excelDistintaButton);
             this.functionGroupBox3.Controls.Add(this.textDistintaComboBox);
@@ -453,16 +455,6 @@ namespace ModelessForm_ExternalEvent
             this.functionGroupBox3.TabIndex = 2;
             this.functionGroupBox3.TabStop = false;
             this.functionGroupBox3.Text = "Mostra Distinta";
-            // 
-            // saveExcelDistintabutton
-            // 
-            this.saveExcelDistintabutton.Location = new System.Drawing.Point(405, 20);
-            this.saveExcelDistintabutton.Name = "saveExcelDistintabutton";
-            this.saveExcelDistintabutton.Size = new System.Drawing.Size(91, 25);
-            this.saveExcelDistintabutton.TabIndex = 8;
-            this.saveExcelDistintabutton.Text = "Salva";
-            this.saveExcelDistintabutton.UseVisualStyleBackColor = true;
-            this.saveExcelDistintabutton.Click += new System.EventHandler(this.saveExcelDistintabutton_Click);
             // 
             // excelDistintaButton
             // 
@@ -476,15 +468,15 @@ namespace ModelessForm_ExternalEvent
             // 
             // textDistintaComboBox
             // 
-            this.textDistintaComboBox.Location = new System.Drawing.Point(715, 24);
+            this.textDistintaComboBox.Location = new System.Drawing.Point(765, 20);
             this.textDistintaComboBox.Name = "textDistintaComboBox";
-            this.textDistintaComboBox.Size = new System.Drawing.Size(156, 22);
+            this.textDistintaComboBox.Size = new System.Drawing.Size(106, 22);
             this.textDistintaComboBox.TabIndex = 6;
             // 
             // importDistintaLabel
             // 
             this.importDistintaLabel.AutoSize = true;
-            this.importDistintaLabel.Location = new System.Drawing.Point(534, 24);
+            this.importDistintaLabel.Location = new System.Drawing.Point(580, 24);
             this.importDistintaLabel.Name = "importDistintaLabel";
             this.importDistintaLabel.Size = new System.Drawing.Size(179, 17);
             this.importDistintaLabel.TabIndex = 5;
@@ -501,6 +493,26 @@ namespace ModelessForm_ExternalEvent
             // 
             this.folderBrowserDialog1.Description = "Scegli la Directory da cui vuoi attingere le immagini.";
             this.folderBrowserDialog1.SelectedPath = "C:\\Users\\Bold\\Documents\\Bold Software\\DataCell\\Images";
+            // 
+            // saveExcelDistintabutton
+            // 
+            this.saveExcelDistintabutton.Location = new System.Drawing.Point(405, 20);
+            this.saveExcelDistintabutton.Name = "saveExcelDistintabutton";
+            this.saveExcelDistintabutton.Size = new System.Drawing.Size(77, 25);
+            this.saveExcelDistintabutton.TabIndex = 8;
+            this.saveExcelDistintabutton.Text = "Salva";
+            this.saveExcelDistintabutton.UseVisualStyleBackColor = true;
+            this.saveExcelDistintabutton.Click += new System.EventHandler(this.saveExcelDistintabutton_Click);
+            // 
+            // openExcelDistintaButton
+            // 
+            this.openExcelDistintaButton.Location = new System.Drawing.Point(488, 20);
+            this.openExcelDistintaButton.Name = "openExcelDistintaButton";
+            this.openExcelDistintaButton.Size = new System.Drawing.Size(77, 25);
+            this.openExcelDistintaButton.TabIndex = 9;
+            this.openExcelDistintaButton.Text = "Apri";
+            this.openExcelDistintaButton.UseVisualStyleBackColor = true;
+            this.openExcelDistintaButton.Click += new System.EventHandler(this.openExcelDistintaButton_Click);
             // 
             // ModelessForm
             // 
@@ -570,7 +582,6 @@ namespace ModelessForm_ExternalEvent
         private Label imagesLabel;
         private Button imagesButton;
         private FolderBrowserDialog folderBrowserDialog1;
-        private Button saveExcelDistintabutton;
         private GroupBox imagesFolderGroupBox;
         private GroupBox groupBox3;
         private Label label4;
@@ -585,5 +596,7 @@ namespace ModelessForm_ExternalEvent
         private Button magnifyingGlassButton;
         private Button magnifyingGlassCloseButton;
         private Label label6;
+        private Button openExcelDistintaButton;
+        private Button saveExcelDistintabutton;
     }
 }

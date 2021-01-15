@@ -223,7 +223,7 @@ namespace ModelessForm_ExternalEvent
         ///   Metodo che salva il Contenuto del DataGridView
         /// </summary>
         /// 
-        public void ExportExcel(string fileName, string sheetDistinta,DataGridView myDGV)
+        public void ExportExcel(string fileName, string sheetDistinta, DataGridView myDGV)
         {
             if (myDGV.Rows.Count > 0)
             {
@@ -470,6 +470,23 @@ namespace ModelessForm_ExternalEvent
 
             // Forza il Garbage Collector a ripulire
             GC.Collect();
+        }
+
+        /// <summary>
+        ///   Apre il file Excel visualizzato
+        /// </summary>
+        /// 
+        private void openExcelDistintaButton_Click(object sender, EventArgs e)
+        {
+            //Excel.Application excel = new Excel.Application();
+            //Excel.Workbook wb = excel.Workbooks.Open(pathExcel);
+            if(File.Exists(pathExcel))
+            {
+                // Chiude tutti i processi Excel ancora attivi
+                KillExcel();
+                // Apre il file Excel
+                Process.Start(pathExcel);
+            }
         }
 
         /// <summary>
@@ -803,7 +820,6 @@ namespace ModelessForm_ExternalEvent
         {
             Close();
         }
-
 
     }  // class
 }
