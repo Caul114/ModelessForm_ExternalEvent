@@ -101,7 +101,5 @@ namespace ModelessForm_ExternalEvent
                 this.Close();
             }
         }
-
-
     }
 }

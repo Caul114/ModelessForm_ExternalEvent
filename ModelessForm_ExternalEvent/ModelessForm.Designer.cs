@@ -33,12 +33,16 @@ namespace ModelessForm_ExternalEvent
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ModelessForm));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.functionGroupBox1 = new System.Windows.Forms.GroupBox();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.imageFamilyGroupBox = new System.Windows.Forms.GroupBox();
             this.magnifyingGlassGroupBox = new System.Windows.Forms.GroupBox();
+            this.label10 = new System.Windows.Forms.Label();
             this.magnifyingGlassCloseButton = new System.Windows.Forms.Button();
-            this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.magnifyingGlassButton = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
@@ -47,10 +51,6 @@ namespace ModelessForm_ExternalEvent
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.pictureBoxCentral = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.imagesFolderGroupBox = new System.Windows.Forms.GroupBox();
-            this.imagesLabel = new System.Windows.Forms.Label();
-            this.imagesButton = new System.Windows.Forms.Button();
-            this.imagesTextBox = new System.Windows.Forms.TextBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.pictureBoxDx = new System.Windows.Forms.PictureBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -59,6 +59,7 @@ namespace ModelessForm_ExternalEvent
             this.label2 = new System.Windows.Forms.Label();
             this.nameFamilyTextBox = new System.Windows.Forms.TextBox();
             this.nameFamilyLabel = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
             this.captureButton = new System.Windows.Forms.Button();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.cleanButton = new System.Windows.Forms.Button();
@@ -71,12 +72,11 @@ namespace ModelessForm_ExternalEvent
             this.functionGroupBox3 = new System.Windows.Forms.GroupBox();
             this.openExcelDistintaButton = new System.Windows.Forms.Button();
             this.saveExcelDistintabutton = new System.Windows.Forms.Button();
-            this.excelDistintaButton = new System.Windows.Forms.Button();
             this.uploadExcelOpenFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.settingsGroupBox = new System.Windows.Forms.GroupBox();
             this.settingsButton = new System.Windows.Forms.Button();
-            this.label7 = new System.Windows.Forms.Label();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.functionGroupBox1.SuspendLayout();
             this.imageFamilyGroupBox.SuspendLayout();
             this.magnifyingGlassGroupBox.SuspendLayout();
@@ -84,7 +84,6 @@ namespace ModelessForm_ExternalEvent
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxHigh)).BeginInit();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCentral)).BeginInit();
-            this.imagesFolderGroupBox.SuspendLayout();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxDx)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -95,11 +94,16 @@ namespace ModelessForm_ExternalEvent
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.functionGroupBox3.SuspendLayout();
             this.settingsGroupBox.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.SuspendLayout();
             // 
             // functionGroupBox1
             // 
+            this.functionGroupBox1.Controls.Add(this.textBox2);
+            this.functionGroupBox1.Controls.Add(this.label9);
+            this.functionGroupBox1.Controls.Add(this.textBox1);
             this.functionGroupBox1.Controls.Add(this.imageFamilyGroupBox);
+            this.functionGroupBox1.Controls.Add(this.label8);
             this.functionGroupBox1.Controls.Add(this.captureButton);
             this.functionGroupBox1.Location = new System.Drawing.Point(12, 13);
             this.functionGroupBox1.Name = "functionGroupBox1";
@@ -108,12 +112,34 @@ namespace ModelessForm_ExternalEvent
             this.functionGroupBox1.TabStop = false;
             this.functionGroupBox1.Text = "Seleziona un oggetto";
             // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(750, 49);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(218, 22);
+            this.textBox2.TabIndex = 23;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(522, 51);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(219, 17);
+            this.label9.TabIndex = 24;
+            this.label9.Text = "Panel Type Identifier dell\'oggetto:";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(750, 19);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(218, 22);
+            this.textBox1.TabIndex = 21;
+            // 
             // imageFamilyGroupBox
             // 
             this.imageFamilyGroupBox.Controls.Add(this.magnifyingGlassGroupBox);
             this.imageFamilyGroupBox.Controls.Add(this.groupBox3);
             this.imageFamilyGroupBox.Controls.Add(this.groupBox2);
-            this.imageFamilyGroupBox.Controls.Add(this.imagesFolderGroupBox);
             this.imageFamilyGroupBox.Controls.Add(this.groupBox4);
             this.imageFamilyGroupBox.Controls.Add(this.groupBox1);
             this.imageFamilyGroupBox.Controls.Add(this.nameFamilyTextBox);
@@ -127,52 +153,52 @@ namespace ModelessForm_ExternalEvent
             // 
             // magnifyingGlassGroupBox
             // 
+            this.magnifyingGlassGroupBox.Controls.Add(this.label10);
             this.magnifyingGlassGroupBox.Controls.Add(this.magnifyingGlassCloseButton);
-            this.magnifyingGlassGroupBox.Controls.Add(this.label6);
             this.magnifyingGlassGroupBox.Controls.Add(this.label5);
             this.magnifyingGlassGroupBox.Controls.Add(this.magnifyingGlassButton);
-            this.magnifyingGlassGroupBox.Location = new System.Drawing.Point(804, 248);
+            this.magnifyingGlassGroupBox.Location = new System.Drawing.Point(404, 487);
             this.magnifyingGlassGroupBox.Name = "magnifyingGlassGroupBox";
-            this.magnifyingGlassGroupBox.Size = new System.Drawing.Size(177, 224);
+            this.magnifyingGlassGroupBox.Size = new System.Drawing.Size(177, 287);
             this.magnifyingGlassGroupBox.TabIndex = 14;
             this.magnifyingGlassGroupBox.TabStop = false;
             this.magnifyingGlassGroupBox.Text = "Lente d\'ingrandimento";
             // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(24, 50);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(124, 17);
+            this.label10.TabIndex = 12;
+            this.label10.Text = "Clicca per attivarla";
+            // 
             // magnifyingGlassCloseButton
             // 
-            this.magnifyingGlassCloseButton.Location = new System.Drawing.Point(43, 158);
+            this.magnifyingGlassCloseButton.Location = new System.Drawing.Point(43, 198);
             this.magnifyingGlassCloseButton.Name = "magnifyingGlassCloseButton";
             this.magnifyingGlassCloseButton.Size = new System.Drawing.Size(89, 52);
             this.magnifyingGlassCloseButton.TabIndex = 11;
-            this.magnifyingGlassCloseButton.Text = "Chiudi";
+            this.magnifyingGlassCloseButton.Text = "Spegni";
             this.magnifyingGlassCloseButton.UseVisualStyleBackColor = true;
             this.magnifyingGlassCloseButton.Click += new System.EventHandler(this.magnifyingGlassCloseButton_Click);
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(65, 133);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(53, 17);
-            this.label6.TabIndex = 10;
-            this.label6.Text = "oppure";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(17, 116);
+            this.label5.Location = new System.Drawing.Point(19, 173);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(144, 17);
+            this.label5.Size = new System.Drawing.Size(137, 17);
             this.label5.TabIndex = 9;
-            this.label5.Text = "Premi \'Esc\' per uscire";
+            this.label5.Text = "Clicca per spegnerla";
             // 
             // magnifyingGlassButton
             // 
-            this.magnifyingGlassButton.Location = new System.Drawing.Point(29, 36);
+            this.magnifyingGlassButton.Image = ((System.Drawing.Image)(resources.GetObject("magnifyingGlassButton.Image")));
+            this.magnifyingGlassButton.Location = new System.Drawing.Point(53, 80);
             this.magnifyingGlassButton.Name = "magnifyingGlassButton";
-            this.magnifyingGlassButton.Size = new System.Drawing.Size(118, 70);
+            this.magnifyingGlassButton.Size = new System.Drawing.Size(65, 70);
             this.magnifyingGlassButton.TabIndex = 8;
-            this.magnifyingGlassButton.Text = "Attiva";
             this.magnifyingGlassButton.UseVisualStyleBackColor = true;
             this.magnifyingGlassButton.Click += new System.EventHandler(this.magnifyingGlassButton_Click);
             // 
@@ -180,7 +206,7 @@ namespace ModelessForm_ExternalEvent
             // 
             this.groupBox3.Controls.Add(this.pictureBoxHigh);
             this.groupBox3.Controls.Add(this.label4);
-            this.groupBox3.Location = new System.Drawing.Point(413, 62);
+            this.groupBox3.Location = new System.Drawing.Point(503, 62);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(385, 419);
             this.groupBox3.TabIndex = 20;
@@ -193,6 +219,8 @@ namespace ModelessForm_ExternalEvent
             this.pictureBoxHigh.Size = new System.Drawing.Size(372, 372);
             this.pictureBoxHigh.TabIndex = 8;
             this.pictureBoxHigh.TabStop = false;
+            this.pictureBoxHigh.MouseEnter += new System.EventHandler(this.pictureBoxHigh_GlassButton_Enter);
+            this.pictureBoxHigh.MouseLeave += new System.EventHandler(this.pictureBoxHigh_GlassButton_Leave);
             // 
             // label4
             // 
@@ -207,7 +235,7 @@ namespace ModelessForm_ExternalEvent
             // 
             this.groupBox2.Controls.Add(this.pictureBoxCentral);
             this.groupBox2.Controls.Add(this.label1);
-            this.groupBox2.Location = new System.Drawing.Point(9, 62);
+            this.groupBox2.Location = new System.Drawing.Point(99, 62);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(385, 419);
             this.groupBox2.TabIndex = 19;
@@ -220,6 +248,8 @@ namespace ModelessForm_ExternalEvent
             this.pictureBoxCentral.Size = new System.Drawing.Size(372, 372);
             this.pictureBoxCentral.TabIndex = 5;
             this.pictureBoxCentral.TabStop = false;
+            this.pictureBoxCentral.MouseEnter += new System.EventHandler(this.pictureBoxCentral_GlassButton_Enter);
+            this.pictureBoxCentral.MouseLeave += new System.EventHandler(this.pictureBoxCentral_GlassButton_Leave);
             // 
             // label1
             // 
@@ -230,49 +260,11 @@ namespace ModelessForm_ExternalEvent
             this.label1.TabIndex = 14;
             this.label1.Text = "Exterior View";
             // 
-            // imagesFolderGroupBox
-            // 
-            this.imagesFolderGroupBox.Controls.Add(this.imagesLabel);
-            this.imagesFolderGroupBox.Controls.Add(this.imagesButton);
-            this.imagesFolderGroupBox.Controls.Add(this.imagesTextBox);
-            this.imagesFolderGroupBox.Location = new System.Drawing.Point(804, 62);
-            this.imagesFolderGroupBox.Name = "imagesFolderGroupBox";
-            this.imagesFolderGroupBox.Size = new System.Drawing.Size(177, 179);
-            this.imagesFolderGroupBox.TabIndex = 13;
-            this.imagesFolderGroupBox.TabStop = false;
-            this.imagesFolderGroupBox.Text = "Cartella Immagini";
-            // 
-            // imagesLabel
-            // 
-            this.imagesLabel.AutoSize = true;
-            this.imagesLabel.Location = new System.Drawing.Point(29, 36);
-            this.imagesLabel.Name = "imagesLabel";
-            this.imagesLabel.Size = new System.Drawing.Size(119, 17);
-            this.imagesLabel.TabIndex = 12;
-            this.imagesLabel.Text = "Percorso cartella:";
-            // 
-            // imagesButton
-            // 
-            this.imagesButton.Location = new System.Drawing.Point(30, 120);
-            this.imagesButton.Name = "imagesButton";
-            this.imagesButton.Size = new System.Drawing.Size(118, 25);
-            this.imagesButton.TabIndex = 8;
-            this.imagesButton.Text = "Carica Immagini";
-            this.imagesButton.UseVisualStyleBackColor = true;
-            this.imagesButton.Click += new System.EventHandler(this.imagesButton_Click);
-            // 
-            // imagesTextBox
-            // 
-            this.imagesTextBox.Location = new System.Drawing.Point(19, 66);
-            this.imagesTextBox.Name = "imagesTextBox";
-            this.imagesTextBox.Size = new System.Drawing.Size(140, 22);
-            this.imagesTextBox.TabIndex = 11;
-            // 
             // groupBox4
             // 
             this.groupBox4.Controls.Add(this.pictureBoxDx);
             this.groupBox4.Controls.Add(this.label3);
-            this.groupBox4.Location = new System.Drawing.Point(413, 487);
+            this.groupBox4.Location = new System.Drawing.Point(590, 487);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(385, 419);
             this.groupBox4.TabIndex = 20;
@@ -285,6 +277,8 @@ namespace ModelessForm_ExternalEvent
             this.pictureBoxDx.Size = new System.Drawing.Size(372, 372);
             this.pictureBoxDx.TabIndex = 7;
             this.pictureBoxDx.TabStop = false;
+            this.pictureBoxDx.MouseEnter += new System.EventHandler(this.pictureBoxDx_GlassButton_Enter);
+            this.pictureBoxDx.MouseLeave += new System.EventHandler(this.pictureBoxDx_GlassButton_Leave);
             // 
             // label3
             // 
@@ -312,6 +306,8 @@ namespace ModelessForm_ExternalEvent
             this.pictureBoxSx.Size = new System.Drawing.Size(372, 372);
             this.pictureBoxSx.TabIndex = 6;
             this.pictureBoxSx.TabStop = false;
+            this.pictureBoxSx.MouseEnter += new System.EventHandler(this.pictureBoxSx_GlassButton_Enter);
+            this.pictureBoxSx.MouseLeave += new System.EventHandler(this.pictureBoxSx_GlassButton_Leave);
             // 
             // label2
             // 
@@ -324,7 +320,7 @@ namespace ModelessForm_ExternalEvent
             // 
             // nameFamilyTextBox
             // 
-            this.nameFamilyTextBox.Location = new System.Drawing.Point(413, 33);
+            this.nameFamilyTextBox.Location = new System.Drawing.Point(495, 34);
             this.nameFamilyTextBox.Name = "nameFamilyTextBox";
             this.nameFamilyTextBox.Size = new System.Drawing.Size(246, 22);
             this.nameFamilyTextBox.TabIndex = 10;
@@ -332,17 +328,26 @@ namespace ModelessForm_ExternalEvent
             // nameFamilyLabel
             // 
             this.nameFamilyLabel.AutoSize = true;
-            this.nameFamilyLabel.Location = new System.Drawing.Point(184, 36);
+            this.nameFamilyLabel.Location = new System.Drawing.Point(295, 36);
             this.nameFamilyLabel.Name = "nameFamilyLabel";
-            this.nameFamilyLabel.Size = new System.Drawing.Size(215, 17);
+            this.nameFamilyLabel.Size = new System.Drawing.Size(191, 17);
             this.nameFamilyLabel.TabIndex = 10;
-            this.nameFamilyLabel.Text = "Nome della Famiglia selezionata:";
+            this.nameFamilyLabel.Text = "Famiglia di Revit selezionata:";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(568, 21);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(176, 17);
+            this.label8.TabIndex = 22;
+            this.label8.Text = "Unit Identifier dell\'oggetto: ";
             // 
             // captureButton
             // 
             this.captureButton.Location = new System.Drawing.Point(14, 21);
             this.captureButton.Name = "captureButton";
-            this.captureButton.Size = new System.Drawing.Size(972, 43);
+            this.captureButton.Size = new System.Drawing.Size(490, 43);
             this.captureButton.TabIndex = 0;
             this.captureButton.Text = "Cattura un oggetto";
             this.captureButton.UseVisualStyleBackColor = true;
@@ -354,7 +359,7 @@ namespace ModelessForm_ExternalEvent
             this.listBox1.ItemHeight = 16;
             this.listBox1.Location = new System.Drawing.Point(6, 32);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(164, 740);
+            this.listBox1.Size = new System.Drawing.Size(164, 820);
             this.listBox1.TabIndex = 2;
             // 
             // cleanButton
@@ -370,21 +375,24 @@ namespace ModelessForm_ExternalEvent
             // comboBox1
             // 
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(12, 21);
+            this.comboBox1.Location = new System.Drawing.Point(12, 27);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(262, 24);
+            this.comboBox1.Size = new System.Drawing.Size(290, 24);
             this.comboBox1.TabIndex = 4;
-            this.comboBox1.Text = "<- Scegli una pagina del foglio Excel ->";
+            this.comboBox1.Text = "<- Scegli una pagina del documento Excel ->";
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.ComboBox1_SelectedIndexChanged);
             // 
             // functionGroupBox2
             // 
+            this.functionGroupBox2.Controls.Add(this.settingsGroupBox);
             this.functionGroupBox2.Controls.Add(this.functionGroupBoxListBox);
+            this.functionGroupBox2.Controls.Add(this.groupBox5);
             this.functionGroupBox2.Controls.Add(this.functionGroupBox4);
             this.functionGroupBox2.Controls.Add(this.dataGridView1);
-            this.functionGroupBox2.Location = new System.Drawing.Point(1010, 80);
+            this.functionGroupBox2.Controls.Add(this.functionGroupBox3);
+            this.functionGroupBox2.Location = new System.Drawing.Point(1010, 13);
             this.functionGroupBox2.Name = "functionGroupBox2";
-            this.functionGroupBox2.Size = new System.Drawing.Size(883, 935);
+            this.functionGroupBox2.Size = new System.Drawing.Size(883, 1002);
             this.functionGroupBox2.TabIndex = 1;
             this.functionGroupBox2.TabStop = false;
             this.functionGroupBox2.Text = "Parametri della Distinta";
@@ -394,16 +402,16 @@ namespace ModelessForm_ExternalEvent
             this.functionGroupBoxListBox.Controls.Add(this.listBox1);
             this.functionGroupBoxListBox.Location = new System.Drawing.Point(702, 14);
             this.functionGroupBoxListBox.Name = "functionGroupBoxListBox";
-            this.functionGroupBoxListBox.Size = new System.Drawing.Size(175, 791);
+            this.functionGroupBoxListBox.Size = new System.Drawing.Size(175, 867);
             this.functionGroupBoxListBox.TabIndex = 7;
             this.functionGroupBoxListBox.TabStop = false;
-            this.functionGroupBoxListBox.Text = "Dimensioni della Cell";
+            this.functionGroupBoxListBox.Text = "Dimensioni dell\'oggetto";
             // 
             // functionGroupBox4
             // 
             this.functionGroupBox4.Controls.Add(this.cleanButton);
             this.functionGroupBox4.Controls.Add(this.exitButton);
-            this.functionGroupBox4.Location = new System.Drawing.Point(702, 809);
+            this.functionGroupBox4.Location = new System.Drawing.Point(702, 887);
             this.functionGroupBox4.Name = "functionGroupBox4";
             this.functionGroupBox4.Size = new System.Drawing.Size(175, 109);
             this.functionGroupBox4.TabIndex = 6;
@@ -424,14 +432,14 @@ namespace ModelessForm_ExternalEvent
             // 
             this.dataGridView1.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCellsExceptHeaders;
             this.dataGridView1.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.Navy;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.Navy;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.GridColor = System.Drawing.Color.Black;
             this.dataGridView1.Location = new System.Drawing.Point(13, 21);
@@ -446,102 +454,89 @@ namespace ModelessForm_ExternalEvent
             // 
             // functionGroupBox3
             // 
-            this.functionGroupBox3.Controls.Add(this.label7);
-            this.functionGroupBox3.Controls.Add(this.openExcelDistintaButton);
-            this.functionGroupBox3.Controls.Add(this.saveExcelDistintabutton);
-            this.functionGroupBox3.Controls.Add(this.excelDistintaButton);
             this.functionGroupBox3.Controls.Add(this.comboBox1);
-            this.functionGroupBox3.Location = new System.Drawing.Point(1010, 13);
+            this.functionGroupBox3.Location = new System.Drawing.Point(13, 930);
             this.functionGroupBox3.Name = "functionGroupBox3";
-            this.functionGroupBox3.Size = new System.Drawing.Size(726, 57);
+            this.functionGroupBox3.Size = new System.Drawing.Size(318, 66);
             this.functionGroupBox3.TabIndex = 2;
             this.functionGroupBox3.TabStop = false;
             this.functionGroupBox3.Text = "Mostra Distinta";
             // 
             // openExcelDistintaButton
             // 
-            this.openExcelDistintaButton.Location = new System.Drawing.Point(635, 20);
+            this.openExcelDistintaButton.Image = ((System.Drawing.Image)(resources.GetObject("openExcelDistintaButton.Image")));
+            this.openExcelDistintaButton.Location = new System.Drawing.Point(140, 21);
             this.openExcelDistintaButton.Name = "openExcelDistintaButton";
-            this.openExcelDistintaButton.Size = new System.Drawing.Size(77, 25);
+            this.openExcelDistintaButton.Size = new System.Drawing.Size(38, 39);
             this.openExcelDistintaButton.TabIndex = 9;
-            this.openExcelDistintaButton.Text = "Apri";
             this.openExcelDistintaButton.UseVisualStyleBackColor = true;
             this.openExcelDistintaButton.Click += new System.EventHandler(this.openExcelDistintaButton_Click);
             // 
             // saveExcelDistintabutton
             // 
-            this.saveExcelDistintabutton.Location = new System.Drawing.Point(552, 20);
+            this.saveExcelDistintabutton.Location = new System.Drawing.Point(38, 21);
             this.saveExcelDistintabutton.Name = "saveExcelDistintabutton";
-            this.saveExcelDistintabutton.Size = new System.Drawing.Size(77, 25);
+            this.saveExcelDistintabutton.Size = new System.Drawing.Size(77, 39);
             this.saveExcelDistintabutton.TabIndex = 8;
             this.saveExcelDistintabutton.Text = "Salva";
             this.saveExcelDistintabutton.UseVisualStyleBackColor = true;
             this.saveExcelDistintabutton.Click += new System.EventHandler(this.saveExcelDistintabutton_Click);
-            // 
-            // excelDistintaButton
-            // 
-            this.excelDistintaButton.Location = new System.Drawing.Point(281, 20);
-            this.excelDistintaButton.Name = "excelDistintaButton";
-            this.excelDistintaButton.Size = new System.Drawing.Size(81, 25);
-            this.excelDistintaButton.TabIndex = 7;
-            this.excelDistintaButton.Text = "Sfoglia";
-            this.excelDistintaButton.UseVisualStyleBackColor = true;
-            this.excelDistintaButton.Click += new System.EventHandler(this.excelDistintaButton_Click);
             // 
             // uploadExcelOpenFileDialog
             // 
             this.uploadExcelOpenFileDialog.DefaultExt = "xlsx";
             this.uploadExcelOpenFileDialog.FileName = "AbacoCells";
             this.uploadExcelOpenFileDialog.Filter = "File Excel (*.xlsx,*.xlsm)|*.xlsx;*.xlsm";
-            this.uploadExcelOpenFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Bold Software\DataCell";
+            this.uploadExcelOpenFileDialog.InitialDirectory = "C:\\Users\\Bold\\Documents\\Bold Software\\DataCell";
             // 
             // folderBrowserDialog1
             // 
             this.folderBrowserDialog1.Description = "Scegli la Directory da cui vuoi prendere le immagini.";
-            this.folderBrowserDialog1.SelectedPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Bold Software\DataCell\Images";
+            this.folderBrowserDialog1.SelectedPath = "C:\\Users\\Bold\\Documents\\Bold Software\\DataCell\\Images";
             // 
             // settingsGroupBox
             // 
             this.settingsGroupBox.Controls.Add(this.settingsButton);
-            this.settingsGroupBox.Location = new System.Drawing.Point(1742, 13);
+            this.settingsGroupBox.Location = new System.Drawing.Point(586, 930);
             this.settingsGroupBox.Name = "settingsGroupBox";
-            this.settingsGroupBox.Size = new System.Drawing.Size(140, 57);
+            this.settingsGroupBox.Size = new System.Drawing.Size(100, 66);
             this.settingsGroupBox.TabIndex = 3;
             this.settingsGroupBox.TabStop = false;
             this.settingsGroupBox.Text = "Impostazioni";
             // 
             // settingsButton
             // 
-            this.settingsButton.Location = new System.Drawing.Point(31, 20);
+            this.settingsButton.Image = ((System.Drawing.Image)(resources.GetObject("settingsButton.Image")));
+            this.settingsButton.Location = new System.Drawing.Point(33, 24);
             this.settingsButton.Name = "settingsButton";
-            this.settingsButton.Size = new System.Drawing.Size(77, 30);
+            this.settingsButton.Size = new System.Drawing.Size(33, 30);
             this.settingsButton.TabIndex = 0;
-            this.settingsButton.Text = "Modifica";
             this.settingsButton.UseVisualStyleBackColor = true;
             this.settingsButton.Click += new System.EventHandler(this.settingsButton_Click);
             // 
-            // label7
+            // groupBox5
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(374, 24);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(178, 17);
-            this.label7.TabIndex = 10;
-            this.label7.Text = "Operazioni sul foglio Excel:";
+            this.groupBox5.Controls.Add(this.saveExcelDistintabutton);
+            this.groupBox5.Controls.Add(this.openExcelDistintaButton);
+            this.groupBox5.Location = new System.Drawing.Point(346, 930);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(224, 66);
+            this.groupBox5.TabIndex = 8;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Operazioni sul documento Excel";
             // 
             // ModelessForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1905, 1027);
-            this.Controls.Add(this.settingsGroupBox);
             this.Controls.Add(this.functionGroupBox2);
             this.Controls.Add(this.functionGroupBox1);
-            this.Controls.Add(this.functionGroupBox3);
             this.Name = "ModelessForm";
             this.Text = "BOLD DataCell";
             this.Load += new System.EventHandler(this.ModelessForm_Load);
             this.functionGroupBox1.ResumeLayout(false);
+            this.functionGroupBox1.PerformLayout();
             this.imageFamilyGroupBox.ResumeLayout(false);
             this.imageFamilyGroupBox.PerformLayout();
             this.magnifyingGlassGroupBox.ResumeLayout(false);
@@ -552,8 +547,6 @@ namespace ModelessForm_ExternalEvent
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCentral)).EndInit();
-            this.imagesFolderGroupBox.ResumeLayout(false);
-            this.imagesFolderGroupBox.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxDx)).EndInit();
@@ -565,8 +558,8 @@ namespace ModelessForm_ExternalEvent
             this.functionGroupBox4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.functionGroupBox3.ResumeLayout(false);
-            this.functionGroupBox3.PerformLayout();
             this.settingsGroupBox.ResumeLayout(false);
+            this.groupBox5.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -582,7 +575,6 @@ namespace ModelessForm_ExternalEvent
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.GroupBox functionGroupBox3;
-        private System.Windows.Forms.Button excelDistintaButton;
         private System.Windows.Forms.GroupBox functionGroupBox4;
         private System.Windows.Forms.PictureBox pictureBoxHigh;
         private System.Windows.Forms.PictureBox pictureBoxDx;
@@ -593,11 +585,7 @@ namespace ModelessForm_ExternalEvent
         private TextBox nameFamilyTextBox;
         private Label nameFamilyLabel;
         private OpenFileDialog uploadExcelOpenFileDialog;
-        private TextBox imagesTextBox;
-        private Label imagesLabel;
-        private Button imagesButton;
         private FolderBrowserDialog folderBrowserDialog1;
-        private GroupBox imagesFolderGroupBox;
         private GroupBox groupBox3;
         private Label label4;
         private GroupBox groupBox2;
@@ -610,11 +598,15 @@ namespace ModelessForm_ExternalEvent
         private Label label5;
         private Button magnifyingGlassButton;
         private Button magnifyingGlassCloseButton;
-        private Label label6;
         private Button openExcelDistintaButton;
         private Button saveExcelDistintabutton;
-        private Label label7;
         private GroupBox settingsGroupBox;
         private Button settingsButton;
+        private TextBox textBox2;
+        private Label label9;
+        private TextBox textBox1;
+        private Label label8;
+        private Label label10;
+        private GroupBox groupBox5;
     }
 }

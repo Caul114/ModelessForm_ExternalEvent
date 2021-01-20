@@ -181,10 +181,8 @@ namespace ModelessForm_ExternalEvent
                                 // Chiama il metodo che seleziona le Dimensioni dell'oggetto selezionato e riempie la ListBox
                                 _dimensionsList = GetParameters(uiapp, pickedObject);
                                 modelessForm.ShowListBox1();
-                                // Chiama il metodo che seleziona la Distinta collegata all'oggetto selezionato
-                                // e la restituisce nel DataGridView. Se non c'è, cancella tutto.
-                                path = modelessForm.GetExcelDirectoryPath() + "\\AbacoCells.xlsx";
-                                modelessForm.GetDataFromExcel(_valueDistinta, path);
+                                // Chiama il metodo che seleziona la Distinta corretta nella ComboBox e riempie la DataGrid
+                                modelessForm.SetComboBox(_valueDistinta);                                
                             }
                             else
                             {
@@ -251,7 +249,7 @@ namespace ModelessForm_ExternalEvent
             if (ele.LookupParameter("BOLD_Distinta") != null)
             {
                 Parameter pardistinta = ele.LookupParameter("BOLD_Distinta");
-                return pardistinta.AsString();
+                return pardistinta.AsString();               
             }
             else
             {

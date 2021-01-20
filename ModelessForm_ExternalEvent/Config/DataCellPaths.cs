@@ -21,8 +21,6 @@ namespace ModelessForm_ExternalEvent.Config
     public partial class DataCellPaths : Form
     {
         #region Private data members
-        // Dichiaro una instanza di dataCell
-        private ModelessForm modelessForm;
 
         // Dichiaro una instanza di ConfigPanel
         private ConfigPanel configPanel = new ConfigPanel();

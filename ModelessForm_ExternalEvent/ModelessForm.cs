@@ -74,11 +74,17 @@ namespace ModelessForm_ExternalEvent
         // Valore della Distinta presente nella DataGridView
         private string valueDistintaActive;
 
+        // Valore di default della ComboBox Distinta
+        private string defaultTextComboBox = "<- Scegli una pagina del documento Excel ->";
+
         // Valore booleano di errore
         bool error = false;
 
         // Valore booleano per impostare le nuove immagini
         bool newImages = false;
+
+        // Valore booleano per usare o meno la Lente d'ingrandimento
+        private bool _activeMagnifyngGlass = false;
 
         #region Class public property
         /// <summary>
@@ -151,7 +157,6 @@ namespace ModelessForm_ExternalEvent
                 // Inserisce le immagini selezionate
                 folderImageActual = folderImageDefault;
                 SetModifyPicture();
-                imagesTextBox.Text = folderImageDefault;
 
                 // Imposta l'origine dati della Combobox e la riempie
                 List<string> dataBuffer = importData.XlSheets(pathExcel);
@@ -385,7 +390,7 @@ namespace ModelessForm_ExternalEvent
             dataGridView1.Refresh();
             listBox1.DataSource = null;
             listBox1.Items.Clear();
-            comboBox1.Text = "<- Scegli una pagina del foglio Excel ->";
+            comboBox1.Text = defaultTextComboBox;
             error = true;
             SetModifyPicture();
         }
@@ -403,7 +408,7 @@ namespace ModelessForm_ExternalEvent
             dataGridView1.Refresh();
             listBox1.DataSource = null;
             listBox1.Items.Clear();
-            comboBox1.Text = "<- Scegli una pagina del foglio Excel ->";
+            comboBox1.Text = defaultTextComboBox;
             error = true;
             SetModifyPicture();
         }
@@ -456,7 +461,7 @@ namespace ModelessForm_ExternalEvent
 
                     // Cancella il contenuto della ComboBox e della DataGrid
                     comboBox1.Items.Clear();
-                    comboBox1.Text = "<- Scegli una pagina del foglio Excel ->";
+                    comboBox1.Text = defaultTextComboBox;
                     dataGridView1.DataSource = null;
                     dataGridView1.Rows.Clear();
                     dataGridView1.Columns.Clear();
@@ -491,6 +496,14 @@ namespace ModelessForm_ExternalEvent
             string selectedItem = (string)comboBox1.SelectedItem;
             valueDistintaActive = selectedItem;
 
+            // Chiama il metodo che importa la pagina scelta del file Excel
+            GetDataFromExcel(selectedItem, pathExcel);
+        }
+
+        public void SetComboBox(string selectedItem)
+        {
+            // Imposta la stringa nella ComboBox
+            comboBox1.SelectedItem = selectedItem;
             // Chiama il metodo che importa la pagina scelta del file Excel
             GetDataFromExcel(selectedItem, pathExcel);
         }
@@ -789,7 +802,6 @@ namespace ModelessForm_ExternalEvent
                 // Imposta il nuovo Path
                 folderName = folderBrowserDialog1.SelectedPath;
                 folderImageActual = folderName;
-                imagesTextBox.Text = folderName;
 
                 // Carica le nuove immagini
                 newImages = true;
@@ -921,7 +933,6 @@ namespace ModelessForm_ExternalEvent
                 if(MyImage1 != null)
                 {
                     folderImageActual = folderImageDefault;
-                    imagesTextBox.Text = folderImageDefault;
 
                     MyImage1 = new Bitmap(folderImageActual + "\\_F.png");
                     nameFamilyTextBox.Text = null;
@@ -1023,10 +1034,11 @@ namespace ModelessForm_ExternalEvent
         /// 
         private void magnifyingGlassButton_Click(object sender, EventArgs e)
         {
-            magnifyingGlass = new MagnifyingGlass();
-            magnifyingGlass.Show();
-            this.SendToBack();
-            magnifyingGlass.TopMost = true;
+            _activeMagnifyngGlass = true;
+            //magnifyingGlass = new MagnifyingGlass();
+            //magnifyingGlass.Show();
+            //this.SendToBack();
+            //magnifyingGlass.TopMost = true;
         }
 
         /// <summary>
@@ -1035,12 +1047,129 @@ namespace ModelessForm_ExternalEvent
         /// 
         private void magnifyingGlassCloseButton_Click(object sender, EventArgs e)
         {
-            if (magnifyingGlass != null && magnifyingGlass.Visible)
+            _activeMagnifyngGlass = false;
+            //if (magnifyingGlass != null && magnifyingGlass.Visible)
+            //{
+            //    this.BringToFront();
+            //    magnifyingGlass.Close();
+            //}
+        }
+
+        /// <summary>
+        ///   Attiva la Form della lente d'ingrandimento.
+        /// </summary>
+        /// 
+        private void pictureBoxCentral_GlassButton_Enter(object sender, EventArgs e)
+        {
+            if (_activeMagnifyngGlass == true)
+            {
+                magnifyingGlass = new MagnifyingGlass();
+                magnifyingGlass.Show();
+                this.SendToBack();
+                magnifyingGlass.TopMost = true;
+            }
+        }
+
+        /// <summary>
+        ///   Forza la chiusura della Form della lente d'ingrandimento.
+        /// </summary>
+        /// 
+        private void pictureBoxCentral_GlassButton_Leave(object sender, EventArgs e)
+        {
+            if (_activeMagnifyngGlass == true && magnifyingGlass != null && magnifyingGlass.Visible)
             {
                 this.BringToFront();
                 magnifyingGlass.Close();
             }
         }
+
+        /// <summary>
+        ///   Attiva la Form della lente d'ingrandimento.
+        /// </summary>
+        /// 
+        private void pictureBoxHigh_GlassButton_Enter(object sender, EventArgs e)
+        {
+            if (_activeMagnifyngGlass == true)
+            {
+                magnifyingGlass = new MagnifyingGlass();
+                magnifyingGlass.Show();
+                this.SendToBack();
+                magnifyingGlass.TopMost = true;
+            }
+        }
+
+        /// <summary>
+        ///   Forza la chiusura della Form della lente d'ingrandimento.
+        /// </summary>
+        /// 
+        private void pictureBoxHigh_GlassButton_Leave(object sender, EventArgs e)
+        {
+            if (_activeMagnifyngGlass == true && magnifyingGlass != null && magnifyingGlass.Visible)
+            {
+                this.BringToFront();
+                magnifyingGlass.Close();
+            }
+        }
+
+        /// <summary>
+        ///   Attiva la Form della lente d'ingrandimento.
+        /// </summary>
+        /// 
+        private void pictureBoxSx_GlassButton_Enter(object sender, EventArgs e)
+        {
+            if(_activeMagnifyngGlass == true)
+            {
+                magnifyingGlass = new MagnifyingGlass();
+                magnifyingGlass.Show();
+                this.SendToBack();
+                magnifyingGlass.TopMost = true;
+            }
+        }
+
+        /// <summary>
+        ///   Forza la chiusura della Form della lente d'ingrandimento.
+        /// </summary>
+        /// 
+        private void pictureBoxSx_GlassButton_Leave(object sender, EventArgs e)
+        {
+            if (_activeMagnifyngGlass == true && magnifyingGlass != null && magnifyingGlass.Visible)
+            {
+                this.BringToFront();
+                magnifyingGlass.Close();
+            }
+        }
+
+        /// <summary>
+        ///   Attiva la Form della lente d'ingrandimento.
+        /// </summary>
+        /// 
+        private void pictureBoxDx_GlassButton_Enter(object sender, EventArgs e)
+        {
+            if (_activeMagnifyngGlass == true)
+            {
+                magnifyingGlass = new MagnifyingGlass();
+                magnifyingGlass.Show();
+                this.SendToBack();
+                magnifyingGlass.TopMost = true;
+            }
+        }
+
+        /// <summary>
+        ///   Forza la chiusura della Form della lente d'ingrandimento.
+        /// </summary>
+        /// 
+        private void pictureBoxDx_GlassButton_Leave(object sender, EventArgs e)
+        {
+            if (_activeMagnifyngGlass == true && magnifyingGlass != null && magnifyingGlass.Visible)
+            {
+                this.BringToFront();
+                magnifyingGlass.Close();
+            }
+        }
+
+
+
+
 
         /// <summary>
         ///   Exit - chiude la finestra di dialogo
