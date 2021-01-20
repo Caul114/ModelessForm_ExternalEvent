@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
 
@@ -16,6 +17,7 @@ namespace ModelessForm_ExternalEvent.DataFromExcel
         #region Private data members
         private List<string> _excelSheets = new List<string>();       // Proprietà privata di una lista di stringhe
         #endregion
+
 
         public Tuple<Excel.Application, Excel.Workbook> ExcelOpen(string xlPercorso)
         {
@@ -41,6 +43,15 @@ namespace ModelessForm_ExternalEvent.DataFromExcel
                 {
                     _excelSheets.Add(xlws.Name);
                 }
+
+                // Rilascia tutti collegamenti ai File Excel
+                Marshal.ReleaseComObject(xlApp.Worksheets);
+                Marshal.ReleaseComObject(xlwb);
+                Marshal.ReleaseComObject(xlApp);
+
+                // Forza il Garbage Collector a ripulire
+                GC.Collect();
+
                 return _excelSheets;
             }
             else

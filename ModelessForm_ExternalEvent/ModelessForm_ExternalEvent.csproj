@@ -16,8 +16,8 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ModelessForm_ExternalEvent</RootNamespace>
-    <AssemblyName>ModelessForm_ExternalEvent</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <AssemblyName>DataCell</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -29,7 +29,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <StartAction>Program</StartAction>
-    <StartProgram>$(ProgramW6432)\Autodesk\Revit 2019\Revit.exe</StartProgram>
+    <StartProgram>$(ProgramW6432)\Autodesk\Revit 2021\Revit.exe</StartProgram>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -39,7 +39,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <StartAction>Program</StartAction>
-    <StartProgram>$(ProgramW6432)\Autodesk\Revit 2019\Revit.exe</StartProgram>
+    <StartProgram>$(ProgramW6432)\Autodesk\Revit 2021\Revit.exe</StartProgram>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -70,13 +70,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="RevitAPI">
-      <HintPath>$(ProgramW6432)\Autodesk\Revit 2019\RevitAPI.dll</HintPath>
+      <HintPath>$(ProgramW6432)\Autodesk\Revit 2021\RevitAPI.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="RevitAPIUI">
-      <HintPath>$(ProgramW6432)\Autodesk\Revit 2019\RevitAPIUI.dll</HintPath>
+      <HintPath>$(ProgramW6432)\Autodesk\Revit 2021\RevitAPIUI.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -89,6 +92,21 @@
   <ItemGroup>
     <Compile Include="App.cs" />
     <Compile Include="Command.cs" />
+    <Compile Include="CommandConfig.cs" />
+    <Compile Include="Config\ConfigPanel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Config\ConfigPanel.Designer.cs">
+      <DependentUpon>ConfigPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Config\Data.cs" />
+    <Compile Include="Config\DataCellPaths.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Config\DataCellPaths.Designer.cs">
+      <DependentUpon>DataCellPaths.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Config\Json.cs" />
     <Compile Include="DataFromExcel\ImportData.cs" />
     <Compile Include="MagnifyingGlass.cs">
       <SubType>Form</SubType>
@@ -108,7 +126,7 @@
     <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ModelessForm_ExternalEvent.addin">
+    <Content Include="DataCell.addin">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\code-small.png" />
@@ -117,6 +135,12 @@
     <Content Include="revitIcon.ico" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Config\ConfigPanel.resx">
+      <DependentUpon>ConfigPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Config\DataCellPaths.resx">
+      <DependentUpon>DataCellPaths.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MagnifyingGlass.resx">
       <DependentUpon>MagnifyingGlass.cs</DependentUpon>
     </EmbeddedResource>
@@ -153,6 +177,9 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy "$(TargetDir)"."" "$(ProgramData)\Autodesk\Revit\Addins\2021\"
@@ -167,7 +194,7 @@
   </Target>
   -->
   <Target Name="AfterClean">
-    <Delete Files="$(AppData)\Autodesk\REVIT\Addins\2019\ModelessForm_ExternalEvent.addin" />
-    <Delete Files="$(AppData)\Autodesk\REVIT\Addins\2019\ModelessForm_ExternalEvent.dll" />
+    <Delete Files="$(AppData)\Autodesk\REVIT\Addins\2021\DataCell.addin" />
+    <Delete Files="$(AppData)\Autodesk\REVIT\Addins\2021\DataCell.dll" />
   </Target>
 </Project>

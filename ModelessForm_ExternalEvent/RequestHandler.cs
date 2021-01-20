@@ -49,15 +49,11 @@ namespace ModelessForm_ExternalEvent
         // Il valore di BOLD_Distinta
         private string _valueDistinta;
 
-        // Il valore selezionato nella ComboBox
-        private string _valueSelectedComboBox;
-
         // Il tipo della famiglia in formato stringa
         private string _familyType;
 
         // Il valore attivo nella pagina
-        private string _valueActive;
-        int count = 0;
+        private int count = 0;
 
         // La lista di stringhe che restituirà i valori da inserire in ListBox
         private ArrayList _dimensionsList;

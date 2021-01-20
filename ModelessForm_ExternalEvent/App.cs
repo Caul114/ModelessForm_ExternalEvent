@@ -15,18 +15,39 @@ using System.Windows.Media.Imaging;
 
 namespace ModelessForm_ExternalEvent
 {
+    /// <summary>
+    /// Implementa l'interfaccia del componente aggiuntivo Revit IExternalApplication
+    /// </summary>
+    /// 
     public class App : IExternalApplication
-    {
-        /// <summary>
-        /// Implementa l'interfaccia del componente aggiuntivo Revit IExternalApplication
-        /// </summary>
-        /// 
-        
+    {        
         // Instanza della classe 
         internal static App thisApp = null;
         
         // Instanza della finestra di dialogo non modale
         private ModelessForm m_MyForm;
+
+        // Creo un gestore privato
+        private RequestHandler _handler;
+
+        // Creo un evento privato
+        private ExternalEvent _exEvent;
+
+        /// <summary>
+        /// Proprietà pubblica per accedere al valore della richiesta corrente
+        /// </summary>
+        public RequestHandler GetHandler
+        {
+            get { return _handler; }
+        }
+
+        /// <summary>
+        /// Proprietà pubblica per accedere al valore della richiesta corrente
+        /// </summary>
+        public ExternalEvent GetEvent
+        {
+            get { return _exEvent; }
+        }
 
         #region IExternalApplication Members
         /// <summary>
@@ -46,7 +67,7 @@ namespace ModelessForm_ExternalEvent
 
             // Creazione del Button da inserire nel Tab
             if(ribbonPanel.AddItem(
-                new PushButtonData("ModelessForm_ExternalEvent", "DataCell", thisAssemblyPath, "ModelessForm_ExternalEvent.Command"))
+                new PushButtonData("DataCell", "DataCell", thisAssemblyPath, "ModelessForm_ExternalEvent.Command"))
                 is PushButton button)
             {
                 // ToolTip mostrato
@@ -88,17 +109,17 @@ namespace ModelessForm_ExternalEvent
         {
             // If we do not have a dialog yet, create and show it
             if (m_MyForm == null || m_MyForm.IsDisposed)
-            {
-                
+            {                
                 // Un nuovo gestore per gestire l'invio delle richieste tramite la finestra di dialogo
-                RequestHandler handler = new RequestHandler();
+               
+                _handler = new RequestHandler();
 
                 // Evento esterno per la finestra di dialogo da utilizzare (per inviare richieste)
-                ExternalEvent exEvent = ExternalEvent.Create(handler);
+                _exEvent = ExternalEvent.Create(_handler);
 
                 // Diamo gli oggetti alla nuova finestra di dialogo. 
                 // La finestra di dialogo diventa il proprietario responsabile della loro disposizione, alla fine.
-                m_MyForm = new ModelessForm(exEvent, handler);
+                m_MyForm = new ModelessForm(_exEvent, _handler);
                 m_MyForm.Show();
                 m_MyForm.BringToFront();
             }
@@ -151,7 +172,7 @@ namespace ModelessForm_ExternalEvent
         public RibbonPanel RibbonPanel(UIControlledApplication uiapp)
         {
             // Nome del Tab
-            string tab = "Bold";
+            string tab = "BOLD";
 
             // Dichiara e inizializza un RibbonPanel vuoto
             RibbonPanel ribbonPanel = null;

@@ -1,5 +1,8 @@
 ﻿using Autodesk.Revit.UI;
+using ModelessForm_ExternalEvent.Config;
 using ModelessForm_ExternalEvent.DataFromExcel;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,6 +12,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,16 +39,33 @@ namespace ModelessForm_ExternalEvent
         private RequestHandler m_Handler;
         private ExternalEvent m_ExEvent;
 
-        // Dichiaro una seconda Form per la lente d'ingrandimento
+        // Instanza della classe 
+        internal static ModelessForm thisModForm = null;
+
+        // Dichiara la Form per il file di Configurazione
+        private ConfigPanel configPanel = new ConfigPanel();
+
+        // Dichiara la Form della lente d'ingrandimento
         private MagnifyingGlass magnifyingGlass;
 
         // Percorso del singolo file excel da importare di default
-        string pathExcel = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Bold Software\DataCell\AbacoCells.xlsx";
+        //private string _pathConfig = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\Bold Software\Config\Config.xlsx";
+        private string _pathFileTxt = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Bold Software\DataCell\ConfigPath.json";
+        private string _pathConfig = "";
+
+        private string pathExcel = "";
         ImportData importData = new ImportData();
 
+        // Percorso del file Excel utile per la Configurazione
+        private string _pathDataCell = "";
+
+        // Dati del foglio Excel utili per determinare la cella da prendere
+        private int _rawCommessa = 2;
+        private int _colDataCell = 3;
+
         // Percorso della cartella Immagini di default
-        string folderNameDefault = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Bold Software\DataCell\Images";
-        string folderNameActual = "";        
+        string folderImageDefault = "";
+        string folderImageActual = "";        
         string folderName = "";
 
         // Valore attivo nella ComboBox
@@ -59,6 +80,33 @@ namespace ModelessForm_ExternalEvent
         // Valore booleano per impostare le nuove immagini
         bool newImages = false;
 
+        #region Class public property
+        /// <summary>
+        /// Proprietà pubblica per accedere al valore della richiesta corrente
+        /// </summary>
+        public string PathFileTxt
+        {
+            get { return _pathFileTxt; }
+        }
+
+        /// <summary>
+        /// Proprietà pubblica per accedere al valore della richiesta corrente
+        /// </summary>
+        public RequestHandler GetHandler
+        {
+            get { return m_Handler; }
+        }
+
+        /// <summary>
+        /// Proprietà pubblica per accedere al valore della richiesta corrente
+        /// </summary>
+        public ExternalEvent GetEvent
+        {
+            get { return m_ExEvent; }
+        }
+
+        #endregion
+
         /// <summary>
         ///   Costruttore della finestra di dialogo
         /// </summary>
@@ -69,21 +117,52 @@ namespace ModelessForm_ExternalEvent
             m_Handler = handler;
             m_ExEvent = exEvent;
 
-            // Definico i colori di alcune forme
-            captureButton.BackColor = Color.DodgerBlue;
+            thisModForm = this;
 
-            // Inserisco le immagini selezionate
-            folderNameActual = folderNameDefault;
-            SetModifyPicture();
-            imagesTextBox.Text = folderNameDefault;
-
-            // Imposta l'origine dati della Combobox e la riempie
-            List<string> dataBuffer = importData.XlSheets(pathExcel);
-            if(dataBuffer != null)
+            // Verifica se il _pathConfig ed il _pathDataCell esisteono o meno
+            GetFileTxt();
+            if(_pathConfig.Length > 1)
             {
-                foreach (var sheet in dataBuffer)
+                GetDataCellPath();
+            }
+
+            // Prende il percorso dei file dal file Excel di Configurazione 
+            if (_pathConfig == "")
+            {
+                MessageBox.Show("Il file Excel di Configurazione non è stato caricato."
+                     + "\nSegui questa procedura per caricare il file di configurazione corretto.");
+                ShowConfigPanel();
+            } 
+            else if (_pathDataCell == "")
+            {
+                configPanel.ShowDataCellPaths();
+            }
+            else
+            {
+                // Ottiene il Path DataCell contenuto nel file di configurazione
+                GetSingleDataFromExcel(_pathConfig);
+
+                pathExcel = _pathDataCell + @"\AbacoCells.xlsm";
+                folderImageDefault = _pathDataCell + @"\Images";
+
+                // Definisce i colori di alcune forme
+                captureButton.BackColor = Color.DodgerBlue;
+
+                // Inserisce le immagini selezionate
+                folderImageActual = folderImageDefault;
+                SetModifyPicture();
+                imagesTextBox.Text = folderImageDefault;
+
+                // Imposta l'origine dati della Combobox e la riempie
+                List<string> dataBuffer = importData.XlSheets(pathExcel);
+                // Chiude tutti i processi Excel ancora attivi
+                KillExcel();
+                if (dataBuffer != null)
                 {
-                    comboBox1.Items.Add(sheet);
+                    foreach (var sheet in dataBuffer)
+                    {
+                        comboBox1.Items.Add(sheet);
+                    }
                 }
             }
         }
@@ -134,7 +213,7 @@ namespace ModelessForm_ExternalEvent
         ///
         private void MakeRequest(RequestId request)
         {
-            App.thisApp.DontShowFormTop();
+            ModelessForm_ExternalEvent.App.thisApp.DontShowFormTop();
             m_Handler.Request.Make(request);
             m_ExEvent.Raise();
             DozeOff();            
@@ -145,7 +224,7 @@ namespace ModelessForm_ExternalEvent
         ///   DozeOff -> disabilita tutti i controlli (tranne il pulsante Esci)
         /// </summary>
         /// 
-        private void DozeOff()
+        public void DozeOff()
         {
             EnableCommands(false);
         }
@@ -177,7 +256,91 @@ namespace ModelessForm_ExternalEvent
             return directoryName;
         }
 
-        
+        /// <summary>
+        ///   Verifica se il file .json di configurazione esiste o meno
+        /// </summary>
+        /// 
+        public void GetFileTxt()
+        {
+            if (File.Exists(_pathFileTxt))
+            {
+                // Salva il percorso in un file .txt
+                //_pathConfig = File.ReadAllText(_pathFileTxt);
+
+                // Legge il .json dal file
+                string jsonText = File.ReadAllText(_pathFileTxt);
+                if(jsonText != "")
+                {
+                    var traduction = JsonConvert.DeserializeObject<IList<Data>>(jsonText);
+                    Data singleItem = traduction.FirstOrDefault(x => x.Id == 1);
+                    _pathConfig = singleItem.Path;
+                }
+            }
+            else
+            {
+                _pathConfig = "";
+            }
+        }
+
+        /// <summary>
+        ///   Verifica se il percorso DataCell esiste o meno
+        /// </summary>
+        /// 
+        public void GetDataCellPath()
+        {
+            // read JSON from a file
+            string jsonText = File.ReadAllText(_pathFileTxt);
+            var traduction = JsonConvert.DeserializeObject<IList<Data>>(jsonText);
+
+            if (traduction.Count == 2)
+            {
+                Data singleItem = traduction.FirstOrDefault(x => x.Id == 2);
+                _pathDataCell = singleItem.Path;
+            }
+            else
+            {
+                _pathDataCell = "";
+            }
+        }
+
+        /// <summary>
+        ///   Metodo per attivare il ConfigPanel
+        /// </summary>
+        /// 
+        private void ShowConfigPanel()
+        {
+            // Inizializzo la Form della Configurazione
+            configPanel = new ConfigPanel();
+            configPanel.Show();
+            this.DozeOff();
+            this.SendToBack();
+            configPanel.TopMost = true;
+        }
+
+        /// <summary>
+        ///   Forza la chiusura del ConfigPanel
+        /// </summary>
+        /// 
+        public void CloseConfigPanel()
+        {
+            if (configPanel != null && configPanel.Visible)
+            {
+                // Chiudo la form ConfigPanel
+                this.BringToFront();
+                configPanel.Close();
+            }
+        }
+
+        /// <summary>
+        ///   Attiva la Form della modifica del Path di Configurazione
+        /// </summary>
+        /// 
+        private void settingsButton_Click(object sender, EventArgs e)
+        {
+            configPanel.ShowDataCellPaths();
+        }
+
+
         #region Capture Button
 
         /// <summary>
@@ -207,7 +370,293 @@ namespace ModelessForm_ExternalEvent
         }
         #endregion
 
-        #region Export Excel
+        #region Cancel
+
+        /// <summary>
+        ///   Metodo collegato al pulsante Cancella tutto, che ripulisce la DataGridView, i TextBox e la ListBox
+        /// </summary>
+        /// 
+        private void cleanButton_Click(object sender, EventArgs e)
+        {
+            nameFamilyTextBox.Text = null;
+            dataGridView1.DataSource = null;
+            dataGridView1.Rows.Clear();
+            dataGridView1.Columns.Clear();
+            dataGridView1.Refresh();
+            listBox1.DataSource = null;
+            listBox1.Items.Clear();
+            comboBox1.Text = "<- Scegli una pagina del foglio Excel ->";
+            error = true;
+            SetModifyPicture();
+        }
+
+        /// <summary>
+        ///   Metodo che ripulisce la DataGridView, i TextBox e la ListBox
+        /// </summary>
+        /// 
+        public void CleanAll()
+        {
+            nameFamilyTextBox.Text = null;
+            dataGridView1.DataSource = null;
+            dataGridView1.Rows.Clear();
+            dataGridView1.Columns.Clear();
+            dataGridView1.Refresh();
+            listBox1.DataSource = null;
+            listBox1.Items.Clear();
+            comboBox1.Text = "<- Scegli una pagina del foglio Excel ->";
+            error = true;
+            SetModifyPicture();
+        }
+
+        #endregion
+
+        #region ListBox
+
+        /// <summary>
+        ///   Metodo che riempie la ListBox
+        /// </summary>
+        /// 
+        public void ShowListBox1()
+        {
+            // Resetta il contenuto della ListBox
+            listBox1.DataSource = null;
+            listBox1.Items.Clear();
+            // Popola la ListBox con l'ArrayList delle dimensioni
+            ArrayList lista = m_Handler.GetList;
+            listBox1.DataSource = lista;
+            // Seleziona i titoli delle dimensioni con SelectionMode esteso
+            listBox1.SelectionMode = SelectionMode.MultiExtended;
+            int count = 0;
+            for (int i = 0; i < listBox1.Items.Count; i++)
+            {
+                if (i == count)
+                {
+                    listBox1.SetSelected(i, true);
+                    count += 3;
+                }
+            }
+        }
+
+        #endregion
+
+        #region ComboBox and Excel
+
+        /// <summary>
+        ///   Metodo che permette di scegliere il file Excel da caricare nella ComboBox
+        /// </summary>
+        ///
+        private void excelDistintaButton_Click(object sender, EventArgs e)
+        {
+            if (uploadExcelOpenFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    // Imposto il nuovo Path del documento da aprire
+                    pathExcel = uploadExcelOpenFileDialog.FileName;
+
+                    // Cancella il contenuto della ComboBox e della DataGrid
+                    comboBox1.Items.Clear();
+                    comboBox1.Text = "<- Scegli una pagina del foglio Excel ->";
+                    dataGridView1.DataSource = null;
+                    dataGridView1.Rows.Clear();
+                    dataGridView1.Columns.Clear();
+                    dataGridView1.Refresh();
+
+                    // Imposta l'origine dati della Combobox e la riempie con il nuovo documento Excel
+                    ImportData newData = new ImportData();
+                    List<string> dataBuffer = newData.XlSheets(pathExcel);
+                    foreach (var sheet in dataBuffer)
+                    {
+                        comboBox1.Items.Add(sheet);
+                    }
+                }
+                catch (SecurityException ex)
+                {
+                    MessageBox.Show($"Security error.\n\nError message: {ex.Message}\n\n" +
+                            $"Details:\n\n{ex.StackTrace}");
+                }
+            }
+        }
+
+        /// <summary>
+        ///   Metodo che sceglie l'elemento attivo nella ComboBox e lo mostra nel DataGridView
+        /// </summary>
+        /// 
+        private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Chiama questo metodo e modifica il Count
+            MakeRequest(RequestId.ComboBox);
+
+            // Ottiene la stringa selezionata nella ComboBox
+            string selectedItem = (string)comboBox1.SelectedItem;
+            valueDistintaActive = selectedItem;
+
+            // Chiama il metodo che importa la pagina scelta del file Excel
+            GetDataFromExcel(selectedItem, pathExcel);
+        }
+
+        /// <summary>
+        ///   Metodo che Importa il foglio Excel
+        /// </summary>
+        ///         
+        public void GetDataFromExcel(string selectedItem, string path)
+        {
+            // Assegna al valore attivo nella ComboBox il SelectItem = valore selezionato
+            valueActive = selectedItem;
+
+            // Se il DataGridView ha qualche oggetto al suo interno viene ripulito.
+            if (dataGridView1.Columns.Count > 0)
+            {
+                dataGridView1.DataSource = null;
+                dataGridView1.Rows.Clear();
+                dataGridView1.Columns.Clear();
+                dataGridView1.Refresh();
+            }
+
+            // Ottieni l'oggetto dell'applicazione Excel.
+            Excel.Application excel_app = new Excel.Application();
+
+            // Apri la cartella di lavoro in sola lettura (per aprirlo e basta, inserire solo il path del file Excel)
+            Excel.Workbook workbook = excel_app.Workbooks.Open(
+                path,
+                Type.Missing, true, Type.Missing, Type.Missing,
+                Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+                Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+                Type.Missing, Type.Missing);
+
+            Excel.Worksheet sheet = (Excel.Worksheet)workbook.Worksheets.Item[selectedItem];
+
+            // Recupera l'intervallo utilizzato.
+            Excel.Range used_range = sheet.UsedRange;
+
+            // Ottieni il numero massimo di righe e colonne.
+            int max_row = used_range.Rows.Count;
+            int max_col = used_range.Columns.Count;
+
+            // Ottieni i valori del foglio.
+            object[,] values = (object[,])used_range.Value2;
+
+            // Ottieni i titoli delle colonne.
+            SetGridColumns(dataGridView1, values, max_col);
+
+            // Recupera i dati.
+            SetGridContents(dataGridView1, values, max_row, max_col);
+
+            // Chiude la cartella di lavoro senza salvare le modifiche.
+            workbook.Close(false, Type.Missing, Type.Missing);
+
+            // Chiude il file Excel.
+            excel_app.Quit();
+
+            // Chiude tutti i processi Excel ancora attivi
+            KillExcel();
+
+            // Forza il Garbage Collector a ripulire
+            GC.Collect();
+        }
+
+        /// <summary>
+        ///   Metodo che imposta i nomi delle colonne della griglia dalla riga 1
+        /// </summary>
+        /// 
+        private void SetGridColumns(DataGridView dgv, object[,] values, int max_col)
+        {
+            dataGridView1.Columns.Clear();
+
+            // Ottieni i valori del titolo.
+            for (int col = 1; col <= max_col; col++)
+            {
+                string title = (string)values[1, col];
+                dgv.Columns.Add("col_" + title, title);
+            }
+        }
+
+        /// <summary>
+        ///   Metodo che imposta il contenuto della griglia
+        /// </summary>
+        /// 
+        private void SetGridContents(DataGridView dgv, object[,] values, int max_row, int max_col)
+        {
+            // Copia i valori nella griglia.
+            for (int row = 2; row <= max_row; row++)
+            {
+                object[] row_values = new object[max_col];
+                for (int col = 1; col <= max_col; col++)
+                    row_values[col - 1] = values[row, col];
+                dgv.Rows.Add(row_values);
+            }
+        }
+
+        /// <summary>
+        ///   Metodo che Importa il foglio Excel per ottenere i dati contenuti in ALCUNE sue celle
+        /// </summary>
+        ///         
+        public void GetSingleDataFromExcel(string path)
+        {
+            // Ottiene l'oggetto dell'applicazione Excel.
+            Excel.Application excel_app = new Excel.Application();
+
+            // Apre il fogio Excel
+            Excel.Workbook workbook = excel_app.Workbooks.Open(path);
+
+            Excel.Worksheet sheet = (Excel.Worksheet)workbook.ActiveSheet;
+
+            // Recupera l'intervallo utilizzato.
+            Excel.Range used_range = sheet.UsedRange;
+
+            // Ottiene il numero massimo di righe e colonne.
+            int max_row = used_range.Rows.Count;
+            int max_col = used_range.Columns.Count;
+
+            // Ottiene i valori del foglio.
+            object[,] values = (object[,])used_range.Value2;
+
+            //// Ottiene i titoli delle colonne.
+            //SetGridColumns(dataGridView1, values, max_col);
+
+            // Imposta il numero della riga e della colonna che si vuole ottenere
+            int rawCommessa = _rawCommessa;
+            int colDataCell = _colDataCell;
+
+            // Imposta il path della Distinta
+            SetPathContent(values, max_row, max_col, rawCommessa, colDataCell);
+
+            // Chiude la cartella di lavoro senza salvare le modifiche.
+            workbook.Close(false, Type.Missing, Type.Missing);
+
+            // Chiude il file Excel.
+            excel_app.Quit();
+
+            // Rilascia tutti collegamenti ai File Excel
+            Marshal.ReleaseComObject(sheet);
+            Marshal.ReleaseComObject(workbook);
+            Marshal.ReleaseComObject(excel_app);
+
+            // Chiude tutti i processi Excel ancora attivi
+            KillExcel();
+
+            // Forza il Garbage Collector a ripulire
+            GC.Collect();
+        }
+
+        /// <summary>
+        ///   Metodo che imposta il contenuto della griglia
+        /// </summary>
+        /// 
+        private void SetPathContent(object[,] values, int max_row, int max_col, int recordRaw, int dataCellCol)
+        {
+            // Copia i valori nella griglia.
+            for (int row = 2; row <= max_row; row++)
+            {
+                for (int col = 1; col <= max_col; col++)
+                {
+                    if (row == recordRaw && col == dataCellCol)
+                    {
+                        _pathDataCell = (string)values[row, col];
+                    }
+                }
+            }
+        }
 
         /// <summary>
         ///   Metodo che chiama il salvataggio del contenuto del DataGridView
@@ -220,7 +669,7 @@ namespace ModelessForm_ExternalEvent
         }
 
         /// <summary>
-        ///   Metodo che salva il Contenuto del DataGridView
+        ///   Metodo che Esporta in Excel il contenuto del DataGridView
         /// </summary>
         /// 
         public void ExportExcel(string fileName, string sheetDistinta, DataGridView myDGV)
@@ -281,197 +730,6 @@ namespace ModelessForm_ExternalEvent
             }
         }
 
-        #endregion
-
-        #region Cancel
-
-        /// <summary>
-        ///   Metodo collegato al pulsante Cancella tutto, che ripulisce la DataGridView, i TextBox e la ListBox
-        /// </summary>
-        /// 
-        private void cleanButton_Click(object sender, EventArgs e)
-        {
-            nameFamilyTextBox.Text = null;
-            textDistintaComboBox.Text = null;
-            dataGridView1.DataSource = null;
-            dataGridView1.Rows.Clear();
-            dataGridView1.Columns.Clear();
-            dataGridView1.Refresh();
-            listBox1.DataSource = null;
-            listBox1.Items.Clear();
-            comboBox1.Text = "<- Scegli una pagina del foglio Excel ->";
-            error = true;
-            SetModifyPicture();
-        }
-
-        /// <summary>
-        ///   Metodo che ripulisce la DataGridView, i TextBox e la ListBox
-        /// </summary>
-        /// 
-        public void CleanAll()
-        {
-            nameFamilyTextBox.Text = null;
-            textDistintaComboBox.Text = null;
-            dataGridView1.DataSource = null;
-            dataGridView1.Rows.Clear();
-            dataGridView1.Columns.Clear();
-            dataGridView1.Refresh();
-            listBox1.DataSource = null;
-            listBox1.Items.Clear();
-            comboBox1.Text = "<- Scegli una pagina del foglio Excel ->";
-            error = true;
-            SetModifyPicture();
-        }
-
-        #endregion
-
-        #region ListBox
-
-        /// <summary>
-        ///   Metodo che riempie la ListBox
-        /// </summary>
-        /// 
-        public void ShowListBox1()
-        {
-            // Resetta il contenuto della ListBox
-            listBox1.DataSource = null;
-            listBox1.Items.Clear();
-            // Popola la ListBox con l'ArrayList delle dimensioni
-            ArrayList lista = m_Handler.GetList;
-            listBox1.DataSource = lista;
-            // Seleziona i titoli delle dimensioni con SelectionMode esteso
-            listBox1.SelectionMode = SelectionMode.MultiExtended;
-            int count = 0;
-            for (int i = 0; i < listBox1.Items.Count; i++)
-            {
-                if (i == count)
-                {
-                    listBox1.SetSelected(i, true);
-                    count += 3;
-                }
-            }
-        }
-
-        #endregion
-
-        #region ComboBox
-
-        /// <summary>
-        ///   Metodo che permette di scegliere il file Excel da caricare nella ComboBox
-        /// </summary>
-        ///
-        private void excelDistintaButton_Click(object sender, EventArgs e)
-        {
-            if (uploadExcelOpenFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                try
-                {
-                    // Imposto il nuovo Path del documento da aprire
-                    pathExcel = uploadExcelOpenFileDialog.FileName;
-
-                    // Cancella il contenuto della ComboBox e della DataGrid
-                    comboBox1.Items.Clear();
-                    comboBox1.Text = "<- Scegli una pagina del foglio Excel ->";
-                    dataGridView1.DataSource = null;
-                    dataGridView1.Rows.Clear();
-                    dataGridView1.Columns.Clear();
-                    dataGridView1.Refresh();
-
-                    // Imposta l'origine dati della Combobox e la riempie con il nuovo documento Excel
-                    ImportData newData = new ImportData();
-                    List<string> dataBuffer = newData.XlSheets(pathExcel);
-                    foreach (var sheet in dataBuffer)
-                    {
-                        comboBox1.Items.Add(sheet);
-                    }
-                }
-                catch (SecurityException ex)
-                {
-                    MessageBox.Show($"Security error.\n\nError message: {ex.Message}\n\n" +
-                            $"Details:\n\n{ex.StackTrace}");
-                }
-            }
-        }
-
-        /// <summary>
-        ///   Metodo che sceglie l'elemento attivo nella ComboBox e lo mostra nel DataGridView
-        /// </summary>
-        /// 
-        private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            // Chiama questo metodo e modifica il Count
-            MakeRequest(RequestId.ComboBox);
-
-            // Ottiene la stringa selezionata nella ComboBox
-            string selectedItem = (string)comboBox1.SelectedItem;
-            valueDistintaActive = selectedItem;
-
-            // Chiama il metodo che importa la pagina scelta del file Excel
-            GetDataFromExcel(selectedItem, pathExcel);
-        }
-
-        /// <summary>
-        ///   Metodo che importa il foglio Excel
-        /// </summary>
-        ///         
-        public void GetDataFromExcel(string selectedItem, string path)
-        {
-            // Assegna al valore attivo nella ComboBox il selectedEmployee
-            valueActive = selectedItem;
-
-            // Assegna il valore attivo nella ComboBox al TextBox della distinta
-            textDistintaComboBox.Text = selectedItem;
-
-            // Se il DataGridView ha qualche oggetto al suo interno viene ripulito.
-            if (dataGridView1.Columns.Count > 0)
-            {
-                dataGridView1.DataSource = null;
-                dataGridView1.Rows.Clear();
-                dataGridView1.Columns.Clear();
-                dataGridView1.Refresh();
-            }
-            // Ottieni l'oggetto dell'applicazione Excel.
-            Excel.Application excel_app = new Excel.Application();
-
-            // Apri la cartella di lavoro in sola lettura.
-            Excel.Workbook workbook = excel_app.Workbooks.Open(
-                path,
-                Type.Missing, true, Type.Missing, Type.Missing,
-                Type.Missing, Type.Missing, Type.Missing, Type.Missing,
-                Type.Missing, Type.Missing, Type.Missing, Type.Missing,
-                Type.Missing, Type.Missing);
-
-            Excel.Worksheet sheet = (Excel.Worksheet)workbook.Worksheets.Item[selectedItem];
-
-            // Recupera l'intervallo utilizzato.
-            Excel.Range used_range = sheet.UsedRange;
-
-            // Ottieni il numero massimo di righe e colonne.
-            int max_row = used_range.Rows.Count;
-            int max_col = used_range.Columns.Count;
-
-            // Ottieni i valori del foglio.
-            object[,] values = (object[,])used_range.Value2;
-
-            // Ottieni i titoli delle colonne.
-            SetGridColumns(dataGridView1, values, max_col);
-
-            // Recupera i dati.
-            SetGridContents(dataGridView1, values, max_row, max_col);
-
-            // Chiude la cartella di lavoro senza salvare le modifiche.
-            workbook.Close(false, Type.Missing, Type.Missing);
-
-            // Chiude il server Excel.
-            excel_app.Quit();
-
-            // Chiude tutti i processi Excel ancora attivi
-            KillExcel();
-
-            // Forza il Garbage Collector a ripulire
-            GC.Collect();
-        }
-
         /// <summary>
         ///   Apre il file Excel visualizzato
         /// </summary>
@@ -504,37 +762,7 @@ namespace ModelessForm_ExternalEvent
             }
             AllProcesses = null;
         }
-        /// <summary>
-        ///   Metodo che imposta i nomi delle colonne della griglia dalla riga 1
-        /// </summary>
-        /// 
-        private void SetGridColumns(DataGridView dgv, object[,] values, int max_col)
-        {
-            dataGridView1.Columns.Clear();
-
-            // Ottieni i valori del titolo.
-            for (int col = 1; col <= max_col; col++)
-            {
-                string title = (string)values[1, col];
-                dgv.Columns.Add("col_" + title, title);
-            }
-        }
-
-        /// <summary>
-        ///   Metodo che imposta il contenuto della griglia
-        /// </summary>
-        /// 
-       private void SetGridContents(DataGridView dgv, object[,] values, int max_row, int max_col)
-        {
-            // Copia i valori nella griglia.
-            for (int row = 2; row <= max_row; row++)
-            {
-                object[] row_values = new object[max_col];
-                for (int col = 1; col <= max_col; col++)
-                    row_values[col - 1] = values[row, col];
-                dgv.Rows.Add(row_values);
-            }
-        }    
+   
 
         /// <summary>
         ///   Valore attivo nella ComboBox in formato stringa
@@ -560,7 +788,7 @@ namespace ModelessForm_ExternalEvent
             {
                 // Imposta il nuovo Path
                 folderName = folderBrowserDialog1.SelectedPath;
-                folderNameActual = folderName;
+                folderImageActual = folderName;
                 imagesTextBox.Text = folderName;
 
                 // Carica le nuove immagini
@@ -624,7 +852,7 @@ namespace ModelessForm_ExternalEvent
         public DataPicture GetDataPictureCentral()
         {
             // Proprietà immagine centrale
-            string pathc = folderNameActual + "\\" + GetPathModifier() + "_F.png";
+            string pathc = folderImageActual + "\\" + GetPathModifier() + "_F.png";
             int widthc = 222;
             int heigthc = 325;
             var data = new DataPicture(pathc, widthc, heigthc);
@@ -634,7 +862,7 @@ namespace ModelessForm_ExternalEvent
         public DataPicture GetDataPictureDx()
         {
             // Proprietà immagine destra
-            string pathd = folderNameActual + "\\" + GetPathModifier() + "_R.png";
+            string pathd = folderImageActual + "\\" + GetPathModifier() + "_R.png";
             int widthd = 65;
             int heigthd = 325;
             var data = new DataPicture(pathd, widthd, heigthd);
@@ -644,7 +872,7 @@ namespace ModelessForm_ExternalEvent
         public DataPicture GetDataPictureSx()
         {
             // Proprietà immagine sinistra
-            string paths = folderNameActual + "\\" + GetPathModifier() + "_L.png";
+            string paths = folderImageActual + "\\" + GetPathModifier() + "_L.png";
             int widths = 65;
             int heigths = 325;
             var data = new DataPicture(paths, widths, heigths);
@@ -654,7 +882,7 @@ namespace ModelessForm_ExternalEvent
         public DataPicture GetDataPictureHigh()
         {
             // Proprietà immagine alta
-            string pathh = folderNameActual + "\\" + GetPathModifier() + "_P.png";
+            string pathh = folderImageActual + "\\" + GetPathModifier() + "_P.png";
             int widthh = 222;
             int heigthh = 25;
             var data = new DataPicture(pathh, widthh, heigthh);
@@ -665,6 +893,8 @@ namespace ModelessForm_ExternalEvent
         private Bitmap MyImage2;
         private Bitmap MyImage3;
         private Bitmap MyImage4;
+
+        public object App { get; internal set; }
 
         public void PictureBoxCentral(string fileToDisplay, int xSize, int ySize)
         {
@@ -690,10 +920,10 @@ namespace ModelessForm_ExternalEvent
 
                 if(MyImage1 != null)
                 {
-                    folderNameActual = folderNameDefault;
-                    imagesTextBox.Text = folderNameDefault;
+                    folderImageActual = folderImageDefault;
+                    imagesTextBox.Text = folderImageDefault;
 
-                    MyImage1 = new Bitmap(folderNameActual + "\\_F.png");
+                    MyImage1 = new Bitmap(folderImageActual + "\\_F.png");
                     nameFamilyTextBox.Text = null;
                 }
             }
@@ -719,8 +949,8 @@ namespace ModelessForm_ExternalEvent
             {
                 if (MyImage2 != null)
                 {
-                    folderNameActual = folderNameDefault;
-                    MyImage2 = new Bitmap(folderNameActual + "\\_R.png");
+                    folderImageActual = folderImageDefault;
+                    MyImage2 = new Bitmap(folderImageActual + "\\_R.png");
                     nameFamilyTextBox.Text = null;
                 }
             }
@@ -747,8 +977,8 @@ namespace ModelessForm_ExternalEvent
             {
                 if (MyImage3 != null)
                 {
-                    folderNameActual = folderNameDefault;
-                    MyImage3 = new Bitmap(folderNameActual + "\\_L.png");
+                    folderImageActual = folderImageDefault;
+                    MyImage3 = new Bitmap(folderImageActual + "\\_L.png");
                     nameFamilyTextBox.Text = null;
                 }                    
             }
@@ -775,8 +1005,8 @@ namespace ModelessForm_ExternalEvent
             {
                 if (MyImage4 != null)
                 {
-                    folderNameActual = folderNameDefault;
-                    MyImage4 = new Bitmap(folderNameActual + "\\_P.png");
+                    folderImageActual = folderImageDefault;
+                    MyImage4 = new Bitmap(folderImageActual + "\\_P.png");
                     nameFamilyTextBox.Text = null;
                 }                    
             }
@@ -816,10 +1046,9 @@ namespace ModelessForm_ExternalEvent
         ///   Exit - chiude la finestra di dialogo
         /// </summary>
         /// 
-        private void exitButton_Click(object sender, EventArgs e)
+        public void exitButton_Click(object sender, EventArgs e)
         {
             Close();
         }
-
     }  // class
 }

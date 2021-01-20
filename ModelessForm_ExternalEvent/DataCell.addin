@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <RevitAddIns>  
 	<AddIn Type="Application">
-		<Name>ModelessForm_ExternalEvent</Name>
-		<Assembly>ModelessForm_ExternalEvent.dll</Assembly>
+		<Name>DataCell</Name>
+		<Assembly>DataCell.dll</Assembly>
 		<FullClassName>ModelessForm_ExternalEvent.App</FullClassName>
-		<ClientId>D7F7BA0D-CC2E-4400-84AC-CFF1AB545695</ClientId>
+		<ClientId>24C25B6C-91A4-42C7-884F-7896D3263F08</ClientId>
 		<VendorId>BOLDstd</VendorId>
 		<VendorDescription>BOLDstd, http://boldstd.it/ </VendorDescription>
 	</AddIn>
