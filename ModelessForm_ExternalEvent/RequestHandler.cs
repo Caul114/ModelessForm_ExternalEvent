@@ -49,6 +49,12 @@ namespace ModelessForm_ExternalEvent
         // Il valore di BOLD_Distinta
         private string _valueDistinta;
 
+        // Il valore dell'Unit Identifier
+        private string _unitIdentifier;
+
+        // Il valore delPanel TypeIdentifier
+        private string _panelTypeIdentifier;
+
         // Il tipo della famiglia in formato stringa
         private string _familyType;
 
@@ -84,6 +90,22 @@ namespace ModelessForm_ExternalEvent
         public string GetDistintaValue
         {
             get { return _valueDistinta; }
+        }
+
+        /// <summary>
+        /// Proprietà pubblica per accedere al valore della richiesta corrente
+        /// </summary>
+        public string GetUnitIdentifier
+        {
+            get { return _unitIdentifier; }
+        }
+
+        /// <summary>
+        /// Proprietà pubblica per accedere al valore della richiesta corrente
+        /// </summary>
+        public string GetPanelTypeIdentifier
+        {
+            get { return _panelTypeIdentifier; }
         }
 
         /// <summary>
@@ -175,6 +197,12 @@ namespace ModelessForm_ExternalEvent
                                 _dimensionsList.Clear();
                                 // Imposta il valore della Distinta per la Form
                                 modelessForm.valueDistintaFromCaptureButton();
+                                // Imposta il valore dello UnitIdentifier per la Form
+                                PickUnitIdentifier(uiapp, pickedObject);
+                                modelessForm.valueUnitIdentifierFromCaptureButton();
+                                // Imposta il valore dello UnitIdentifier per la Form
+                                PickPanelTypeIdentifier(uiapp, pickedObject);
+                                modelessForm.valuePanelTypeIdentifierFromCaptureButton();
                                 // Chiama il metodo che seleziona il parametro stringa della famiglia scelta e riempie il PictureBox
                                 GetTypeParameterOfFamily(uiapp, pickedObject);
                                 modelessForm.SetModifyPicture();
@@ -255,6 +283,137 @@ namespace ModelessForm_ExternalEvent
             {
                 return "Nessun valore";
             }            
+        }
+
+        /// <summary>
+        ///   La subroutine di selezione di un elemento che torna il valore stringa dell'Unit Identifier
+        /// </summary>
+        /// <remarks>
+        /// Il valore dell'UnitIdentifier e' composto dai Parametri dell'elemento UI-ItemCategory, 
+        /// UI-ProjectAbbreviation, UI-Quadrant, UI-FloorNumber e UI-UnitNumber
+        /// </remarks>
+        /// <param name="uiapp">L'oggetto Applicazione di Revit</param>m>
+        /// 
+        private void PickUnitIdentifier(UIApplication uiapp, Reference reference)
+        {
+            // Chiamo la vista attiva e seleziono gli elementi che mi servono
+            UIDocument uidoc = uiapp.ActiveUIDocument;
+            ElementId eleId = reference.ElementId;
+            Element ele = uidoc.Document.GetElement(eleId);
+            ElementType eleType = uidoc.Document.GetElement(ele.GetTypeId()) as ElementType;
+
+            // Restituisce il valore del parametro UI-ItemCategory  
+            string strUIItemCategory = "";   
+            if (eleType.LookupParameter("UI-ItemCategory") != null)
+            {
+                Parameter par = eleType.LookupParameter("UI-ItemCategory");
+                strUIItemCategory = par.AsString();
+            }
+            else { strUIItemCategory = "xxx"; }
+
+            // Restituisce il valore del parametro UI-ProjectAbbreviation  
+            string strUIProjectAbbreviation = "";
+            if (eleType.LookupParameter("UI-ProjectAbbreviation") != null)
+            {
+                Parameter par = eleType.LookupParameter("UI-ProjectAbbreviation");
+                strUIProjectAbbreviation = par.AsString();
+            }
+            else { strUIProjectAbbreviation = "xxx"; }
+
+            // Restituisce il valore del parametro UI-Quadrant
+            string strUIQuadrant = "";
+            if (ele.LookupParameter("UI-Quadrant") != null)
+            {
+                Parameter par = ele.LookupParameter("UI-Quadrant");
+                strUIQuadrant = par.AsString();
+            }
+            else { strUIQuadrant = "xx"; }
+
+            // Restituisce il valore del parametro UI-FloorNumber
+            string strUIFloorNumber = "";
+            if (ele.LookupParameter("UI-FloorNumber") != null)
+            {
+                Parameter par = ele.LookupParameter("UI-FloorNumber");
+                strUIFloorNumber = par.AsString();
+            }
+            else { strUIFloorNumber = "xx"; }
+
+            // Restituisce il valore del parametro UI-UnitNumber
+            string strUIUnitNumber = "";
+            if (ele.LookupParameter("UI-UnitNumber") != null)
+            {
+                Parameter par = ele.LookupParameter("UI-UnitNumber");
+                strUIUnitNumber = par.AsString();
+            }
+            else { strUIUnitNumber = "xxx"; }
+
+            // Imposta la stringa finale
+            _unitIdentifier = 
+                strUIItemCategory + "-" +
+                strUIProjectAbbreviation + "-" +
+                strUIQuadrant + "-" +
+                strUIFloorNumber + "-" +
+                strUIUnitNumber;
+        }
+
+        /// <summary>
+        ///   La subroutine di selezione di un elemento che torna il valore stringa del Panel Type Identifier
+        /// </summary>
+        /// <remarks>
+        /// Il valore del Panel Type Identifier e' composto dai Parametri dell'elemento PNT-ItemCategory, 
+        /// PNT-ProjectAbbreviation, PNT-WallType e PNT-PanelType        
+        /// </remarks>
+        /// <param name="uiapp">L'oggetto Applicazione di Revit</param>m>
+        /// 
+        private void PickPanelTypeIdentifier(UIApplication uiapp, Reference reference)
+        {
+            // Chiamo la vista attiva e seleziono gli elementi che mi servono
+            UIDocument uidoc = uiapp.ActiveUIDocument;
+            ElementId eleId = reference.ElementId;
+            Element ele = uidoc.Document.GetElement(eleId);
+            ElementType eleType = uidoc.Document.GetElement(ele.GetTypeId()) as ElementType;
+
+            // Restituisce il valore del parametro PNT-ItemCategory
+            string strPNTItemCategory = "";
+            if (eleType.LookupParameter("PNT-ItemCategory") != null)
+            {
+                Parameter par = eleType.LookupParameter("PNT-ItemCategory");
+                strPNTItemCategory = par.AsString();
+            }
+            else { strPNTItemCategory = "xxx"; }
+
+            // Restituisce il valore del parametro PNT-ProjectAbbreviation
+            string strPNTProjectAbbreviation = "";
+            if (eleType.LookupParameter("PNT-ProjectAbbreviation") != null)
+            {
+                Parameter par = eleType.LookupParameter("PNT-ProjectAbbreviation");
+                strPNTProjectAbbreviation = par.AsString();
+            }
+            else { strPNTProjectAbbreviation = "xxx"; }
+
+            // Restituisce il valore del parametro PNT-WallType
+            string strPNTWallType = "";
+            if (eleType.LookupParameter("PNT-WallType") != null)
+            {
+                Parameter par = eleType.LookupParameter("PNT-WallType");
+                strPNTWallType = par.AsString();
+            }
+            else { strPNTWallType = "xxxx"; }
+
+            // Restituisce il valore del parametro PNT-PanelType
+            string strPNTPanelType = "";
+            if (ele.LookupParameter("PNT-PanelType") != null)
+            {
+                Parameter par = ele.LookupParameter("PNT-PanelType");
+                strPNTPanelType = par.AsString();
+            }
+            else { strPNTPanelType = "xx"; }
+
+            _panelTypeIdentifier =
+                strPNTItemCategory + "-" +
+                strPNTProjectAbbreviation + "-" +
+                strPNTWallType + "-" +
+                strPNTPanelType;
         }
 
         /// <summary>

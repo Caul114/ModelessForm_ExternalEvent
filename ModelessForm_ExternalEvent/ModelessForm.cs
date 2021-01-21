@@ -373,6 +373,25 @@ namespace ModelessForm_ExternalEvent
         {
             valueDistintaActive = m_Handler.GetDistintaValue;
         }
+
+        /// <summary>
+        ///   Metodo che imposta il valore dell'Unit Identifier in base alla selezione del Button
+        /// </summary>
+        /// 
+        public void valueUnitIdentifierFromCaptureButton()
+        {
+            unitIdentifierTextBox.Text = m_Handler.GetUnitIdentifier;
+        }
+
+        /// <summary>
+        ///   Metodo che imposta il valore del Panel Type Identifier in base alla selezione del Button
+        /// </summary>
+        /// 
+        public void valuePanelTypeIdentifierFromCaptureButton()
+        {
+            panelTypeIdentifierTextBox.Text = m_Handler.GetPanelTypeIdentifier;
+        }
+
         #endregion
 
         #region Cancel

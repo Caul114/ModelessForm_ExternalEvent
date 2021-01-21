@@ -34,11 +34,11 @@ namespace ModelessForm_ExternalEvent
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ModelessForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.functionGroupBox1 = new System.Windows.Forms.GroupBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.panelTypeIdentifierTextBox = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.unitIdentifierTextBox = new System.Windows.Forms.TextBox();
             this.imageFamilyGroupBox = new System.Windows.Forms.GroupBox();
             this.magnifyingGlassGroupBox = new System.Windows.Forms.GroupBox();
             this.label10 = new System.Windows.Forms.Label();
@@ -65,18 +65,19 @@ namespace ModelessForm_ExternalEvent
             this.cleanButton = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.functionGroupBox2 = new System.Windows.Forms.GroupBox();
+            this.settingsGroupBox = new System.Windows.Forms.GroupBox();
+            this.settingsButton = new System.Windows.Forms.Button();
             this.functionGroupBoxListBox = new System.Windows.Forms.GroupBox();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.saveExcelDistintabutton = new System.Windows.Forms.Button();
+            this.openExcelDistintaButton = new System.Windows.Forms.Button();
             this.functionGroupBox4 = new System.Windows.Forms.GroupBox();
             this.exitButton = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.functionGroupBox3 = new System.Windows.Forms.GroupBox();
-            this.openExcelDistintaButton = new System.Windows.Forms.Button();
-            this.saveExcelDistintabutton = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
             this.uploadExcelOpenFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.settingsGroupBox = new System.Windows.Forms.GroupBox();
-            this.settingsButton = new System.Windows.Forms.Button();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.functionGroupBox1.SuspendLayout();
             this.imageFamilyGroupBox.SuspendLayout();
             this.magnifyingGlassGroupBox.SuspendLayout();
@@ -89,19 +90,19 @@ namespace ModelessForm_ExternalEvent
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxSx)).BeginInit();
             this.functionGroupBox2.SuspendLayout();
+            this.settingsGroupBox.SuspendLayout();
             this.functionGroupBoxListBox.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.functionGroupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.functionGroupBox3.SuspendLayout();
-            this.settingsGroupBox.SuspendLayout();
-            this.groupBox5.SuspendLayout();
             this.SuspendLayout();
             // 
             // functionGroupBox1
             // 
-            this.functionGroupBox1.Controls.Add(this.textBox2);
+            this.functionGroupBox1.Controls.Add(this.panelTypeIdentifierTextBox);
             this.functionGroupBox1.Controls.Add(this.label9);
-            this.functionGroupBox1.Controls.Add(this.textBox1);
+            this.functionGroupBox1.Controls.Add(this.unitIdentifierTextBox);
             this.functionGroupBox1.Controls.Add(this.imageFamilyGroupBox);
             this.functionGroupBox1.Controls.Add(this.label8);
             this.functionGroupBox1.Controls.Add(this.captureButton);
@@ -112,12 +113,12 @@ namespace ModelessForm_ExternalEvent
             this.functionGroupBox1.TabStop = false;
             this.functionGroupBox1.Text = "Seleziona un oggetto";
             // 
-            // textBox2
+            // panelTypeIdentifierTextBox
             // 
-            this.textBox2.Location = new System.Drawing.Point(750, 49);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(218, 22);
-            this.textBox2.TabIndex = 23;
+            this.panelTypeIdentifierTextBox.Location = new System.Drawing.Point(750, 49);
+            this.panelTypeIdentifierTextBox.Name = "panelTypeIdentifierTextBox";
+            this.panelTypeIdentifierTextBox.Size = new System.Drawing.Size(218, 22);
+            this.panelTypeIdentifierTextBox.TabIndex = 23;
             // 
             // label9
             // 
@@ -128,12 +129,12 @@ namespace ModelessForm_ExternalEvent
             this.label9.TabIndex = 24;
             this.label9.Text = "Panel Type Identifier dell\'oggetto:";
             // 
-            // textBox1
+            // unitIdentifierTextBox
             // 
-            this.textBox1.Location = new System.Drawing.Point(750, 19);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(218, 22);
-            this.textBox1.TabIndex = 21;
+            this.unitIdentifierTextBox.Location = new System.Drawing.Point(750, 19);
+            this.unitIdentifierTextBox.Name = "unitIdentifierTextBox";
+            this.unitIdentifierTextBox.Size = new System.Drawing.Size(218, 22);
+            this.unitIdentifierTextBox.TabIndex = 21;
             // 
             // imageFamilyGroupBox
             // 
@@ -175,11 +176,11 @@ namespace ModelessForm_ExternalEvent
             // 
             // magnifyingGlassCloseButton
             // 
-            this.magnifyingGlassCloseButton.Location = new System.Drawing.Point(43, 198);
+            this.magnifyingGlassCloseButton.Image = ((System.Drawing.Image)(resources.GetObject("magnifyingGlassCloseButton.Image")));
+            this.magnifyingGlassCloseButton.Location = new System.Drawing.Point(60, 198);
             this.magnifyingGlassCloseButton.Name = "magnifyingGlassCloseButton";
-            this.magnifyingGlassCloseButton.Size = new System.Drawing.Size(89, 52);
+            this.magnifyingGlassCloseButton.Size = new System.Drawing.Size(52, 52);
             this.magnifyingGlassCloseButton.TabIndex = 11;
-            this.magnifyingGlassCloseButton.Text = "Spegni";
             this.magnifyingGlassCloseButton.UseVisualStyleBackColor = true;
             this.magnifyingGlassCloseButton.Click += new System.EventHandler(this.magnifyingGlassCloseButton_Click);
             // 
@@ -375,9 +376,9 @@ namespace ModelessForm_ExternalEvent
             // comboBox1
             // 
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(12, 27);
+            this.comboBox1.Location = new System.Drawing.Point(133, 37);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(290, 24);
+            this.comboBox1.Size = new System.Drawing.Size(296, 24);
             this.comboBox1.TabIndex = 4;
             this.comboBox1.Text = "<- Scegli una pagina del documento Excel ->";
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.ComboBox1_SelectedIndexChanged);
@@ -397,6 +398,26 @@ namespace ModelessForm_ExternalEvent
             this.functionGroupBox2.TabStop = false;
             this.functionGroupBox2.Text = "Parametri della Distinta";
             // 
+            // settingsGroupBox
+            // 
+            this.settingsGroupBox.Controls.Add(this.settingsButton);
+            this.settingsGroupBox.Location = new System.Drawing.Point(595, 911);
+            this.settingsGroupBox.Name = "settingsGroupBox";
+            this.settingsGroupBox.Size = new System.Drawing.Size(100, 85);
+            this.settingsGroupBox.TabIndex = 3;
+            this.settingsGroupBox.TabStop = false;
+            this.settingsGroupBox.Text = "Impostazioni";
+            // 
+            // settingsButton
+            // 
+            this.settingsButton.Image = ((System.Drawing.Image)(resources.GetObject("settingsButton.Image")));
+            this.settingsButton.Location = new System.Drawing.Point(31, 29);
+            this.settingsButton.Name = "settingsButton";
+            this.settingsButton.Size = new System.Drawing.Size(38, 39);
+            this.settingsButton.TabIndex = 0;
+            this.settingsButton.UseVisualStyleBackColor = true;
+            this.settingsButton.Click += new System.EventHandler(this.settingsButton_Click);
+            // 
             // functionGroupBoxListBox
             // 
             this.functionGroupBoxListBox.Controls.Add(this.listBox1);
@@ -406,6 +427,37 @@ namespace ModelessForm_ExternalEvent
             this.functionGroupBoxListBox.TabIndex = 7;
             this.functionGroupBoxListBox.TabStop = false;
             this.functionGroupBoxListBox.Text = "Dimensioni dell\'oggetto";
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.saveExcelDistintabutton);
+            this.groupBox5.Controls.Add(this.openExcelDistintaButton);
+            this.groupBox5.Location = new System.Drawing.Point(454, 911);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(134, 85);
+            this.groupBox5.TabIndex = 8;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Documento Excel";
+            // 
+            // saveExcelDistintabutton
+            // 
+            this.saveExcelDistintabutton.Location = new System.Drawing.Point(7, 29);
+            this.saveExcelDistintabutton.Name = "saveExcelDistintabutton";
+            this.saveExcelDistintabutton.Size = new System.Drawing.Size(77, 39);
+            this.saveExcelDistintabutton.TabIndex = 8;
+            this.saveExcelDistintabutton.Text = "Salva";
+            this.saveExcelDistintabutton.UseVisualStyleBackColor = true;
+            this.saveExcelDistintabutton.Click += new System.EventHandler(this.saveExcelDistintabutton_Click);
+            // 
+            // openExcelDistintaButton
+            // 
+            this.openExcelDistintaButton.Image = ((System.Drawing.Image)(resources.GetObject("openExcelDistintaButton.Image")));
+            this.openExcelDistintaButton.Location = new System.Drawing.Point(90, 29);
+            this.openExcelDistintaButton.Name = "openExcelDistintaButton";
+            this.openExcelDistintaButton.Size = new System.Drawing.Size(38, 39);
+            this.openExcelDistintaButton.TabIndex = 9;
+            this.openExcelDistintaButton.UseVisualStyleBackColor = true;
+            this.openExcelDistintaButton.Click += new System.EventHandler(this.openExcelDistintaButton_Click);
             // 
             // functionGroupBox4
             // 
@@ -432,14 +484,14 @@ namespace ModelessForm_ExternalEvent
             // 
             this.dataGridView1.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCellsExceptHeaders;
             this.dataGridView1.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.Navy;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Navy;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.GridColor = System.Drawing.Color.Black;
             this.dataGridView1.Location = new System.Drawing.Point(13, 21);
@@ -449,38 +501,28 @@ namespace ModelessForm_ExternalEvent
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 24;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(683, 897);
+            this.dataGridView1.Size = new System.Drawing.Size(683, 884);
             this.dataGridView1.TabIndex = 0;
             // 
             // functionGroupBox3
             // 
+            this.functionGroupBox3.Controls.Add(this.label6);
             this.functionGroupBox3.Controls.Add(this.comboBox1);
-            this.functionGroupBox3.Location = new System.Drawing.Point(13, 930);
+            this.functionGroupBox3.Location = new System.Drawing.Point(13, 911);
             this.functionGroupBox3.Name = "functionGroupBox3";
-            this.functionGroupBox3.Size = new System.Drawing.Size(318, 66);
+            this.functionGroupBox3.Size = new System.Drawing.Size(435, 85);
             this.functionGroupBox3.TabIndex = 2;
             this.functionGroupBox3.TabStop = false;
             this.functionGroupBox3.Text = "Mostra Distinta";
             // 
-            // openExcelDistintaButton
+            // label6
             // 
-            this.openExcelDistintaButton.Image = ((System.Drawing.Image)(resources.GetObject("openExcelDistintaButton.Image")));
-            this.openExcelDistintaButton.Location = new System.Drawing.Point(140, 21);
-            this.openExcelDistintaButton.Name = "openExcelDistintaButton";
-            this.openExcelDistintaButton.Size = new System.Drawing.Size(38, 39);
-            this.openExcelDistintaButton.TabIndex = 9;
-            this.openExcelDistintaButton.UseVisualStyleBackColor = true;
-            this.openExcelDistintaButton.Click += new System.EventHandler(this.openExcelDistintaButton_Click);
-            // 
-            // saveExcelDistintabutton
-            // 
-            this.saveExcelDistintabutton.Location = new System.Drawing.Point(38, 21);
-            this.saveExcelDistintabutton.Name = "saveExcelDistintabutton";
-            this.saveExcelDistintabutton.Size = new System.Drawing.Size(77, 39);
-            this.saveExcelDistintabutton.TabIndex = 8;
-            this.saveExcelDistintabutton.Text = "Salva";
-            this.saveExcelDistintabutton.UseVisualStyleBackColor = true;
-            this.saveExcelDistintabutton.Click += new System.EventHandler(this.saveExcelDistintabutton_Click);
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(6, 38);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(105, 17);
+            this.label6.TabIndex = 5;
+            this.label6.Text = "BOLD_Distinta:";
             // 
             // uploadExcelOpenFileDialog
             // 
@@ -493,37 +535,6 @@ namespace ModelessForm_ExternalEvent
             // 
             this.folderBrowserDialog1.Description = "Scegli la Directory da cui vuoi prendere le immagini.";
             this.folderBrowserDialog1.SelectedPath = "C:\\Users\\Bold\\Documents\\Bold Software\\DataCell\\Images";
-            // 
-            // settingsGroupBox
-            // 
-            this.settingsGroupBox.Controls.Add(this.settingsButton);
-            this.settingsGroupBox.Location = new System.Drawing.Point(586, 930);
-            this.settingsGroupBox.Name = "settingsGroupBox";
-            this.settingsGroupBox.Size = new System.Drawing.Size(100, 66);
-            this.settingsGroupBox.TabIndex = 3;
-            this.settingsGroupBox.TabStop = false;
-            this.settingsGroupBox.Text = "Impostazioni";
-            // 
-            // settingsButton
-            // 
-            this.settingsButton.Image = ((System.Drawing.Image)(resources.GetObject("settingsButton.Image")));
-            this.settingsButton.Location = new System.Drawing.Point(33, 24);
-            this.settingsButton.Name = "settingsButton";
-            this.settingsButton.Size = new System.Drawing.Size(33, 30);
-            this.settingsButton.TabIndex = 0;
-            this.settingsButton.UseVisualStyleBackColor = true;
-            this.settingsButton.Click += new System.EventHandler(this.settingsButton_Click);
-            // 
-            // groupBox5
-            // 
-            this.groupBox5.Controls.Add(this.saveExcelDistintabutton);
-            this.groupBox5.Controls.Add(this.openExcelDistintaButton);
-            this.groupBox5.Location = new System.Drawing.Point(346, 930);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(224, 66);
-            this.groupBox5.TabIndex = 8;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Operazioni sul documento Excel";
             // 
             // ModelessForm
             // 
@@ -554,12 +565,13 @@ namespace ModelessForm_ExternalEvent
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxSx)).EndInit();
             this.functionGroupBox2.ResumeLayout(false);
+            this.settingsGroupBox.ResumeLayout(false);
             this.functionGroupBoxListBox.ResumeLayout(false);
+            this.groupBox5.ResumeLayout(false);
             this.functionGroupBox4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.functionGroupBox3.ResumeLayout(false);
-            this.settingsGroupBox.ResumeLayout(false);
-            this.groupBox5.ResumeLayout(false);
+            this.functionGroupBox3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -602,11 +614,12 @@ namespace ModelessForm_ExternalEvent
         private Button saveExcelDistintabutton;
         private GroupBox settingsGroupBox;
         private Button settingsButton;
-        private TextBox textBox2;
+        private TextBox panelTypeIdentifierTextBox;
         private Label label9;
-        private TextBox textBox1;
+        private TextBox unitIdentifierTextBox;
         private Label label8;
         private Label label10;
         private GroupBox groupBox5;
+        private Label label6;
     }
 }
