@@ -51,6 +51,18 @@ namespace ModelessForm_ExternalEvent.Config
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Modulo gestore eventi chiuso
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            // Disattiva la form DataCell
+            ModelessForm.thisModForm.WakeUp();
+            // non dimenticare di chiamare la classe base
+            base.OnFormClosed(e);
+        }
+
         private void settingsDataCellButton_Click(object sender, EventArgs e)
         {
             if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
@@ -89,7 +101,8 @@ namespace ModelessForm_ExternalEvent.Config
                     this.Close();
 
                     // Avvisa che per far funziona reil DataCell bisogna riaccenderlo
-                    MessageBox.Show("Hai concluso correttamente la Configurazione. \nRientra cliccando nuovamente sul Plugin DataCell che trovi nel Pannello Bold.");
+                    MessageBox.Show("Hai concluso correttamente la Configurazione. " +
+                        "\nRientra cliccando nuovamente sul Plugin DataCell che trovi nel Pannello Bold.");
 
                     // Chiude il DataCell 
                     ModelessForm.thisModForm.Close();

@@ -46,6 +46,18 @@ namespace ModelessForm_ExternalEvent.Config
         }
 
         /// <summary>
+        /// Modulo gestore eventi chiuso
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            // Disattiva la form DataCell
+            ModelessForm.thisModForm.WakeUp();
+            // non dimenticare di chiamare la classe base
+            base.OnFormClosed(e);
+        }
+
+        /// <summary>
         ///   Pulsante di modifica del Path di configurazione
         /// </summary>
         ///    

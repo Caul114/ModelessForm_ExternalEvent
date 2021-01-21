@@ -342,7 +342,18 @@ namespace ModelessForm_ExternalEvent
         /// 
         private void settingsButton_Click(object sender, EventArgs e)
         {
-            configPanel.ShowDataCellPaths();
+            if(!File.Exists(_pathFileTxt))
+            {
+                ShowConfigPanel();
+            } 
+            else if (File.ReadAllText(_pathFileTxt) == "")
+            {
+                ShowConfigPanel();
+            }
+            else
+            {
+                configPanel.ShowDataCellPaths();
+            }
         }
 
 
@@ -391,7 +402,6 @@ namespace ModelessForm_ExternalEvent
         {
             panelTypeIdentifierTextBox.Text = m_Handler.GetPanelTypeIdentifier;
         }
-
         #endregion
 
         #region Cancel

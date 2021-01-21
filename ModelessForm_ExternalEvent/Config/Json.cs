@@ -10,13 +10,7 @@ namespace ModelessForm_ExternalEvent.Config
 {
     public class Json
     {
-
         private List<Data> _data = new List<Data>();
-
-        public List<Data> Data
-        {
-           get { return _data;  }
-        }
 
         public List<Data> WriteJson(int id, string name, string path)
         {

@@ -72,13 +72,15 @@ namespace ModelessForm_ExternalEvent.Config
             // 
             this.openFileDialog1.FileName = "Config.xlsx";
             this.openFileDialog1.Filter = "File Excel (*.xlsx)|*.xlsx|All files (*.*)|*.*";
-            this.openFileDialog1.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Bold Software\DataCell";
+            this.openFileDialog1.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Bold Software\Config";
             // 
             // ConfigPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(364, 246);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Controls.Add(this.groupBox1);
             this.Name = "ConfigPanel";
             this.Text = "Pannello di Configurazione";
