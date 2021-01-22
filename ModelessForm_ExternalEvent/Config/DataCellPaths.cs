@@ -73,24 +73,12 @@ namespace ModelessForm_ExternalEvent.Config
                     _pathDataCell = folderBrowserDialog1.SelectedPath;
 
                     // Lo scrive in un file esterno Json
-                    string jsonText = File.ReadAllText(ModelessForm.thisModForm.PathFileTxt);
-                    var traduction = JsonConvert.DeserializeObject<IList<Data>>(jsonText);
-                    dynamic jsonObj = JsonConvert.DeserializeObject(jsonText);
-                    // Se l'oggetto .json esiste già...
-                    if (traduction.Count == 2)
-                    {
-                        jsonObj[1]["Path"] = _pathDataCell;
-                        string output = JsonConvert.SerializeObject(jsonObj, Formatting.Indented);
-                        File.WriteAllText(ModelessForm.thisModForm.PathFileTxt, output);
-                    }
-                    else // ... altrimenti lo crea
-                    {
-                        traduction.Add(new Data { Id = 2, Name = "DataCellPath", Path = _pathDataCell });
-                        jsonText = JsonConvert.SerializeObject(traduction);
-                        File.WriteAllText(ModelessForm.thisModForm.PathFileTxt, jsonText);
-                    }
-                    
+                    Json fileJson = new Json();
+                    fileJson.UpdateJson(2, 1, "DataCellPath", _pathDataCell);
+
                     // Ottiene il _pathconfig
+                    string jsonText = File.ReadAllText(ModelessForm.thisModForm.PathFileTxt);
+                    IList<Data> traduction = JsonConvert.DeserializeObject<IList<Data>>(jsonText);
                     Data singleItem = traduction.FirstOrDefault(x => x.Id == 1);
                     _pathConfig = singleItem.Path;
 
