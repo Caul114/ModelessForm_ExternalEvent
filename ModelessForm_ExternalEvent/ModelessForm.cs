@@ -49,7 +49,6 @@ namespace ModelessForm_ExternalEvent
         private MagnifyingGlass magnifyingGlass;
 
         // Percorso del singolo file excel da importare di default
-        //private string _pathConfig = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\Bold Software\Config\Config.xlsx";
         private string _pathFileTxt = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Bold Software\DataCell\ConfigPath.json";
         private string _pathConfig = "";
 
@@ -123,6 +122,7 @@ namespace ModelessForm_ExternalEvent
             m_Handler = handler;
             m_ExEvent = exEvent;
 
+            // Riempie l'istanza di questa classe con la Form
             thisModForm = this;
 
             // Verifica se il _pathConfig ed il _pathDataCell esisteono o meno
