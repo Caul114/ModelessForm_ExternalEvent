@@ -22,14 +22,23 @@ namespace ModelessForm_ExternalEvent.Config
     {
         #region Private data members
 
+        // Dichiaro un'istanza di ModelessForm
+        private ModelessForm modelessForm;
+
         // Dichiaro una instanza di ConfigPanel
         private ConfigPanel configPanel = new ConfigPanel();
 
         // Valore del Path del file Configuration
         private string _pathConfig = "";
 
-        // Valore del path DATACELL sulla cartella CLOUD
+        // Valore del path DATACELL 
         private string _pathDataCell = "";
+
+        // Valore del path BOLD_Distinta 
+        private string _pathBOLD_Distinta = "";
+
+        // Valore del path IMAGES 
+        private string _pathImages = "";
 
         // Imposta i valori delle raw e delle column dell'Excel Config 
         private int _rawCommessa = 2;
@@ -72,9 +81,15 @@ namespace ModelessForm_ExternalEvent.Config
                     // Ottiene il nuovo Path del File di configurazione
                     _pathDataCell = folderBrowserDialog1.SelectedPath;
 
+                    // Imposta i Path degli altri due valori 
+                    _pathBOLD_Distinta = _pathDataCell + @"\AbacoCells.xlsm";
+                    _pathImages = _pathDataCell + @"\Images";
+
                     // Lo scrive in un file esterno Json
                     Json fileJson = new Json();
-                    fileJson.UpdateJson(2, 1, "DataCellPath", _pathDataCell);
+                    fileJson.UpdateJson(2, 1, "DataCellPath", _pathDataCell);                    
+                    fileJson.UpdateJson(3, 2, "AbacoCellPath", _pathBOLD_Distinta);
+                    fileJson.UpdateJson(4, 3, "ImagesPath", _pathImages);
 
                     // Ottiene il _pathconfig
                     string jsonText = File.ReadAllText(ModelessForm.thisModForm.PathFileTxt);

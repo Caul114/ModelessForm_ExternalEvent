@@ -52,7 +52,7 @@ namespace ModelessForm_ExternalEvent
         private string _pathFileTxt = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Bold Software\DataCell\ConfigPath.json";
         private string _pathConfig = "";
 
-        private string pathExcel = "";
+        private string _pathExcel = "";
         ImportData importData = new ImportData();
 
         // Percorso del file Excel utile per la Configurazione
@@ -63,9 +63,10 @@ namespace ModelessForm_ExternalEvent
         private int _colDataCell = 3;
 
         // Percorso della cartella Immagini di default
-        string folderImageDefault = "";
-        string folderImageActual = "";        
-        string folderName = "";
+        private string _folderImageSkeleton = "";
+        private string _folderImageDefault = "";
+        private string _folderImageActual = "";
+        private string _folderName = "";
 
         // Valore attivo nella ComboBox
         private string valueActive;
@@ -89,14 +90,6 @@ namespace ModelessForm_ExternalEvent
         /// <summary>
         /// Proprietà pubblica per accedere al valore della richiesta corrente
         /// </summary>
-        public string PathFileTxt
-        {
-            get { return _pathFileTxt; }
-        }
-
-        /// <summary>
-        /// Proprietà pubblica per accedere al valore della richiesta corrente
-        /// </summary>
         public RequestHandler GetHandler
         {
             get { return m_Handler; }
@@ -110,6 +103,29 @@ namespace ModelessForm_ExternalEvent
             get { return m_ExEvent; }
         }
 
+        /// <summary>
+        /// Proprietà pubblica per accedere al valore della richiesta corrente
+        /// </summary>
+        public string PathFileTxt
+        {
+            get { return _pathFileTxt; }
+        }
+
+        /// <summary>
+        /// Proprietà pubblica per accedere al valore della richiesta corrente
+        /// </summary>
+        public string PathBOLD_Distinta
+        {
+            get { return _pathExcel; }
+        }
+
+        /// <summary>
+        /// Proprietà pubblica per accedere al valore della richiesta corrente
+        /// </summary>
+        public string PathImages
+        {
+            get { return _folderImageDefault; }
+        }
         #endregion
 
         /// <summary>
@@ -125,7 +141,7 @@ namespace ModelessForm_ExternalEvent
             // Riempie l'istanza di questa classe con la Form
             thisModForm = this;
 
-            // Verifica se il _pathConfig ed il _pathDataCell esisteono o meno
+            // Verifica se il _pathConfig ed il _pathDataCell esistAno o meno
             GetFileTxt();
             if(_pathConfig.Length > 1)
             {
@@ -148,18 +164,19 @@ namespace ModelessForm_ExternalEvent
                 // Ottiene il Path DataCell contenuto nel file di configurazione
                 GetSingleDataFromExcel(_pathConfig);
 
-                pathExcel = _pathDataCell + @"\AbacoCells.xlsm";
-                folderImageDefault = _pathDataCell + @"\Images";
+                _pathExcel = _pathDataCell + @"\AbacoCells.xlsm";
+                _folderImageSkeleton = _pathDataCell + @"\Images_Skeleton";
+                _folderImageDefault = _pathDataCell + @"\Images";
 
                 // Definisce i colori di alcune forme
                 captureButton.BackColor = Color.DodgerBlue;
 
                 // Inserisce le immagini selezionate
-                folderImageActual = folderImageDefault;
+                _folderImageActual = _folderImageDefault;
                 SetModifyPicture();
 
                 // Imposta l'origine dati della Combobox e la riempie
-                List<string> dataBuffer = importData.XlSheets(pathExcel);
+                List<string> dataBuffer = importData.XlSheets(_pathExcel);
                 // Chiude tutti i processi Excel ancora attivi
                 KillExcel();
                 if (dataBuffer != null)
@@ -257,7 +274,7 @@ namespace ModelessForm_ExternalEvent
         /// 
         public string GetExcelDirectoryPath()
         {
-            string directoryName = Path.GetDirectoryName(pathExcel);
+            string directoryName = Path.GetDirectoryName(_pathExcel);
             return directoryName;
         }
 
@@ -297,7 +314,7 @@ namespace ModelessForm_ExternalEvent
             string jsonText = File.ReadAllText(_pathFileTxt);
             var traduction = JsonConvert.DeserializeObject<IList<Data>>(jsonText);
 
-            if (traduction.Count == 2)
+            if (traduction.Any(x => x.Id == 2))
             {
                 Data singleItem = traduction.FirstOrDefault(x => x.Id == 2);
                 _pathDataCell = singleItem.Path;
@@ -486,7 +503,7 @@ namespace ModelessForm_ExternalEvent
                 try
                 {
                     // Imposto il nuovo Path del documento da aprire
-                    pathExcel = uploadExcelOpenFileDialog.FileName;
+                    _pathExcel = uploadExcelOpenFileDialog.FileName;
 
                     // Cancella il contenuto della ComboBox e della DataGrid
                     comboBox1.Items.Clear();
@@ -498,7 +515,7 @@ namespace ModelessForm_ExternalEvent
 
                     // Imposta l'origine dati della Combobox e la riempie con il nuovo documento Excel
                     ImportData newData = new ImportData();
-                    List<string> dataBuffer = newData.XlSheets(pathExcel);
+                    List<string> dataBuffer = newData.XlSheets(_pathExcel);
                     foreach (var sheet in dataBuffer)
                     {
                         comboBox1.Items.Add(sheet);
@@ -526,7 +543,7 @@ namespace ModelessForm_ExternalEvent
             valueDistintaActive = selectedItem;
 
             // Chiama il metodo che importa la pagina scelta del file Excel
-            GetDataFromExcel(selectedItem, pathExcel);
+            GetDataFromExcel(selectedItem, _pathExcel);
         }
 
         public void SetComboBox(string selectedItem)
@@ -534,7 +551,7 @@ namespace ModelessForm_ExternalEvent
             // Imposta la stringa nella ComboBox
             comboBox1.SelectedItem = selectedItem;
             // Chiama il metodo che importa la pagina scelta del file Excel
-            GetDataFromExcel(selectedItem, pathExcel);
+            GetDataFromExcel(selectedItem, _pathExcel);
         }
 
         /// <summary>
@@ -707,7 +724,7 @@ namespace ModelessForm_ExternalEvent
         private void saveExcelDistintabutton_Click(object sender, EventArgs e)
         {
             string sheet = valueDistintaActive;
-            ExportExcel(pathExcel, sheet, dataGridView1);
+            ExportExcel(_pathExcel, sheet, dataGridView1);
         }
 
         /// <summary>
@@ -779,13 +796,13 @@ namespace ModelessForm_ExternalEvent
         private void openExcelDistintaButton_Click(object sender, EventArgs e)
         {
             //Excel.Application excel = new Excel.Application();
-            //Excel.Workbook wb = excel.Workbooks.Open(pathExcel);
-            if(File.Exists(pathExcel))
+            //Excel.Workbook wb = excel.Workbooks.Open(_pathExcel);
+            if(File.Exists(_pathExcel))
             {
                 // Chiude tutti i processi Excel ancora attivi
                 KillExcel();
                 // Apre il file Excel
-                Process.Start(pathExcel);
+                Process.Start(_pathExcel);
             }
         }
 
@@ -829,8 +846,8 @@ namespace ModelessForm_ExternalEvent
             if (result == DialogResult.OK)
             {
                 // Imposta il nuovo Path
-                folderName = folderBrowserDialog1.SelectedPath;
-                folderImageActual = folderName;
+                _folderName = folderBrowserDialog1.SelectedPath;
+                _folderImageActual = _folderName;
 
                 // Carica le nuove immagini
                 newImages = true;
@@ -851,7 +868,7 @@ namespace ModelessForm_ExternalEvent
             {
                 return "";
             }
-            if(familyType == null)
+            else if(familyType == null)
             {
                 return "";
             }
@@ -893,7 +910,15 @@ namespace ModelessForm_ExternalEvent
         public DataPicture GetDataPictureCentral()
         {
             // Proprietà immagine centrale
-            string pathc = folderImageActual + "\\" + GetPathModifier() + "_F.png";
+            string pathc = "";
+            if (GetPathModifier() == null)
+            {
+                pathc = _folderImageSkeleton + "\\_F.png";
+            }
+            else
+            {
+                pathc = _folderImageActual + "\\" + GetPathModifier() + "_F.png";
+            }
             int widthc = 222;
             int heigthc = 325;
             var data = new DataPicture(pathc, widthc, heigthc);
@@ -903,7 +928,15 @@ namespace ModelessForm_ExternalEvent
         public DataPicture GetDataPictureDx()
         {
             // Proprietà immagine destra
-            string pathd = folderImageActual + "\\" + GetPathModifier() + "_R.png";
+            string pathd = "";
+            if (GetPathModifier() == null)
+            {
+                pathd = _folderImageSkeleton + "\\_R.png";
+            }
+            else
+            {
+                pathd = _folderImageActual + "\\" + GetPathModifier() + "_R.png";
+            }
             int widthd = 65;
             int heigthd = 325;
             var data = new DataPicture(pathd, widthd, heigthd);
@@ -913,7 +946,15 @@ namespace ModelessForm_ExternalEvent
         public DataPicture GetDataPictureSx()
         {
             // Proprietà immagine sinistra
-            string paths = folderImageActual + "\\" + GetPathModifier() + "_L.png";
+            string paths = "";
+            if (GetPathModifier() == null)
+            {
+                paths = _folderImageSkeleton + "\\_L.png";
+            }
+            else
+            {
+                paths = _folderImageActual + "\\" + GetPathModifier() + "_L.png";
+            }
             int widths = 65;
             int heigths = 325;
             var data = new DataPicture(paths, widths, heigths);
@@ -923,7 +964,15 @@ namespace ModelessForm_ExternalEvent
         public DataPicture GetDataPictureHigh()
         {
             // Proprietà immagine alta
-            string pathh = folderImageActual + "\\" + GetPathModifier() + "_P.png";
+            string pathh = "";
+            if (GetPathModifier() == null)
+            {
+                pathh = _folderImageSkeleton + "\\_P.png";
+            }
+            else
+            {
+                pathh = _folderImageActual + "\\" + GetPathModifier() + "_P.png";
+            }
             int widthh = 222;
             int heigthh = 25;
             var data = new DataPicture(pathh, widthh, heigthh);
@@ -961,9 +1010,9 @@ namespace ModelessForm_ExternalEvent
 
                 if(MyImage1 != null)
                 {
-                    folderImageActual = folderImageDefault;
+                    _folderImageActual = _folderImageDefault;
 
-                    MyImage1 = new Bitmap(folderImageActual + "\\_F.png");
+                    MyImage1 = new Bitmap(_folderImageActual + "\\_F.png");
                     nameFamilyTextBox.Text = null;
                 }
             }
@@ -989,8 +1038,8 @@ namespace ModelessForm_ExternalEvent
             {
                 if (MyImage2 != null)
                 {
-                    folderImageActual = folderImageDefault;
-                    MyImage2 = new Bitmap(folderImageActual + "\\_R.png");
+                    _folderImageActual = _folderImageDefault;
+                    MyImage2 = new Bitmap(_folderImageActual + "\\_R.png");
                     nameFamilyTextBox.Text = null;
                 }
             }
@@ -1017,8 +1066,8 @@ namespace ModelessForm_ExternalEvent
             {
                 if (MyImage3 != null)
                 {
-                    folderImageActual = folderImageDefault;
-                    MyImage3 = new Bitmap(folderImageActual + "\\_L.png");
+                    _folderImageActual = _folderImageDefault;
+                    MyImage3 = new Bitmap(_folderImageActual + "\\_L.png");
                     nameFamilyTextBox.Text = null;
                 }                    
             }
@@ -1045,8 +1094,8 @@ namespace ModelessForm_ExternalEvent
             {
                 if (MyImage4 != null)
                 {
-                    folderImageActual = folderImageDefault;
-                    MyImage4 = new Bitmap(folderImageActual + "\\_P.png");
+                    _folderImageActual = _folderImageDefault;
+                    MyImage4 = new Bitmap(_folderImageActual + "\\_P.png");
                     nameFamilyTextBox.Text = null;
                 }                    
             }

@@ -215,6 +215,7 @@ namespace ModelessForm_ExternalEvent
             // 
             // pictureBoxHigh
             // 
+            this.pictureBoxHigh.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.pictureBoxHigh.Location = new System.Drawing.Point(7, 15);
             this.pictureBoxHigh.Name = "pictureBoxHigh";
             this.pictureBoxHigh.Size = new System.Drawing.Size(372, 372);
@@ -244,6 +245,7 @@ namespace ModelessForm_ExternalEvent
             // 
             // pictureBoxCentral
             // 
+            this.pictureBoxCentral.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.pictureBoxCentral.Location = new System.Drawing.Point(7, 15);
             this.pictureBoxCentral.Name = "pictureBoxCentral";
             this.pictureBoxCentral.Size = new System.Drawing.Size(372, 372);
@@ -273,6 +275,7 @@ namespace ModelessForm_ExternalEvent
             // 
             // pictureBoxDx
             // 
+            this.pictureBoxDx.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.pictureBoxDx.Location = new System.Drawing.Point(7, 16);
             this.pictureBoxDx.Name = "pictureBoxDx";
             this.pictureBoxDx.Size = new System.Drawing.Size(372, 372);
@@ -302,6 +305,7 @@ namespace ModelessForm_ExternalEvent
             // 
             // pictureBoxSx
             // 
+            this.pictureBoxSx.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.pictureBoxSx.Location = new System.Drawing.Point(7, 15);
             this.pictureBoxSx.Name = "pictureBoxSx";
             this.pictureBoxSx.Size = new System.Drawing.Size(372, 372);
@@ -410,12 +414,13 @@ namespace ModelessForm_ExternalEvent
             // 
             // settingsButton
             // 
+            this.settingsButton.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.settingsButton.Image = ((System.Drawing.Image)(resources.GetObject("settingsButton.Image")));
             this.settingsButton.Location = new System.Drawing.Point(31, 29);
             this.settingsButton.Name = "settingsButton";
             this.settingsButton.Size = new System.Drawing.Size(38, 39);
             this.settingsButton.TabIndex = 0;
-            this.settingsButton.UseVisualStyleBackColor = true;
+            this.settingsButton.UseVisualStyleBackColor = false;
             this.settingsButton.Click += new System.EventHandler(this.settingsButton_Click);
             // 
             // functionGroupBoxListBox
@@ -451,12 +456,13 @@ namespace ModelessForm_ExternalEvent
             // 
             // openExcelDistintaButton
             // 
+            this.openExcelDistintaButton.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.openExcelDistintaButton.Image = ((System.Drawing.Image)(resources.GetObject("openExcelDistintaButton.Image")));
             this.openExcelDistintaButton.Location = new System.Drawing.Point(90, 29);
             this.openExcelDistintaButton.Name = "openExcelDistintaButton";
             this.openExcelDistintaButton.Size = new System.Drawing.Size(38, 39);
             this.openExcelDistintaButton.TabIndex = 9;
-            this.openExcelDistintaButton.UseVisualStyleBackColor = true;
+            this.openExcelDistintaButton.UseVisualStyleBackColor = false;
             this.openExcelDistintaButton.Click += new System.EventHandler(this.openExcelDistintaButton_Click);
             // 
             // functionGroupBox4

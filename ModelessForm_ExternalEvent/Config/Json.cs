@@ -35,7 +35,7 @@ namespace ModelessForm_ExternalEvent.Config
             IList<Data> traduction = JsonConvert.DeserializeObject<IList<Data>>(jsonText);
             dynamic jsonObj = JsonConvert.DeserializeObject(jsonText);
             // Se l'oggetto .json esiste già...
-            if (traduction.Count == id)
+            if (traduction.Any(x => x.Id == id))
             {
                 jsonObj[index]["Path"] = path;
                 string output = JsonConvert.SerializeObject(jsonObj, Formatting.Indented);
