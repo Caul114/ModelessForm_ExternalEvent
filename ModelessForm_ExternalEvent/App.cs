@@ -73,7 +73,7 @@ namespace ModelessForm_ExternalEvent
                 // ToolTip mostrato
                 button.ToolTip = "Mostra i parametri delle finestre";
                 // Icona del Button
-                Uri uriImage = new Uri(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Bold Software\DataCell\Icon\revit_small.png");
+                Uri uriImage = new Uri(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\BOLD Software\DataCell\Icon\revit_small.png");
                 BitmapImage image = new BitmapImage(uriImage);
                 button.LargeImage = image;
             };

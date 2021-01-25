@@ -26,8 +26,18 @@ namespace ModelessForm_ExternalEvent.Config
         // Dichiaro una instanza di DataCellPaths
         private DataCellPaths dataCellPaths;
 
+        // Dichiaro una instanza di ExportValueToExcel
+        private ExportValueToExcel exportValueToExcel = new ExportValueToExcel();
+
         // Valore del Path del file Configuration
         private string _pathConfig = "";
+
+        // Valore del path DATACELL 
+        private string _pathDataCell = "";
+
+        // Imposta i valori delle raw e delle column dell'Excel Config 
+        private int _rawCommessa = 2;
+        private int _colDataCell = 3;
         #endregion
 
         #region Class public property
@@ -69,29 +79,70 @@ namespace ModelessForm_ExternalEvent.Config
                 {
                     // Ottiene il nuovo Path del File di configurazione
                     _pathConfig = openFileDialog1.FileName;
+                    string pathReplaced = _pathConfig.Replace(Environment.GetFolderPath(
+                        Environment.SpecialFolder.MyDocuments), "");
 
                     // Lo scrive in un file esterno
-                    //System.IO.File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Bold Software\Config\ConfigPath.txt", _pathConfig);
-                    
+                    //System.IO.File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\BOLD Software\Config\ConfigPath.txt", _pathConfig);
+
                     // Lo scrive in un file esterno Json
                     Json fileJson = new Json();
-                    List<Data> data = fileJson.WriteJson(1, "ConfigPath", _pathConfig);
+                    fileJson.UpdateJson(1, 0, "ConfigPath", pathReplaced);
 
-                    if (_pathConfig.Contains("Config.xlsx"))
+                    if (!_pathConfig.Contains("Config.xlsx"))
+                    {
+                        MessageBox.Show("Non hai scelto il file corretto.\n" +
+                            "Inserisci nuovamente il nome del file, ricordandoti che abbia questa estensione: \"...\\Config.xlsx\"");
+                    }
+                    else
                     {
                         // Chiude questo pannello
                         modelessForm = App.thisApp.RetriveForm();
                         modelessForm.CloseConfigPanel();
 
-                        // Apre il pannello DataCellPaths
-                        ShowDataCellPaths();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Non hai scelto il file corretto.\n" +
-                            "Inserisci nuovamente il nome del file, ricordandoti che abbia questa estensione: \"...\\Config.xlsx\"");
-                    }
+                        // legge ilfile .json
+                        string pathFileTxt = ModelessForm.thisModForm.PathFileTxt;
+                        string jsonText = File.ReadAllText(pathFileTxt);
+                        var traduction = JsonConvert.DeserializeObject<IList<Data>>(jsonText);
 
+                        if (traduction.Any(x => x.Id == 2))
+                        {
+                            Data singleItem = traduction.FirstOrDefault(x => x.Id == 2);
+                            if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + singleItem.Path))
+                            {
+                                // Apre il pannello DataCellPaths
+                                ShowDataCellPaths();
+                            }
+                            else
+                            {
+                                // Ottiene il path di DataCell                              
+                                Data itemDataCell= traduction.FirstOrDefault(x => x.Id == 2);
+                                _pathDataCell = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + itemDataCell.Path;
+
+                                // Ottiene il path di AbacoCells
+                                Data itemAbacoCells = traduction.FirstOrDefault(x => x.Id == 3);
+                                _pathConfig = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + itemAbacoCells.Path;
+
+                                // Ottiene i path di AbacoCells.xlsm e di Images
+                                exportValueToExcel.ExportExcelAndChangeValue(_pathConfig, _pathDataCell, _rawCommessa, _colDataCell);
+
+                                // Chiude la Form
+                                this.Close();
+
+                                // Avvisa che per far funziona reil DataCell bisogna riaccenderlo
+                                MessageBox.Show("Hai concluso correttamente la Configurazione. " +
+                                    "\nRientra cliccando nuovamente sul Plugin DataCell che trovi nel Pannello BOLD");
+
+                                // Chiude il DataCell 
+                                ModelessForm.thisModForm.Close();
+                            }
+                        }
+                        else
+                        {
+                            // Apre il pannello DataCellPaths
+                            ShowDataCellPaths();
+                        }
+                    }
                 }
                 catch (SecurityException ex)
                 {
@@ -126,7 +177,6 @@ namespace ModelessForm_ExternalEvent.Config
                 // Chiudo la form ConfigPanel
                 dataCellPaths.Close();
             }
-        }
-
+        }   
     }
 }

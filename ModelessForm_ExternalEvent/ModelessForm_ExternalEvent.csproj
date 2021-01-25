@@ -106,6 +106,7 @@
     <Compile Include="Config\DataCellPaths.Designer.cs">
       <DependentUpon>DataCellPaths.cs</DependentUpon>
     </Compile>
+    <Compile Include="Config\ExportValueToExcel.cs" />
     <Compile Include="Config\Json.cs" />
     <Compile Include="DataFromExcel\ImportData.cs" />
     <Compile Include="MagnifyingGlass.cs">

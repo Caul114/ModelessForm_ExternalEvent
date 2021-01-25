@@ -33,11 +33,13 @@ namespace ModelessForm_ExternalEvent.Config
             this.settingsDataCellButton = new System.Windows.Forms.Button();
             this.settingsDataCellLabel = new System.Windows.Forms.Label();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.label2 = new System.Windows.Forms.Label();
             this.settingsDataCellGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // settingsDataCellGroupBox
             // 
+            this.settingsDataCellGroupBox.Controls.Add(this.label2);
             this.settingsDataCellGroupBox.Controls.Add(this.settingsDataCellButton);
             this.settingsDataCellGroupBox.Controls.Add(this.settingsDataCellLabel);
             this.settingsDataCellGroupBox.Location = new System.Drawing.Point(28, 18);
@@ -49,7 +51,7 @@ namespace ModelessForm_ExternalEvent.Config
             // 
             // settingsDataCellButton
             // 
-            this.settingsDataCellButton.Location = new System.Drawing.Point(125, 110);
+            this.settingsDataCellButton.Location = new System.Drawing.Point(124, 115);
             this.settingsDataCellButton.Name = "settingsDataCellButton";
             this.settingsDataCellButton.Size = new System.Drawing.Size(169, 82);
             this.settingsDataCellButton.TabIndex = 1;
@@ -60,20 +62,30 @@ namespace ModelessForm_ExternalEvent.Config
             // settingsDataCellLabel
             // 
             this.settingsDataCellLabel.AutoSize = true;
-            this.settingsDataCellLabel.Location = new System.Drawing.Point(26, 51);
+            this.settingsDataCellLabel.Location = new System.Drawing.Point(81, 53);
             this.settingsDataCellLabel.Name = "settingsDataCellLabel";
-            this.settingsDataCellLabel.Size = new System.Drawing.Size(378, 34);
+            this.settingsDataCellLabel.Size = new System.Drawing.Size(268, 17);
             this.settingsDataCellLabel.TabIndex = 0;
             this.settingsDataCellLabel.Text = "Inserisci l\'indirizzo della Cartella DataCell.\r\n";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(163, 74);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(87, 17);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "(.../DataCell)";
             // 
             // DataCellPaths
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(490, 294);
+            this.Controls.Add(this.settingsDataCellGroupBox);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Controls.Add(this.settingsDataCellGroupBox);
             this.Name = "DataCellPaths";
             this.Text = "Percorso della Cartella DataCell";
             this.settingsDataCellGroupBox.ResumeLayout(false);
@@ -88,5 +100,6 @@ namespace ModelessForm_ExternalEvent.Config
         private System.Windows.Forms.Button settingsDataCellButton;
         private System.Windows.Forms.Label settingsDataCellLabel;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
+        private System.Windows.Forms.Label label2;
     }
 }

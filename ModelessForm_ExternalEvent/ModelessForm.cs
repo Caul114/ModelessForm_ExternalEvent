@@ -49,7 +49,8 @@ namespace ModelessForm_ExternalEvent
         private MagnifyingGlass magnifyingGlass;
 
         // Percorso del singolo file excel da importare di default
-        private string _pathFileTxt = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Bold Software\DataCell\ConfigPath.json";
+        private string _pathFileConfig = @"\BOLD Software\DataCell\ConfigPath.json";
+        private string _pathFileTxt = "";
         private string _pathConfig = "";
 
         private string _pathExcel = "";
@@ -141,7 +142,7 @@ namespace ModelessForm_ExternalEvent
             // Riempie l'istanza di questa classe con la Form
             thisModForm = this;
 
-            // Verifica se il _pathConfig ed il _pathDataCell esistAno o meno
+            // Verifica se il _pathConfig ed il _pathDataCell esistano o meno
             GetFileTxt();
             if(_pathConfig.Length > 1)
             {
@@ -284,6 +285,8 @@ namespace ModelessForm_ExternalEvent
         /// 
         public void GetFileTxt()
         {
+            _pathFileTxt = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + _pathFileConfig;
+
             if (File.Exists(_pathFileTxt))
             {
                 // Salva il percorso in un file .txt
@@ -295,7 +298,10 @@ namespace ModelessForm_ExternalEvent
                 {
                     var traduction = JsonConvert.DeserializeObject<IList<Data>>(jsonText);
                     Data singleItem = traduction.FirstOrDefault(x => x.Id == 1);
-                    _pathConfig = singleItem.Path;
+                    if(File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + singleItem.Path))
+                    {
+                        _pathConfig = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + singleItem.Path;
+                    }                    
                 }
             }
             else
@@ -310,14 +316,17 @@ namespace ModelessForm_ExternalEvent
         /// 
         public void GetDataCellPath()
         {
-            // read JSON from a file
+            // legge ilfile .json
             string jsonText = File.ReadAllText(_pathFileTxt);
             var traduction = JsonConvert.DeserializeObject<IList<Data>>(jsonText);
 
             if (traduction.Any(x => x.Id == 2))
             {
                 Data singleItem = traduction.FirstOrDefault(x => x.Id == 2);
-                _pathDataCell = singleItem.Path;
+                if(Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + singleItem.Path))
+                {
+                    _pathDataCell = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + singleItem.Path;
+                }
             }
             else
             {

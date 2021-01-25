@@ -14,7 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using Excel = Microsoft.Office.Interop.Excel;
+
 
 namespace ModelessForm_ExternalEvent.Config
 {
@@ -22,11 +22,14 @@ namespace ModelessForm_ExternalEvent.Config
     {
         #region Private data members
 
-        // Dichiaro un'istanza di ModelessForm
-        private ModelessForm modelessForm;
+        // Instanza della classe 
+        internal static DataCellPaths thisDataCell = null;
 
         // Dichiaro una instanza di ConfigPanel
         private ConfigPanel configPanel = new ConfigPanel();
+
+        // Dichiaro una instanza di ExportValueToExcel
+        private ExportValueToExcel exportValueToExcel = new ExportValueToExcel();
 
         // Valore del Path del file Configuration
         private string _pathConfig = "";
@@ -57,7 +60,8 @@ namespace ModelessForm_ExternalEvent.Config
 
         public DataCellPaths()
         {
-            InitializeComponent();
+            thisDataCell = this;
+            InitializeComponent();            
         }
 
         /// <summary>
@@ -80,35 +84,44 @@ namespace ModelessForm_ExternalEvent.Config
                 {
                     // Ottiene il nuovo Path del File di configurazione
                     _pathDataCell = folderBrowserDialog1.SelectedPath;
+                    if (_pathDataCell.Contains("DataCell"))
+                    {
+                        string pathReplaced = _pathDataCell.Replace(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "");
 
-                    // Imposta i Path degli altri due valori 
-                    _pathBOLD_Distinta = _pathDataCell + @"\AbacoCells.xlsm";
-                    _pathImages = _pathDataCell + @"\Images";
+                        // Imposta i Path degli altri due valori 
+                        _pathBOLD_Distinta = pathReplaced + @"\AbacoCells.xlsm";
+                        _pathImages = pathReplaced + @"\Images";
 
-                    // Lo scrive in un file esterno Json
-                    Json fileJson = new Json();
-                    fileJson.UpdateJson(2, 1, "DataCellPath", _pathDataCell);                    
-                    fileJson.UpdateJson(3, 2, "AbacoCellPath", _pathBOLD_Distinta);
-                    fileJson.UpdateJson(4, 3, "ImagesPath", _pathImages);
+                        // Lo scrive in un file esterno Json
+                        Json fileJson = new Json();
+                        fileJson.UpdateJson(2, 1, "DataCellPath", pathReplaced);
+                        fileJson.UpdateJson(3, 2, "AbacoCellPath", _pathBOLD_Distinta);
+                        fileJson.UpdateJson(4, 3, "ImagesPath", _pathImages);
 
-                    // Ottiene il _pathconfig
-                    string jsonText = File.ReadAllText(ModelessForm.thisModForm.PathFileTxt);
-                    IList<Data> traduction = JsonConvert.DeserializeObject<IList<Data>>(jsonText);
-                    Data singleItem = traduction.FirstOrDefault(x => x.Id == 1);
-                    _pathConfig = singleItem.Path;
+                        // Ottiene il _pathconfig
+                        string jsonText = File.ReadAllText(ModelessForm.thisModForm.PathFileTxt);
+                        IList<Data> traduction = JsonConvert.DeserializeObject<IList<Data>>(jsonText);
+                        Data singleItem = traduction.FirstOrDefault(x => x.Id == 3);
+                        _pathConfig = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + singleItem.Path;
 
-                    // Ottiene i path di AbacoCells.xlsm e di Images
-                    ExportExcelAndChangeValue(_pathConfig, _rawCommessa, _colDataCell);
+                        // Ottiene i path di AbacoCells.xlsm e di Images
+                        exportValueToExcel.ExportExcelAndChangeValue(_pathConfig, _pathDataCell, _rawCommessa, _colDataCell);
 
-                    // Chiude la Form
-                    this.Close();
+                        // Chiude la Form
+                        this.Close();
 
-                    // Avvisa che per far funziona reil DataCell bisogna riaccenderlo
-                    MessageBox.Show("Hai concluso correttamente la Configurazione. " +
-                        "\nRientra cliccando nuovamente sul Plugin DataCell che trovi nel Pannello Bold.");
+                        // Avvisa che per far funziona reil DataCell bisogna riaccenderlo
+                        MessageBox.Show("Hai concluso correttamente la Configurazione. " +
+                            "\nRientra cliccando nuovamente sul Plugin DataCell che trovi nel Pannello BOLD");
 
-                    // Chiude il DataCell 
-                    ModelessForm.thisModForm.Close();
+                        // Chiude il DataCell 
+                        ModelessForm.thisModForm.Close();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Non hai inserito un percorso corretto." +
+                            "\nClicca nuovamente il pulsante Inserisci e cerca il percorso corretto della cartella DataCell.");
+                    }                    
                 }
                 catch (SecurityException ex)
                 {
@@ -116,136 +129,6 @@ namespace ModelessForm_ExternalEvent.Config
                     $"Details:\n\n{ex.StackTrace}");
                 }
             }
-        }
-
-        /// <summary>
-        ///   Metodo che Esporta in Excel i cambiamenti effettuati in alcune sue celle
-        /// </summary>
-        /// 
-        public void ExportExcelAndChangeValue(string pathExcel, int raw, int col)
-        {
-
-            Excel.Application excelApp = new Excel.Application();
-            if (excelApp == null)
-            {
-                MessageBox.Show("Non puoi creare un documento Excel." +
-                    "\nIl tuo PC potrebbe non essere abilitato per il salvataggio di un file Excel.");
-                return;
-            }
-
-            Excel.Workbooks workbooks = excelApp.Workbooks;
-            Excel.Workbook workbook = workbooks.Open(
-                  pathExcel,
-                  Type.Missing, //updatelinks
-                  false,        //readonly
-                  Type.Missing, //format
-                  Type.Missing, //Password
-                  Type.Missing, //writeResPass
-                  true,         //ignoreReadOnly
-                  Type.Missing, //origin
-                  Type.Missing, //delimiter
-                  true,         //editable
-                  Type.Missing, //Notify
-                  Type.Missing, //converter
-                  Type.Missing, //AddToMru
-                  Type.Missing, //Local
-                  Type.Missing); //corruptLoad);
-            Excel.Worksheet worksheet = (Excel.Worksheet)workbook.ActiveSheet;
-
-            // Recupera l'intervallo utilizzato.
-            Excel.Range used_range = worksheet.UsedRange;
-
-            // Ottiene il numero massimo di righe e colonne.
-            int max_row = used_range.Rows.Count;
-            int max_col = used_range.Columns.Count;
-
-            // Ottiene i valori del foglio.
-            object[,] values = (object[,])used_range.Value2;
-
-            // Imposta il numero della riga e della colonna che si vuole ottenere
-            int rawCommessa = raw;
-            int colDataCell = col;
-
-            //used_range.Cells[rawCommessa, colDataCell] = _newPathDataCell;
-
-            // Imposta il path della Distinta
-            SetCellContent(worksheet, max_row, max_col, rawCommessa, colDataCell);
-
-            worksheet.Columns.EntireColumn.AutoFit();
-
-            // Crea un file Excel temporaneo e lo salva al posto di quello originale
-            string tmpName = Path.GetTempFileName();
-            //string tmpName = @"C:\Users\Bold\Documents\Bold Software\Config\temp.xlsx";
-            File.Delete(tmpName);
-
-            if (pathExcel != "")
-            {
-                try
-                {
-                    workbook.SaveAs(tmpName, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing,
-                        Excel.XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Errore di esportazione!\n" + ex.Message);
-                }
-            }
-            workbook.Close(false, Type.Missing, Type.Missing);
-            excelApp.Quit();
-            File.Delete(pathExcel);
-            File.Move(tmpName, pathExcel);
-
-
-            // Chiude tutti i processi Excel ancora attivi
-            KillExcel();
-
-            // Forza un Garbage collector immediato
-            GC.Collect();
-        }
-
-
-        /// <summary>
-        ///   Metodo che imposta il contenuto della cella specifica
-        /// </summary>
-        /// 
-        private void SetCellContent(Excel.Worksheet worksheet, int max_row, int max_col, int recordRaw, int recordCol)
-        {
-            // Copia i valori nella griglia.
-            for (int row = 2; row <= max_row; row++)
-            {
-                for (int col = 1; col <= max_col; col++)
-                {
-                    if (row == recordRaw && col == recordCol && recordCol == 3)
-                    {
-                        worksheet.Cells[row, col] = _pathDataCell;
-                    }
-                    else if (row == recordRaw && col == (recordCol + 1) && (recordCol + 1) == 4)
-                    {
-                        worksheet.Cells[row, col] = _pathDataCell + @"\AbacoCells.xlsm";
-                    }
-                    else if (row == recordRaw && col == (recordCol + 2) && (recordCol + 2) == 5)
-                    {
-                        worksheet.Cells[row, col] = _pathDataCell + @"\Images";
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        ///   Metodo che chiude tutti i processi Excel attivi
-        /// </summary>
-        ///        
-        static void KillExcel()
-        {
-            Process[] AllProcesses = Process.GetProcessesByName("excel");
-
-            // Fai un check per Killare tutti i processi Excel
-            foreach (Process ExcelProcess in AllProcesses)
-            {
-                //if (myHashtable.ContainsKey(ExcelProcess.Id) == true)
-                ExcelProcess.Kill();
-            }
-            AllProcesses = null;
-        }
+        }       
     }
 }
