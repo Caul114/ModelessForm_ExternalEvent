@@ -59,7 +59,7 @@ namespace ModelessForm_ExternalEvent
         private string _familyType;
 
         // Il valore attivo nella pagina
-        private int count = 0;
+        int count = 0;
 
         // La lista di stringhe che restituirà i valori da inserire in ListBox
         private ArrayList _dimensionsList;
@@ -71,7 +71,6 @@ namespace ModelessForm_ExternalEvent
         private DataTable _table;
 
         // Percorso file Excel con tutte le Distinte
-        string path = "";
         private List<string> _listXlSh;
         #endregion
 
