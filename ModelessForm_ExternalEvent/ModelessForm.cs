@@ -69,6 +69,9 @@ namespace ModelessForm_ExternalEvent
         private string _folderImageActual = "";
         private string _folderName = "";
 
+        // Percorso della cartella family delle immagini
+        private string _familyType = "";
+
         // Valore attivo nella ComboBox
         private string valueActive;
 
@@ -872,12 +875,14 @@ namespace ModelessForm_ExternalEvent
         // Recupera il valore stringa del tipo della famiglia dall'elemento selezionato
         private string GetPathModifier()
         {
-            string familyType = "";
-            if(newImages)
+            // Cattura il tipo di famiglia dell'immagine
+            _familyType = m_Handler.GetFamilyType;
+
+            if (newImages)
             {
                 return "";
             }
-            else if(familyType == null)
+            else if(_familyType == null)
             {
                 return "";
             }
@@ -886,10 +891,9 @@ namespace ModelessForm_ExternalEvent
                 return "";
             }
             else
-            {
-                familyType = m_Handler.GetFamilyType;
-                nameFamilyTextBox.Text = familyType;
-                return familyType;
+            {                
+                nameFamilyTextBox.Text = _familyType;
+                return _familyType;
             }
         }
 
@@ -920,72 +924,120 @@ namespace ModelessForm_ExternalEvent
         {
             // Proprietà immagine centrale
             string pathc = "";
-            if (GetPathModifier() == null)
+            string stringToAdd = GetPathModifier();
+            if (stringToAdd == null || stringToAdd == "")
             {
                 pathc = _folderImageSkeleton + "\\_F.png";
             }
             else
             {
-                pathc = _folderImageActual + "\\" + GetPathModifier() + "_F.png";
+                pathc = _folderImageActual + "\\" + stringToAdd + "_F.png";
             }
+
             int widthc = 222;
             int heigthc = 325;
-            var data = new DataPicture(pathc, widthc, heigthc);
-            return data;
+
+            if (File.Exists(pathc))
+            {                
+                var data = new DataPicture(pathc, widthc, heigthc);
+                return data;
+            }
+            else
+            {
+                var data = new DataPicture(_folderImageSkeleton + @"\_F.png", widthc, heigthc);
+                return data;                 
+            }
         }
 
         public DataPicture GetDataPictureDx()
         {
             // Proprietà immagine destra
             string pathd = "";
-            if (GetPathModifier() == null)
+            string stringToAdd = GetPathModifier();
+            if (stringToAdd == null || stringToAdd == "")
             {
                 pathd = _folderImageSkeleton + "\\_R.png";
             }
             else
             {
-                pathd = _folderImageActual + "\\" + GetPathModifier() + "_R.png";
+                pathd = _folderImageActual + "\\" + stringToAdd + "_R.png";
             }
+
             int widthd = 65;
             int heigthd = 325;
-            var data = new DataPicture(pathd, widthd, heigthd);
-            return data;
+
+            if (File.Exists(pathd))
+            {                
+                var data = new DataPicture(pathd, widthd, heigthd);
+                return data;
+            }
+            else
+            {
+                var data = new DataPicture(_folderImageSkeleton + @"\_R.png", widthd, heigthd);
+                return data;
+            }
+            
         }
 
         public DataPicture GetDataPictureSx()
         {
             // Proprietà immagine sinistra
             string paths = "";
-            if (GetPathModifier() == null)
+            string stringToAdd = GetPathModifier();
+            if (stringToAdd == null || stringToAdd == "")
             {
                 paths = _folderImageSkeleton + "\\_L.png";
             }
             else
             {
-                paths = _folderImageActual + "\\" + GetPathModifier() + "_L.png";
+                paths = _folderImageActual + "\\" + stringToAdd + "_L.png";
             }
+
             int widths = 65;
             int heigths = 325;
-            var data = new DataPicture(paths, widths, heigths);
-            return data;
+
+            if (File.Exists(paths))
+            {
+
+                var data = new DataPicture(paths, widths, heigths);
+                return data;
+            }
+            else
+            {
+                var data = new DataPicture(_folderImageSkeleton + @"\_L.png", widths, heigths);
+                return data;
+            }
+            
         }
 
         public DataPicture GetDataPictureHigh()
         {
             // Proprietà immagine alta
             string pathh = "";
-            if (GetPathModifier() == null)
+            string stringToAdd = GetPathModifier();
+            if (stringToAdd == null || stringToAdd == "")
             {
                 pathh = _folderImageSkeleton + "\\_P.png";
             }
             else
             {
-                pathh = _folderImageActual + "\\" + GetPathModifier() + "_P.png";
+                pathh = _folderImageActual + "\\" + stringToAdd + "_P.png";
             }
+
             int widthh = 222;
             int heigthh = 25;
-            var data = new DataPicture(pathh, widthh, heigthh);
-            return data;
+
+            if (File.Exists(pathh))
+            {
+                var data = new DataPicture(pathh, widthh, heigthh);
+                return data;
+            }
+            else
+            {
+                var data = new DataPicture(_folderImageSkeleton + @"\_P.png", widthh, heigthh);
+                return data;
+            }
+            
         }        
 
         private Bitmap MyImage1;

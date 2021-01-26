@@ -79,23 +79,23 @@ namespace ModelessForm_ExternalEvent.Config
                 {
                     // Ottiene il nuovo Path del File di configurazione
                     _pathConfig = openFileDialog1.FileName;
-                    string pathReplaced = _pathConfig.Replace(Environment.GetFolderPath(
-                        Environment.SpecialFolder.MyDocuments), "");
 
-                    // Lo scrive in un file esterno
-                    //System.IO.File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\BOLD Software\Config\ConfigPath.txt", _pathConfig);
-
-                    // Lo scrive in un file esterno Json
-                    Json fileJson = new Json();
-                    fileJson.UpdateJson(1, 0, "ConfigPath", pathReplaced);
-
-                    if (!_pathConfig.Contains("Config.xlsx"))
+                    if (!_pathConfig.Contains("BOLD Software\\Config\\Config.xlsx"))
                     {
                         MessageBox.Show("Non hai scelto il file corretto.\n" +
-                            "Inserisci nuovamente il nome del file, ricordandoti che abbia questa estensione: \"...\\Config.xlsx\"");
+                            "Inserisci nuovamente il nome del file, ricordandoti che abbia questo percorso: \"...BOLD Software\\Config.xlsx\"");
                     }
                     else
                     {
+                        // Lo scrive in un file esterno
+                        //System.IO.File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\BOLD Software\Config\ConfigPath.txt", _pathConfig);
+
+                        // Lo scrive in un file esterno Json
+                        Json fileJson = new Json();
+                        string pathReplaced = _pathConfig.Replace(Environment.GetFolderPath(
+                            Environment.SpecialFolder.MyDocuments), "");
+                        fileJson.UpdateJson(1, 0, "ConfigPath", pathReplaced);
+
                         // Chiude questo pannello
                         modelessForm = App.thisApp.RetriveForm();
                         modelessForm.CloseConfigPanel();

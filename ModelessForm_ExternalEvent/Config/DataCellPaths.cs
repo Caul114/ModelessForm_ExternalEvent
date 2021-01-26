@@ -84,7 +84,7 @@ namespace ModelessForm_ExternalEvent.Config
                 {
                     // Ottiene il nuovo Path del File di configurazione
                     _pathDataCell = folderBrowserDialog1.SelectedPath;
-                    if (_pathDataCell.Contains("DataCell"))
+                    if (_pathDataCell.Contains("\\DataCell") && !_pathDataCell.Contains("\\Images"))
                     {
                         string pathReplaced = _pathDataCell.Replace(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "");
 
