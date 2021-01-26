@@ -6,6 +6,7 @@ using Autodesk.Revit.UI;
 using Microsoft.Office.Interop;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
@@ -71,15 +72,29 @@ namespace ModelessForm_ExternalEvent
                 is PushButton button)
             {
                 // ToolTip mostrato
-                button.ToolTip = "Mostra i parametri delle finestre";
+                button.ToolTip = "Mostra i parametri degli oggetti selezionati";
                 // Icona del Button
-                Uri uriImage = new Uri(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\BOLD Software\DataCell\Icon\revit_small.png");
-                BitmapImage image = new BitmapImage(uriImage);
-                button.LargeImage = image;
+                //Uri uriImage = new Uri(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\BOLD Software\DataCell\Icon\revit_small.png");
+                //BitmapImage image = new BitmapImage(uriImage);
+                //button.LargeImage = image;
+                button.Image = GetEmbeddedImage("ModelessForm_ExternalEvent.Resources.BoldSoftware_16.png");                
+                button.LargeImage = GetEmbeddedImage("ModelessForm_ExternalEvent.Resources.BoldSoftware_32.png");
             };
-
-
             return Result.Succeeded;
+        }
+
+        static BitmapSource GetEmbeddedImage(string name)
+        {
+            try
+            {
+                Assembly assemb = Assembly.GetExecutingAssembly();
+                Stream stre = assemb.GetManifestResourceStream(name);
+                return BitmapFrame.Create(stre);
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         /// <summary>
