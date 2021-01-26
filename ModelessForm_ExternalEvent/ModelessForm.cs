@@ -59,6 +59,9 @@ namespace ModelessForm_ExternalEvent
         // Percorso del file Excel utile per la Configurazione
         private string _pathDataCell = "";
 
+        // Inizializza la Classe ExportValueToExcel
+        ExportValueToExcel exportValueToExcel = new ExportValueToExcel();
+
         // Dati del foglio Excel utili per determinare la cella da prendere
         private int _rawCommessa = 2;
         private int _colDataCell = 3;
@@ -165,8 +168,8 @@ namespace ModelessForm_ExternalEvent
             }
             else
             {
-                // Ottiene il Path DataCell contenuto nel file di configurazione
-                GetSingleDataFromExcel(_pathConfig);
+                // Esporta le modifiche su folgio Excel, del pathDataCell, di AbacoCells.xlsm e di Images
+                exportValueToExcel.ExportExcelAndChangeValue(_pathConfig, _pathDataCell, _rawCommessa, _colDataCell);
 
                 _pathExcel = _pathDataCell + @"\AbacoCells.xlsm";
                 _folderImageSkeleton = _pathDataCell + @"\Images_Skeleton";
@@ -667,7 +670,7 @@ namespace ModelessForm_ExternalEvent
             // Ottiene l'oggetto dell'applicazione Excel.
             Excel.Application excel_app = new Excel.Application();
 
-            // Apre il fogio Excel
+            // Apre il foglio Excel
             Excel.Workbook workbook = excel_app.Workbooks.Open(path);
 
             Excel.Worksheet sheet = (Excel.Worksheet)workbook.ActiveSheet;

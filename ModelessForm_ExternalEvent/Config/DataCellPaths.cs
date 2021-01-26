@@ -104,7 +104,7 @@ namespace ModelessForm_ExternalEvent.Config
                         Data singleItem = traduction.FirstOrDefault(x => x.Id == 3);
                         _pathConfig = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + singleItem.Path;
 
-                        // Ottiene i path di AbacoCells.xlsm e di Images
+                        // Esporta le modifiche su folgio Excel, del pathDataCell, di AbacoCells.xlsm e di Images
                         exportValueToExcel.ExportExcelAndChangeValue(_pathConfig, _pathDataCell, _rawCommessa, _colDataCell);
 
                         // Chiude la Form
