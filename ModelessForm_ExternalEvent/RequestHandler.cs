@@ -253,7 +253,7 @@ namespace ModelessForm_ExternalEvent
             Document doc = uidoc.Document;
             Selection choices = uidoc.Selection;
 
-            // Ottieni il singolo elemento
+            // Ottieni il riferimento al singolo elemento
             Reference pickedObj = uidoc.Selection.PickObject(ObjectType.Element);
             return pickedObj;
         }

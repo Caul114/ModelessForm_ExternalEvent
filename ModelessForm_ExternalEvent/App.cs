@@ -72,17 +72,19 @@ namespace ModelessForm_ExternalEvent
                 is PushButton button)
             {
                 // ToolTip mostrato
-                button.ToolTip = "Mostra i parametri degli oggetti selezionati";
+                button.ToolTip = "Visualizzatore dei parametri degli oggetti selezionati";
                 // Icona del Button
-                //Uri uriImage = new Uri(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\BOLD Software\DataCell\Icon\revit_small.png");
-                //BitmapImage image = new BitmapImage(uriImage);
-                //button.LargeImage = image;
-                button.Image = GetEmbeddedImage("ModelessForm_ExternalEvent.Resources.BoldSoftware_16.png");                
-                button.LargeImage = GetEmbeddedImage("ModelessForm_ExternalEvent.Resources.BoldSoftware_32.png");
+                button.Image = GetEmbeddedImage("ModelessForm_ExternalEvent.Resources.BOLDsft_16.png");                
+                button.LargeImage = GetEmbeddedImage("ModelessForm_ExternalEvent.Resources.BOLDsft_32.png");
             };
             return Result.Succeeded;
         }
 
+        /// <summary>
+        /// Implementa il caricamento dell'Immagine Embedded
+        /// </summary>
+        /// <param name="application">Percorso dell'immagine</param>
+        /// <returns></returns>
         static BitmapSource GetEmbeddedImage(string name)
         {
             try
@@ -102,7 +104,6 @@ namespace ModelessForm_ExternalEvent
         /// </summary>
         /// <param name="application"></param>
         /// <returns></returns>
-
         public Result OnShutdown(UIControlledApplication application)
         {
             if (m_MyForm != null && m_MyForm.Visible)

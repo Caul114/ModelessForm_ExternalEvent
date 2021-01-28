@@ -133,14 +133,13 @@
     <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="BoldSoftware_16.ico" />
     <Content Include="DataCell.addin">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <EmbeddedResource Include="Resources\BoldSoftware_16.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\BoldSoftware_32.png" />
-    <Content Include="Resources\revit_small.png" />
+    <EmbeddedResource Include="Resources\BOLDsft_16.ico" />
+    <EmbeddedResource Include="Resources\BOLDsft_16.png" />
+    <EmbeddedResource Include="Resources\BOLDsft_32.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Config\ConfigPanel.resx">

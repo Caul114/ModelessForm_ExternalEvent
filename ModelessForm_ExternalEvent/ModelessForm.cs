@@ -155,7 +155,7 @@ namespace ModelessForm_ExternalEvent
                 GetDataCellPath();
             }
 
-            // Prende il percorso dei file dal file Excel di Configurazione 
+            // Prende il percorso dei file dal file .json di Configurazione 
             if (_pathConfig == "")
             {
                 MessageBox.Show("Il file Excel di Configurazione non è stato caricato."
@@ -452,6 +452,8 @@ namespace ModelessForm_ExternalEvent
             listBox1.DataSource = null;
             listBox1.Items.Clear();
             comboBox1.Text = defaultTextComboBox;
+            unitIdentifierTextBox.Text = null;
+            panelTypeIdentifierTextBox.Text = null;
             error = true;
             SetModifyPicture();
         }
@@ -470,6 +472,8 @@ namespace ModelessForm_ExternalEvent
             listBox1.DataSource = null;
             listBox1.Items.Clear();
             comboBox1.Text = defaultTextComboBox;
+            unitIdentifierTextBox.Text = null;
+            panelTypeIdentifierTextBox.Text = null;
             error = true;
             SetModifyPicture();
         }

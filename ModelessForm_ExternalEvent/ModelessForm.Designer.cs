@@ -535,12 +535,12 @@ namespace ModelessForm_ExternalEvent
             this.uploadExcelOpenFileDialog.DefaultExt = "xlsx";
             this.uploadExcelOpenFileDialog.FileName = "AbacoCells";
             this.uploadExcelOpenFileDialog.Filter = "File Excel (*.xlsx,*.xlsm)|*.xlsx;*.xlsm";
-            this.uploadExcelOpenFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\BOLD Software\\DataCell";
+            this.uploadExcelOpenFileDialog.InitialDirectory = "C:\\Users\\Bold\\Documents\\BOLD Software\\DataCell";
             // 
             // folderBrowserDialog1
             // 
             this.folderBrowserDialog1.Description = "Scegli la Directory da cui vuoi prendere le immagini.";
-            this.folderBrowserDialog1.SelectedPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\BOLD Software\\DataCell\\Images";
+            this.folderBrowserDialog1.SelectedPath = "C:\\Users\\Bold\\Documents\\BOLD Software\\DataCell\\Images";
             // 
             // ModelessForm
             // 
@@ -549,6 +549,7 @@ namespace ModelessForm_ExternalEvent
             this.ClientSize = new System.Drawing.Size(1905, 1027);
             this.Controls.Add(this.functionGroupBox2);
             this.Controls.Add(this.functionGroupBox1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ModelessForm";
             this.Text = "BOLD DataCell";
             this.Load += new System.EventHandler(this.ModelessForm_Load);
