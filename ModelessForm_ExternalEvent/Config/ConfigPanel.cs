@@ -100,7 +100,7 @@ namespace ModelessForm_ExternalEvent.Config
                         modelessForm = App.thisApp.RetriveForm();
                         modelessForm.CloseConfigPanel();
 
-                        // legge ilfile .json
+                        // legge il file .json
                         string pathFileTxt = ModelessForm.thisModForm.PathFileTxt;
                         string jsonText = File.ReadAllText(pathFileTxt);
                         var traduction = JsonConvert.DeserializeObject<IList<Data>>(jsonText);

@@ -36,6 +36,8 @@ namespace ModelessForm_ExternalEvent
         // In questo esempio, la finestra di dialogo possiede il gestore e gli oggetti evento, 
         // ma non è un requisito. Potrebbero anche essere proprietà statiche dell'applicazione.
 
+        #region Private data members
+
         private RequestHandler m_Handler;
         private ExternalEvent m_ExEvent;
 
@@ -48,7 +50,7 @@ namespace ModelessForm_ExternalEvent
         // Dichiara la Form della lente d'ingrandimento
         private MagnifyingGlass magnifyingGlass;
 
-        // Percorso del singolo file excel da importare di default
+        // Percorso del singolo file .json da importare di default
         private string _pathFileConfig = @"\BOLD Software\DataCell\ConfigPath.json";
         private string _pathFileTxt = "";
         private string _pathConfig = "";
@@ -92,6 +94,8 @@ namespace ModelessForm_ExternalEvent
 
         // Valore booleano per usare o meno la Lente d'ingrandimento
         private bool _activeMagnifyngGlass = false;
+
+        #endregion
 
         #region Class public property
         /// <summary>
@@ -147,6 +151,11 @@ namespace ModelessForm_ExternalEvent
 
             // Riempie l'istanza di questa classe con la Form
             thisModForm = this;
+
+            double FeetToInc = Constant.FeetToInc(21, 9);
+            double feetToMm = Constant.FeetToMm(FeetToInc);
+            double mmToFeet = Constant.MmToFeet(feetToMm);
+            int[] intToFeet = Constant.IncToFeet(mmToFeet);
 
             // Verifica se il _pathConfig ed il _pathDataCell esistano o meno
             GetFileTxt();
@@ -286,7 +295,7 @@ namespace ModelessForm_ExternalEvent
         }
 
         /// <summary>
-        ///   Verifica se il file .json di configurazione esiste o meno
+        ///   Verifica se il file .json di configurazione esista o meno
         /// </summary>
         /// 
         public void GetFileTxt()
@@ -1174,6 +1183,7 @@ namespace ModelessForm_ExternalEvent
         }
         #endregion
 
+        #region Magnifying Glass
         /// <summary>
         ///   Attiva la Form della lente d'ingrandimento.
         /// </summary>
@@ -1313,8 +1323,7 @@ namespace ModelessForm_ExternalEvent
             }
         }
 
-
-
+        #endregion
 
 
         /// <summary>

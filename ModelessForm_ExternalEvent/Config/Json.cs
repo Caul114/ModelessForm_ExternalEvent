@@ -23,7 +23,7 @@ namespace ModelessForm_ExternalEvent.Config
             });
             string jsonString = JsonConvert.SerializeObject(_data.ToArray());
             //write string to file
-            File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Bold Software\DataCell\ConfigPath.json", jsonString);
+            File.WriteAllText(ModelessForm.thisModForm.PathFileTxt, jsonString);
 
             return _data;
         }

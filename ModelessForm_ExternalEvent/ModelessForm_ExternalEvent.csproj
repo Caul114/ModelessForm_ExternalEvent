@@ -109,6 +109,7 @@
     </Compile>
     <Compile Include="Config\ExportValueToExcel.cs" />
     <Compile Include="Config\Json.cs" />
+    <Compile Include="Constant.cs" />
     <Compile Include="DataFromExcel\ImportData.cs" />
     <Compile Include="MagnifyingGlass.cs">
       <SubType>Form</SubType>
