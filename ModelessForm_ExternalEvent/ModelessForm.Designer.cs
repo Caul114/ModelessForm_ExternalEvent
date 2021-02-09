@@ -380,9 +380,9 @@ namespace ModelessForm_ExternalEvent
             // comboBox1
             // 
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(133, 37);
+            this.comboBox1.Location = new System.Drawing.Point(113, 37);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(296, 24);
+            this.comboBox1.Size = new System.Drawing.Size(316, 24);
             this.comboBox1.TabIndex = 4;
             this.comboBox1.Text = "<- Scegli una pagina del documento Excel ->";
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.ComboBox1_SelectedIndexChanged);
@@ -524,23 +524,23 @@ namespace ModelessForm_ExternalEvent
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 38);
+            this.label6.Location = new System.Drawing.Point(20, 40);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(105, 17);
+            this.label6.Size = new System.Drawing.Size(87, 17);
             this.label6.TabIndex = 5;
-            this.label6.Text = "BOLD_Distinta:";
+            this.label6.Text = "Foglio Excel:";
             // 
             // uploadExcelOpenFileDialog
             // 
             this.uploadExcelOpenFileDialog.DefaultExt = "xlsx";
             this.uploadExcelOpenFileDialog.FileName = "AbacoCells";
             this.uploadExcelOpenFileDialog.Filter = "File Excel (*.xlsx,*.xlsm)|*.xlsx;*.xlsm";
-            this.uploadExcelOpenFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"C:\BOLD Software\DataCell";
+            this.uploadExcelOpenFileDialog.InitialDirectory = "C:\\Users\\Bold\\DocumentsC:\\BOLD Software\\DataCell";
             // 
             // folderBrowserDialog1
             // 
             this.folderBrowserDialog1.Description = "Scegli la Directory da cui vuoi prendere le immagini.";
-            this.folderBrowserDialog1.SelectedPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"C:\BOLD Software\DataCell\Images";
+            this.folderBrowserDialog1.SelectedPath = "C:\\Users\\Bold\\DocumentsC:\\BOLD Software\\DataCell\\Images";
             // 
             // ModelessForm
             // 
@@ -551,7 +551,7 @@ namespace ModelessForm_ExternalEvent
             this.Controls.Add(this.functionGroupBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ModelessForm";
-            this.Text = "BOLD DataCell";
+            this.Text = "BOLD - DataCell";
             this.Load += new System.EventHandler(this.ModelessForm_Load);
             this.functionGroupBox1.ResumeLayout(false);
             this.functionGroupBox1.PerformLayout();

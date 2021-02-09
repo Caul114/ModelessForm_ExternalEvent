@@ -213,7 +213,7 @@ namespace ModelessForm_ExternalEvent
                             }
                             else
                             {
-                                MessageBox.Show("Questo elemento non ha un valore BOLD_Distinta. Aggiungilo.");
+                                MessageBox.Show("Questo elemento non ha un valore BOLDDistinta. Aggiungilo.");
                                 modelessForm.CleanAll();
                             }                            
                             break;
@@ -273,9 +273,9 @@ namespace ModelessForm_ExternalEvent
             Element ele = uidoc.Document.GetElement(eleId);
 
             // Restituisce il valore del parametro
-            if (ele.LookupParameter("BOLD_Distinta") != null)
+            if (ele.LookupParameter("BOLDDistinta") != null)
             {
-                Parameter pardistinta = ele.LookupParameter("BOLD_Distinta");
+                Parameter pardistinta = ele.LookupParameter("BOLDDistinta");
                 return pardistinta.AsString();               
             }
             else
@@ -461,7 +461,7 @@ namespace ModelessForm_ExternalEvent
             foreach (Parameter par in pListOrdered)
             {
                 // Se il nome del parametro è già presente o uguale a BOLD_Distinta, salta a quello dopo
-                if (par.Definition.Name != ctrl && par.Definition.Name != "BOLD_Distinta")
+                if (par.Definition.Name != ctrl && par.Definition.Name != "BOLDDistinta")
                 {
                     _dimensionsList.Add(par.Definition.Name + ":");
                     if (par.AsValueString() == null)
@@ -593,7 +593,7 @@ namespace ModelessForm_ExternalEvent
             string singleString = null;
             foreach (Parameter param in ps)
             {
-                if (param.Definition.Name == "Family" || param.Definition.Name == "Famiglia")
+                if (param.Definition.Name == "Family" || param.Definition.Name == "Famille" || param.Definition.Name == "Famiglia")
                     singleString = param.AsValueString();
             }
             return singleString;
