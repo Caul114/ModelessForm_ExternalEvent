@@ -161,11 +161,7 @@ namespace ModelessForm_ExternalEvent.Config
                 exportValueToExcel.KillExcel();
                 _colValue = 6;
                 exportValueToExcel.ExportExcelAndChangeValue(pathExcelConfig, _typologieCode, _cellCode, _positionalCode, _rawCommessa, _colValue);
-                //_colValue = 7;
-                //exportValueToExcel.ExportExcelAndChangeValue(pathExcelConfig, _cellCode, _rawCommessa, _colValue);
-                //_colValue = 8;
-                //exportValueToExcel.ExportExcelAndChangeValue(pathExcelConfig, _positionalCode, _rawCommessa, _colValue);
-
+                
                 // Chiude la Form
                 this.Close();
 
