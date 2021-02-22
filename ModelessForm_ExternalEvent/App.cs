@@ -156,8 +156,10 @@ namespace ModelessForm_ExternalEvent
         /// 
         public void DontShowFormTop()
         {
-            //m_MyForm.WindowState = FormWindowState.Minimized;
-            m_MyForm.TopMost = false;
+            if(m_MyForm != null)
+            {
+                m_MyForm.TopMost = false;
+            }
         }
 
         /// <summary>
@@ -166,8 +168,10 @@ namespace ModelessForm_ExternalEvent
         /// 
         public void ShowFormTop()
         {
-            //m_MyForm.WindowState = FormWindowState.Normal;
-            m_MyForm.TopMost = true;
+            if (m_MyForm != null)
+            {
+                m_MyForm.TopMost = true;
+            }
         }
 
         /// <summary>

@@ -98,14 +98,14 @@ namespace ModelessForm_ExternalEvent.Config
                         fileJson.UpdateJson(3, 2, "AbacoCellPath", _pathBOLD_Distinta);
                         fileJson.UpdateJson(4, 3, "ImagesPath", _pathImages);
 
-                        // Ottiene il _pathconfig
+                        // Ottiene il _pathconfig del foglio Excel
                         string jsonText = File.ReadAllText(ModelessForm.thisModForm.PathFileTxt);
                         IList<Data> traduction = JsonConvert.DeserializeObject<IList<Data>>(jsonText);
                         Data singleItem = traduction.FirstOrDefault(x => x.Id == 3);
-                        _pathConfig = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + singleItem.Path;
+                        _pathConfig = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + singleItem.Value;
 
-                        // Esporta le modifiche su folgio Excel, del pathDataCell, di AbacoCells.xlsm e di Images
-                        exportValueToExcel.ExportExcelAndChangeValue(_pathConfig, _pathDataCell, _rawCommessa, _colDataCell);
+                        // Esporta le modifiche su foglio Excel, del pathDataCell, di AbacoCells.xlsm e di Images
+                        exportValueToExcel.ExportExcelAndChangeValue(_pathConfig, _pathDataCell, "", "", _rawCommessa, _colDataCell);
 
                         // Chiude la Form
                         this.Close();

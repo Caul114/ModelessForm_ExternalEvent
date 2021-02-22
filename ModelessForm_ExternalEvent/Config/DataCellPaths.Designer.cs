@@ -29,11 +29,12 @@ namespace ModelessForm_ExternalEvent.Config
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DataCellPaths));
             this.settingsDataCellGroupBox = new System.Windows.Forms.GroupBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.settingsDataCellButton = new System.Windows.Forms.Button();
             this.settingsDataCellLabel = new System.Windows.Forms.Label();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.label2 = new System.Windows.Forms.Label();
             this.settingsDataCellGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -48,6 +49,16 @@ namespace ModelessForm_ExternalEvent.Config
             this.settingsDataCellGroupBox.TabIndex = 0;
             this.settingsDataCellGroupBox.TabStop = false;
             this.settingsDataCellGroupBox.Text = "Impostazioni";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(163, 74);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(87, 17);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "(.../DataCell)";
             // 
             // settingsDataCellButton
             // 
@@ -68,22 +79,13 @@ namespace ModelessForm_ExternalEvent.Config
             this.settingsDataCellLabel.TabIndex = 0;
             this.settingsDataCellLabel.Text = "Inserisci l\'indirizzo della Cartella DataCell.\r\n";
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(163, 74);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(87, 17);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "(.../DataCell)";
-            // 
             // DataCellPaths
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(490, 294);
             this.Controls.Add(this.settingsDataCellGroupBox);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "DataCellPaths";

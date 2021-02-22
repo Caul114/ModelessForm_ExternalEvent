@@ -94,6 +94,12 @@
     <Compile Include="App.cs" />
     <Compile Include="Command.cs" />
     <Compile Include="CommandConfig.cs" />
+    <Compile Include="Config\CodeDefinition.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Config\CodeDefinition.Designer.cs">
+      <DependentUpon>CodeDefinition.cs</DependentUpon>
+    </Compile>
     <Compile Include="Config\ConfigPanel.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -134,10 +140,12 @@
     <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="BoldSoftware_16.ico" />
     <Content Include="DataCell.addin">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="Config\CodeDefinition.resx">
+      <DependentUpon>CodeDefinition.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\BOLDsft_16.ico" />
     <EmbeddedResource Include="Resources\BOLDsft_16.png" />
     <EmbeddedResource Include="Resources\BOLDsft_32.png" />

@@ -36,10 +36,16 @@ namespace ModelessForm_ExternalEvent
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ModelessForm));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.functionGroupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.typologyTextBox = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.unitIdentifierTextBox = new System.Windows.Forms.TextBox();
             this.panelTypeIdentifierTextBox = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.unitIdentifierTextBox = new System.Windows.Forms.TextBox();
             this.imageFamilyGroupBox = new System.Windows.Forms.GroupBox();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.nameFamilyTextBox = new System.Windows.Forms.TextBox();
             this.magnifyingGlassGroupBox = new System.Windows.Forms.GroupBox();
             this.label10 = new System.Windows.Forms.Label();
             this.magnifyingGlassCloseButton = new System.Windows.Forms.Button();
@@ -57,9 +63,6 @@ namespace ModelessForm_ExternalEvent
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.pictureBoxSx = new System.Windows.Forms.PictureBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.nameFamilyTextBox = new System.Windows.Forms.TextBox();
-            this.nameFamilyLabel = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
             this.captureButton = new System.Windows.Forms.Button();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.cleanButton = new System.Windows.Forms.Button();
@@ -79,7 +82,9 @@ namespace ModelessForm_ExternalEvent
             this.uploadExcelOpenFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.functionGroupBox1.SuspendLayout();
+            this.groupBox7.SuspendLayout();
             this.imageFamilyGroupBox.SuspendLayout();
+            this.groupBox6.SuspendLayout();
             this.magnifyingGlassGroupBox.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxHigh)).BeginInit();
@@ -100,11 +105,8 @@ namespace ModelessForm_ExternalEvent
             // 
             // functionGroupBox1
             // 
-            this.functionGroupBox1.Controls.Add(this.panelTypeIdentifierTextBox);
-            this.functionGroupBox1.Controls.Add(this.label9);
-            this.functionGroupBox1.Controls.Add(this.unitIdentifierTextBox);
+            this.functionGroupBox1.Controls.Add(this.groupBox7);
             this.functionGroupBox1.Controls.Add(this.imageFamilyGroupBox);
-            this.functionGroupBox1.Controls.Add(this.label8);
             this.functionGroupBox1.Controls.Add(this.captureButton);
             this.functionGroupBox1.Location = new System.Drawing.Point(12, 13);
             this.functionGroupBox1.Name = "functionGroupBox1";
@@ -113,44 +115,99 @@ namespace ModelessForm_ExternalEvent
             this.functionGroupBox1.TabStop = false;
             this.functionGroupBox1.Text = "Seleziona un oggetto";
             // 
+            // groupBox7
+            // 
+            this.groupBox7.Controls.Add(this.label7);
+            this.groupBox7.Controls.Add(this.typologyTextBox);
+            this.groupBox7.Controls.Add(this.label8);
+            this.groupBox7.Controls.Add(this.unitIdentifierTextBox);
+            this.groupBox7.Controls.Add(this.panelTypeIdentifierTextBox);
+            this.groupBox7.Controls.Add(this.label9);
+            this.groupBox7.Location = new System.Drawing.Point(571, 8);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(389, 104);
+            this.groupBox7.TabIndex = 27;
+            this.groupBox7.TabStop = false;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(25, 19);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(117, 17);
+            this.label7.TabIndex = 26;
+            this.label7.Text = "Codice Tipologia:";
+            // 
+            // typologyTextBox
+            // 
+            this.typologyTextBox.Location = new System.Drawing.Point(158, 16);
+            this.typologyTextBox.Name = "typologyTextBox";
+            this.typologyTextBox.Size = new System.Drawing.Size(212, 22);
+            this.typologyTextBox.TabIndex = 25;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(13, 75);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(131, 17);
+            this.label8.TabIndex = 22;
+            this.label8.Text = "Codice Posizionale:";
+            // 
+            // unitIdentifierTextBox
+            // 
+            this.unitIdentifierTextBox.Location = new System.Drawing.Point(158, 72);
+            this.unitIdentifierTextBox.Name = "unitIdentifierTextBox";
+            this.unitIdentifierTextBox.Size = new System.Drawing.Size(212, 22);
+            this.unitIdentifierTextBox.TabIndex = 21;
+            // 
             // panelTypeIdentifierTextBox
             // 
-            this.panelTypeIdentifierTextBox.Location = new System.Drawing.Point(750, 49);
+            this.panelTypeIdentifierTextBox.Location = new System.Drawing.Point(158, 44);
             this.panelTypeIdentifierTextBox.Name = "panelTypeIdentifierTextBox";
-            this.panelTypeIdentifierTextBox.Size = new System.Drawing.Size(218, 22);
+            this.panelTypeIdentifierTextBox.Size = new System.Drawing.Size(212, 22);
             this.panelTypeIdentifierTextBox.TabIndex = 23;
             // 
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(522, 51);
+            this.label9.Location = new System.Drawing.Point(41, 47);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(219, 17);
+            this.label9.Size = new System.Drawing.Size(101, 17);
             this.label9.TabIndex = 24;
-            this.label9.Text = "Panel Type Identifier dell\'oggetto:";
-            // 
-            // unitIdentifierTextBox
-            // 
-            this.unitIdentifierTextBox.Location = new System.Drawing.Point(750, 19);
-            this.unitIdentifierTextBox.Name = "unitIdentifierTextBox";
-            this.unitIdentifierTextBox.Size = new System.Drawing.Size(218, 22);
-            this.unitIdentifierTextBox.TabIndex = 21;
+            this.label9.Text = "Codice Cellula:";
             // 
             // imageFamilyGroupBox
             // 
+            this.imageFamilyGroupBox.Controls.Add(this.groupBox6);
             this.imageFamilyGroupBox.Controls.Add(this.magnifyingGlassGroupBox);
             this.imageFamilyGroupBox.Controls.Add(this.groupBox3);
             this.imageFamilyGroupBox.Controls.Add(this.groupBox2);
             this.imageFamilyGroupBox.Controls.Add(this.groupBox4);
             this.imageFamilyGroupBox.Controls.Add(this.groupBox1);
-            this.imageFamilyGroupBox.Controls.Add(this.nameFamilyTextBox);
-            this.imageFamilyGroupBox.Controls.Add(this.nameFamilyLabel);
-            this.imageFamilyGroupBox.Location = new System.Drawing.Point(5, 79);
+            this.imageFamilyGroupBox.Location = new System.Drawing.Point(5, 116);
             this.imageFamilyGroupBox.Name = "imageFamilyGroupBox";
-            this.imageFamilyGroupBox.Size = new System.Drawing.Size(981, 917);
+            this.imageFamilyGroupBox.Size = new System.Drawing.Size(981, 878);
             this.imageFamilyGroupBox.TabIndex = 9;
             this.imageFamilyGroupBox.TabStop = false;
             this.imageFamilyGroupBox.Text = "Famiglia dell\'oggetto selezionato";
+            // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.nameFamilyTextBox);
+            this.groupBox6.Location = new System.Drawing.Point(400, 452);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(184, 63);
+            this.groupBox6.TabIndex = 21;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Famiglia di Revit";
+            // 
+            // nameFamilyTextBox
+            // 
+            this.nameFamilyTextBox.Location = new System.Drawing.Point(13, 26);
+            this.nameFamilyTextBox.Name = "nameFamilyTextBox";
+            this.nameFamilyTextBox.Size = new System.Drawing.Size(162, 22);
+            this.nameFamilyTextBox.TabIndex = 10;
             // 
             // magnifyingGlassGroupBox
             // 
@@ -158,9 +215,9 @@ namespace ModelessForm_ExternalEvent
             this.magnifyingGlassGroupBox.Controls.Add(this.magnifyingGlassCloseButton);
             this.magnifyingGlassGroupBox.Controls.Add(this.label5);
             this.magnifyingGlassGroupBox.Controls.Add(this.magnifyingGlassButton);
-            this.magnifyingGlassGroupBox.Location = new System.Drawing.Point(404, 487);
+            this.magnifyingGlassGroupBox.Location = new System.Drawing.Point(404, 538);
             this.magnifyingGlassGroupBox.Name = "magnifyingGlassGroupBox";
-            this.magnifyingGlassGroupBox.Size = new System.Drawing.Size(177, 287);
+            this.magnifyingGlassGroupBox.Size = new System.Drawing.Size(177, 301);
             this.magnifyingGlassGroupBox.TabIndex = 14;
             this.magnifyingGlassGroupBox.TabStop = false;
             this.magnifyingGlassGroupBox.Text = "Lente d\'ingrandimento";
@@ -168,7 +225,7 @@ namespace ModelessForm_ExternalEvent
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(24, 50);
+            this.label10.Location = new System.Drawing.Point(25, 54);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(124, 17);
             this.label10.TabIndex = 12;
@@ -177,7 +234,7 @@ namespace ModelessForm_ExternalEvent
             // magnifyingGlassCloseButton
             // 
             this.magnifyingGlassCloseButton.Image = ((System.Drawing.Image)(resources.GetObject("magnifyingGlassCloseButton.Image")));
-            this.magnifyingGlassCloseButton.Location = new System.Drawing.Point(60, 198);
+            this.magnifyingGlassCloseButton.Location = new System.Drawing.Point(61, 208);
             this.magnifyingGlassCloseButton.Name = "magnifyingGlassCloseButton";
             this.magnifyingGlassCloseButton.Size = new System.Drawing.Size(52, 52);
             this.magnifyingGlassCloseButton.TabIndex = 11;
@@ -187,7 +244,7 @@ namespace ModelessForm_ExternalEvent
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(19, 173);
+            this.label5.Location = new System.Drawing.Point(20, 183);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(137, 17);
             this.label5.TabIndex = 9;
@@ -196,7 +253,7 @@ namespace ModelessForm_ExternalEvent
             // magnifyingGlassButton
             // 
             this.magnifyingGlassButton.Image = ((System.Drawing.Image)(resources.GetObject("magnifyingGlassButton.Image")));
-            this.magnifyingGlassButton.Location = new System.Drawing.Point(53, 80);
+            this.magnifyingGlassButton.Location = new System.Drawing.Point(54, 84);
             this.magnifyingGlassButton.Name = "magnifyingGlassButton";
             this.magnifyingGlassButton.Size = new System.Drawing.Size(65, 70);
             this.magnifyingGlassButton.TabIndex = 8;
@@ -207,7 +264,7 @@ namespace ModelessForm_ExternalEvent
             // 
             this.groupBox3.Controls.Add(this.pictureBoxHigh);
             this.groupBox3.Controls.Add(this.label4);
-            this.groupBox3.Location = new System.Drawing.Point(503, 62);
+            this.groupBox3.Location = new System.Drawing.Point(503, 27);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(385, 419);
             this.groupBox3.TabIndex = 20;
@@ -237,7 +294,7 @@ namespace ModelessForm_ExternalEvent
             // 
             this.groupBox2.Controls.Add(this.pictureBoxCentral);
             this.groupBox2.Controls.Add(this.label1);
-            this.groupBox2.Location = new System.Drawing.Point(99, 62);
+            this.groupBox2.Location = new System.Drawing.Point(99, 27);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(385, 419);
             this.groupBox2.TabIndex = 19;
@@ -267,7 +324,7 @@ namespace ModelessForm_ExternalEvent
             // 
             this.groupBox4.Controls.Add(this.pictureBoxDx);
             this.groupBox4.Controls.Add(this.label3);
-            this.groupBox4.Location = new System.Drawing.Point(590, 487);
+            this.groupBox4.Location = new System.Drawing.Point(590, 452);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(385, 419);
             this.groupBox4.TabIndex = 20;
@@ -297,7 +354,7 @@ namespace ModelessForm_ExternalEvent
             // 
             this.groupBox1.Controls.Add(this.pictureBoxSx);
             this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Location = new System.Drawing.Point(9, 487);
+            this.groupBox1.Location = new System.Drawing.Point(9, 452);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(385, 419);
             this.groupBox1.TabIndex = 18;
@@ -323,36 +380,11 @@ namespace ModelessForm_ExternalEvent
             this.label2.TabIndex = 15;
             this.label2.Text = "Left View";
             // 
-            // nameFamilyTextBox
-            // 
-            this.nameFamilyTextBox.Location = new System.Drawing.Point(495, 34);
-            this.nameFamilyTextBox.Name = "nameFamilyTextBox";
-            this.nameFamilyTextBox.Size = new System.Drawing.Size(246, 22);
-            this.nameFamilyTextBox.TabIndex = 10;
-            // 
-            // nameFamilyLabel
-            // 
-            this.nameFamilyLabel.AutoSize = true;
-            this.nameFamilyLabel.Location = new System.Drawing.Point(295, 36);
-            this.nameFamilyLabel.Name = "nameFamilyLabel";
-            this.nameFamilyLabel.Size = new System.Drawing.Size(191, 17);
-            this.nameFamilyLabel.TabIndex = 10;
-            this.nameFamilyLabel.Text = "Famiglia di Revit selezionata:";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(568, 21);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(176, 17);
-            this.label8.TabIndex = 22;
-            this.label8.Text = "Unit Identifier dell\'oggetto: ";
-            // 
             // captureButton
             // 
-            this.captureButton.Location = new System.Drawing.Point(14, 21);
+            this.captureButton.Location = new System.Drawing.Point(40, 27);
             this.captureButton.Name = "captureButton";
-            this.captureButton.Size = new System.Drawing.Size(490, 43);
+            this.captureButton.Size = new System.Drawing.Size(490, 75);
             this.captureButton.TabIndex = 0;
             this.captureButton.Text = "Cattura un oggetto";
             this.captureButton.UseVisualStyleBackColor = true;
@@ -500,14 +532,14 @@ namespace ModelessForm_ExternalEvent
             this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.GridColor = System.Drawing.Color.Black;
-            this.dataGridView1.Location = new System.Drawing.Point(13, 21);
+            this.dataGridView1.Location = new System.Drawing.Point(13, 24);
             this.dataGridView1.MultiSelect = false;
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 24;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(683, 884);
+            this.dataGridView1.Size = new System.Drawing.Size(683, 881);
             this.dataGridView1.TabIndex = 0;
             // 
             // functionGroupBox3
@@ -519,7 +551,7 @@ namespace ModelessForm_ExternalEvent
             this.functionGroupBox3.Size = new System.Drawing.Size(435, 85);
             this.functionGroupBox3.TabIndex = 2;
             this.functionGroupBox3.TabStop = false;
-            this.functionGroupBox3.Text = "Mostra Distinta";
+            this.functionGroupBox3.Text = "Mostra il foglio Excel, il cui nome corrisponde al Codice Tipologia";
             // 
             // label6
             // 
@@ -554,9 +586,11 @@ namespace ModelessForm_ExternalEvent
             this.Text = "BOLD - DataCell";
             this.Load += new System.EventHandler(this.ModelessForm_Load);
             this.functionGroupBox1.ResumeLayout(false);
-            this.functionGroupBox1.PerformLayout();
+            this.groupBox7.ResumeLayout(false);
+            this.groupBox7.PerformLayout();
             this.imageFamilyGroupBox.ResumeLayout(false);
-            this.imageFamilyGroupBox.PerformLayout();
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
             this.magnifyingGlassGroupBox.ResumeLayout(false);
             this.magnifyingGlassGroupBox.PerformLayout();
             this.groupBox3.ResumeLayout(false);
@@ -602,7 +636,6 @@ namespace ModelessForm_ExternalEvent
         private System.Windows.Forms.GroupBox imageFamilyGroupBox;
         private System.Windows.Forms.GroupBox functionGroupBoxListBox;
         private TextBox nameFamilyTextBox;
-        private Label nameFamilyLabel;
         private OpenFileDialog uploadExcelOpenFileDialog;
         private FolderBrowserDialog folderBrowserDialog1;
         private GroupBox groupBox3;
@@ -628,5 +661,9 @@ namespace ModelessForm_ExternalEvent
         private Label label10;
         private GroupBox groupBox5;
         private Label label6;
+        private TextBox typologyTextBox;
+        private Label label7;
+        private GroupBox groupBox6;
+        private GroupBox groupBox7;
     }
 }

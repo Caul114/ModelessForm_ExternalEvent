@@ -50,16 +50,29 @@ namespace ModelessForm_ExternalEvent
         // Dichiara la Form della lente d'ingrandimento
         private MagnifyingGlass magnifyingGlass;
 
+        // Dichiara la Form del cambio codici
+        private CodeDefinition _codeDefinition;
+
         // Percorso del singolo file .json da importare di default
         private string _pathFileConfig = @"\BOLD Software\DataCell\ConfigPath.json";
-        private string _pathFileTxt = "";
-        private string _pathConfig = "";
+        private string _pathFileTxt = string.Empty;
+        private string _pathConfig = string.Empty;
 
-        private string _pathExcel = "";
+        private string _pathExcel = string.Empty;
         ImportData importData = new ImportData();
 
         // Percorso del file Excel utile per la Configurazione
-        private string _pathDataCell = "";
+        private string _pathDataCell = string.Empty;
+
+        // Nome della variabile che contiene il Codice Tipologia
+        private string _typologieCode = string.Empty;
+        //private string _typologieCode = "BOLDDistinta";
+
+        // Nome della variabile che contiene il Codice Cellula
+        private string _cellCode = string.Empty;
+
+        // Nome della variabile che contiene il Codice Posizionale
+        private string _positionalCode = string.Empty;
 
         // Inizializza la Classe ExportValueToExcel
         ExportValueToExcel exportValueToExcel = new ExportValueToExcel();
@@ -69,13 +82,13 @@ namespace ModelessForm_ExternalEvent
         private int _colDataCell = 3;
 
         // Percorso della cartella Immagini di default
-        private string _folderImageSkeleton = "";
-        private string _folderImageDefault = "";
-        private string _folderImageActual = "";
-        private string _folderName = "";
+        private string _folderImageSkeleton = string.Empty;
+        private string _folderImageDefault = string.Empty;
+        private string _folderImageActual = string.Empty;
+        private string _folderName = string.Empty;
 
         // Percorso della cartella family delle immagini
-        private string _familyType = "";
+        private string _familyType = string.Empty;
 
         // Valore attivo nella ComboBox
         private string valueActive;
@@ -117,6 +130,14 @@ namespace ModelessForm_ExternalEvent
         /// <summary>
         /// Proprietà pubblica per accedere al valore della richiesta corrente
         /// </summary>
+        public string PathFileConfig
+        {
+            get { return _pathFileConfig; }
+        }
+
+        /// <summary>
+        /// Proprietà pubblica per accedere al valore della richiesta corrente
+        /// </summary>
         public string PathFileTxt
         {
             get { return _pathFileTxt; }
@@ -125,7 +146,7 @@ namespace ModelessForm_ExternalEvent
         /// <summary>
         /// Proprietà pubblica per accedere al valore della richiesta corrente
         /// </summary>
-        public string PathBOLD_Distinta
+        public string PathTypologieCode
         {
             get { return _pathExcel; }
         }
@@ -136,6 +157,30 @@ namespace ModelessForm_ExternalEvent
         public string PathImages
         {
             get { return _folderImageDefault; }
+        }
+
+        /// <summary>
+        /// Proprietà pubblica per accedere al valore della richiesta corrente
+        /// </summary>
+        public string TypologieCode
+        {
+            get { return _typologieCode; }
+        }
+
+        /// <summary>
+        /// Proprietà pubblica per accedere al valore della richiesta corrente
+        /// </summary>
+        public string CellCode
+        {
+            get { return _cellCode; }
+        }
+
+        /// <summary>
+        /// Proprietà pubblica per accedere al valore della richiesta corrente
+        /// </summary>
+        public string PositionalCode
+        {
+            get { return _positionalCode; }
         }
         #endregion
 
@@ -164,21 +209,28 @@ namespace ModelessForm_ExternalEvent
                 GetDataCellPath();
             }
 
+            // Inizializza i codici nel caso in cui siano già memorizzati
+            GetCodes();
+
             // Prende il percorso dei file dal file .json di Configurazione 
-            if (_pathConfig == "")
+            if (_pathConfig == string.Empty)
             {
                 MessageBox.Show("Il file Excel di Configurazione non è stato caricato."
                      + "\nSegui questa procedura per caricare il file di configurazione corretto.");
                 ShowConfigPanel();
             } 
-            else if (_pathDataCell == "")
+            else if (_pathDataCell == string.Empty)
             {
                 configPanel.ShowDataCellPaths();
             }
+            else if(_typologieCode == string.Empty || _cellCode == string.Empty || _positionalCode == string.Empty)
+            {
+                ConfigureTheCodes();
+            }
             else
             {
-                // Esporta le modifiche su folgio Excel, del pathDataCell, di AbacoCells.xlsm e di Images
-                exportValueToExcel.ExportExcelAndChangeValue(_pathConfig, _pathDataCell, _rawCommessa, _colDataCell);
+                // Esporta le modifiche su foglio Excel, del pathDataCell, di AbacoCells.xlsm e di Images
+                exportValueToExcel.ExportExcelAndChangeValue(_pathConfig, _pathDataCell, "", "", _rawCommessa, _colDataCell);
 
                 _pathExcel = _pathDataCell + @"\AbacoCells.xlsm";
                 _folderImageSkeleton = _pathDataCell + @"\Images_Skeleton";
@@ -313,9 +365,9 @@ namespace ModelessForm_ExternalEvent
                 {
                     var traduction = JsonConvert.DeserializeObject<IList<Data>>(jsonText);
                     Data singleItem = traduction.FirstOrDefault(x => x.Id == 1);
-                    if(File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + singleItem.Path))
+                    if(File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + singleItem.Value))
                     {
-                        _pathConfig = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + singleItem.Path;
+                        _pathConfig = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + singleItem.Value;
                     }                    
                 }
             }
@@ -338,9 +390,9 @@ namespace ModelessForm_ExternalEvent
             if (traduction.Any(x => x.Id == 2))
             {
                 Data singleItem = traduction.FirstOrDefault(x => x.Id == 2);
-                if(Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + singleItem.Path))
+                if(Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + singleItem.Value))
                 {
-                    _pathDataCell = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + singleItem.Path;
+                    _pathDataCell = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + singleItem.Value;
                 }
             }
             else
@@ -397,6 +449,91 @@ namespace ModelessForm_ExternalEvent
             }
         }
 
+        #region Configure CodeDefinition
+        /// <summary>
+        ///   Chiama il pannello che inizializza i Codici di Tipologia, Cellula e Posizionale, se presenti
+        /// </summary>
+        /// 
+        public void GetCodes()
+        {
+            _pathFileTxt = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + _pathFileConfig;
+
+            if (File.Exists(_pathFileTxt))
+            {
+                // Legge il .json dal file
+                string jsonText = File.ReadAllText(_pathFileTxt);
+                if (jsonText != string.Empty)
+                {
+                    var traduction = JsonConvert.DeserializeObject<IList<Data>>(jsonText);
+                    Data singleItem1 = traduction.FirstOrDefault(x => x.Id == 5);
+                    if (singleItem1.Value != string.Empty)
+                    {
+                        _typologieCode = singleItem1.Value;
+                    }
+                    Data singleItem2 = traduction.FirstOrDefault(x => x.Id == 6);
+                    if (singleItem2.Value != string.Empty)
+                    {
+                        _cellCode = singleItem2.Value;
+                    }
+                    Data singleItem3 = traduction.FirstOrDefault(x => x.Id == 7);
+                    if (singleItem3.Value != string.Empty)
+                    {
+                        _positionalCode = singleItem3.Value;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        ///   Chiama il pannello che permette la Configurazione dei Codici di Tipologia, Cellula e Posizionale
+        /// </summary>
+        /// 
+        public void ConfigureTheCodes()
+        {
+            CodeDefinition codForm = new CodeDefinition();
+            codForm.Show();
+            this.DozeOff();
+            this.SendToBack();
+            codForm.TopMost = true;
+            MakeRequest(RequestId.Code);
+        }
+
+        /// <summary>
+        ///   Metodo che imposta i nuovi codici
+        /// </summary>
+        /// 
+        public void GoToChanges()
+        {
+            MakeRequest(RequestId.ChangeCode);
+        }
+
+        /// <summary>
+        ///   Metodo che imposta i nuovi codici
+        /// </summary>
+        /// 
+        public void CodesChanges()
+        {
+            // Implementa un'istanza di CodeDefinition
+            _codeDefinition = CodeDefinition.thisCodeDef;
+            _typologieCode = _codeDefinition.TypologieCode;
+            _cellCode = _codeDefinition.CellCode;
+            _positionalCode = _codeDefinition.PositionalCode;
+        }
+
+        /// <summary>
+        ///   Forza la chiusura del Form CodeDefinition
+        /// </summary>
+        /// 
+        public void CloseCodeDefinition()
+        {
+            if (_codeDefinition != null && _codeDefinition.Visible)
+            {
+                // Chiudo la Form CodeDefinition
+                this.BringToFront();
+                _codeDefinition.Close();
+            }
+        }
+        #endregion
 
         #region Capture Button
 
@@ -418,30 +555,39 @@ namespace ModelessForm_ExternalEvent
         }
 
         /// <summary>
-        ///   Metodo che imposta il valore della distinta presente del DataGrid in base alla selezione del Button
+        ///   Metodo che imposta il valore della distinta presente nella ComboBox del DataGrid in base alla selezione del Button
         /// </summary>
         /// 
-        public void valueDistintaFromCaptureButton()
+        public void ValueDistintaFromCaptureButton()
         {
-            valueDistintaActive = m_Handler.GetDistintaValue;
+            valueDistintaActive = m_Handler.GetValueTypologieCode;
+        }
+
+        /// <summary>
+        ///   Metodo che imposta il valore del CODICE TIPOLOGIA in base alla selezione del Button
+        /// </summary>
+        /// 
+        public void ValueTypologyCodex()
+        {
+            typologyTextBox.Text = m_Handler.GetValueTypologieCode;
+        }
+
+        /// <summary>
+        ///   Metodo che imposta il valore del CODICE CELLULCA (Panel Type Identifier) in base alla selezione del Button
+        /// </summary>
+        /// 
+        public void ValuePanelTypeIdentifierFromCaptureButton()
+        {
+            panelTypeIdentifierTextBox.Text = m_Handler.GetValueCellCode;
         }
 
         /// <summary>
         ///   Metodo che imposta il valore dell'Unit Identifier in base alla selezione del Button
         /// </summary>
         /// 
-        public void valueUnitIdentifierFromCaptureButton()
+        public void ValueUnitIdentifierFromCaptureButton()
         {
-            unitIdentifierTextBox.Text = m_Handler.GetUnitIdentifier;
-        }
-
-        /// <summary>
-        ///   Metodo che imposta il valore del Panel Type Identifier in base alla selezione del Button
-        /// </summary>
-        /// 
-        public void valuePanelTypeIdentifierFromCaptureButton()
-        {
-            panelTypeIdentifierTextBox.Text = m_Handler.GetPanelTypeIdentifier;
+            unitIdentifierTextBox.Text = m_Handler.GetValuePositionalCode;
         }
         #endregion
 
@@ -563,15 +709,15 @@ namespace ModelessForm_ExternalEvent
         /// 
         private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Chiama questo metodo e modifica il Count
-            MakeRequest(RequestId.ComboBox);
-
             // Ottiene la stringa selezionata nella ComboBox
             string selectedItem = (string)comboBox1.SelectedItem;
             valueDistintaActive = selectedItem;
 
             // Chiama il metodo che importa la pagina scelta del file Excel
             GetDataFromExcel(selectedItem, _pathExcel);
+
+            // Chiama questo metodo e modifica il Count
+            MakeRequest(RequestId.ComboBox);
         }
 
         public void SetComboBox(string selectedItem)

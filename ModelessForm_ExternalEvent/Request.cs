@@ -41,6 +41,14 @@ namespace ModelessForm_ExternalEvent
         /// "ComboBox" request
         /// </summary>
         ComboBox = 2,
+        /// <summary>
+        /// "Code" request
+        /// </summary>
+        Code = 3,
+        /// <summary>
+        /// "ChangeCode" request
+        /// </summary>
+        ChangeCode = 4,
     }
 
     /// <summary>

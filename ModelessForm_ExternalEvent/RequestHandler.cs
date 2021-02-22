@@ -29,6 +29,7 @@ using System.Windows.Forms;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using Autodesk.Revit.UI.Selection;
+using ModelessForm_ExternalEvent.Config;
 using ModelessForm_ExternalEvent.DataFromExcel;
 
 namespace ModelessForm_ExternalEvent
@@ -43,29 +44,41 @@ namespace ModelessForm_ExternalEvent
         // Il valore dell'ultima richiesta effettuata dal modulo non modale
         private Request m_request = new Request();
 
+        // Un'istanza della finestra di dialogo
+        private ModelessForm modelessForm;
+
+        // Un'istanza della Form del CodeDefinition
+        private CodeDefinition _codeDefinition;
+
         // Il Riferimento all'oggetto selezionato
         Reference pickedObject;
 
-        // Il valore di BOLD_Distinta
-        private string _valueDistinta;
+        // Il nome del Codice Tipologia
+        private string _typologieCode = string.Empty;
 
-        // Il valore dell'Unit Identifier
-        private string _unitIdentifier;
+        // Il valore del Codice Tipologia
+        private string _valueTypologieCode = string.Empty;
 
-        // Il valore delPanel TypeIdentifier
-        private string _panelTypeIdentifier;
+        // Il nome del Codice Cellula
+        private string _cellCode = string.Empty;
+
+        // Il valore del Codice Cellula
+        private string _valueCellCode = string.Empty;
+
+        // Il nome del Codice Posizionale
+        private string _positionalCode = string.Empty;
+
+        // Il valore del Codice Posizionale
+        private string _valuePositionalCode = string.Empty;
+
+        // Variabile che raccoglie tutti i parametri dell'elemento
+        private List<string> _allParameters;
 
         // Il tipo della famiglia in formato stringa
-        private string _familyType;
-
-        // Il valore attivo nella pagina
-        int count = 0;
+        private string _familyType = string.Empty;
 
         // La lista di stringhe che restituirà i valori da inserire in ListBox
         private ArrayList _dimensionsList;
-
-        // Un instanza della finestra di dialogo
-        private ModelessForm modelessForm;
 
         // Un instanza di DataTable per riempire il DataGridView
         private DataTable _table;
@@ -86,25 +99,25 @@ namespace ModelessForm_ExternalEvent
         /// <summary>
         /// Proprietà pubblica per accedere al valore della richiesta corrente
         /// </summary>
-        public string GetDistintaValue
+        public string GetValueTypologieCode
         {
-            get { return _valueDistinta; }
+            get { return _valueTypologieCode; }
         }
 
         /// <summary>
         /// Proprietà pubblica per accedere al valore della richiesta corrente
         /// </summary>
-        public string GetUnitIdentifier
+        public string GetValueCellCode
         {
-            get { return _unitIdentifier; }
+            get { return _valueCellCode; }
         }
 
         /// <summary>
         /// Proprietà pubblica per accedere al valore della richiesta corrente
         /// </summary>
-        public string GetPanelTypeIdentifier
+        public string GetValuePositionalCode
         {
-            get { return _panelTypeIdentifier; }
+            get { return _valuePositionalCode; }
         }
 
         /// <summary>
@@ -150,6 +163,7 @@ namespace ModelessForm_ExternalEvent
             _dimensionsList = new ArrayList();
             _listXlSh = new List<string>();
             _table = new DataTable();
+            _allParameters = new List<string>();
         }
         #endregion
 
@@ -158,7 +172,7 @@ namespace ModelessForm_ExternalEvent
         /// </summary>
         public String GetName()
         {
-            return "R2014 External Event Sample";
+            return "R2021 External Event DataCell";
         }
 
         /// <summary>
@@ -172,6 +186,11 @@ namespace ModelessForm_ExternalEvent
         /// 
         public void Execute(UIApplication uiapp)
         {
+            // Il valore attivo nella pagina
+            int countInt = 0;
+            // Variabile booleana che attesta se va riattivata o meno la Form principale
+            bool _modForm = true;
+
             try
             {
                 switch (Request.Take())
@@ -182,26 +201,34 @@ namespace ModelessForm_ExternalEvent
                         }
                     case RequestId.Id:
                         {
+                            // Definisce il nome dei Codici Tipologia, Cellula, Posizionale
+                            modelessForm = App.thisApp.RetriveForm();
+                            _typologieCode = modelessForm.TypologieCode;
+                            _cellCode = modelessForm.CellCode;
+                            _positionalCode = modelessForm.PositionalCode;
                             // Chiama il metodo che seleziona un oggetto
                             pickedObject = PickObject(uiapp);
-                            // Chiama il metodo che restituisce il valore della BOLD_Distinta
-                            _valueDistinta = PickBOLD_distinta(uiapp, pickedObject);                            
+                            // Chiama il metodo che restituisce il valore del Codice Tipologia
+                            _valueTypologieCode = PickTypologieCode(uiapp, pickedObject);
                             // Cambia il count
-                            count = 1;
-                            modelessForm = App.thisApp.RetriveForm();
-                            // Se il valore della BOLD_Distinta è presente, lo aggiunge alla Form
-                            if (_valueDistinta != "Nessun valore" && _valueDistinta != null)
+                            countInt = 1;                            
+                            // Se il valore del Codice Tipologia è presente, lo aggiunge alla Form
+                            if (_valueTypologieCode != "Nessun valore" && _valueTypologieCode != null)
                             {
                                 // Cancello tutti i valori presenti nell'ArrayList
                                 _dimensionsList.Clear();
                                 // Imposta il valore della Distinta per la Form
-                                modelessForm.valueDistintaFromCaptureButton();
-                                // Imposta il valore dello UnitIdentifier per la Form
+                                modelessForm.ValueDistintaFromCaptureButton();
+                                // Imposta il valore del Codice Tipologia per la Form
+                                PickCellCode(uiapp, pickedObject);
+                                //PickPanelTypeIdentifier(uiapp, pickedObject);
+                                modelessForm.ValueTypologyCodex();
+                                // Imposta il valore del Codice Cellula (Panel Type Identifier) per la Form
+                                modelessForm.ValuePanelTypeIdentifierFromCaptureButton();
+                                // Imposta il valore del Codice Posizionale (UnitIdentifier) per la Form
+                                //PickPositionalCode(uiapp, pickedObject);
                                 PickUnitIdentifier(uiapp, pickedObject);
-                                modelessForm.valueUnitIdentifierFromCaptureButton();
-                                // Imposta il valore dello UnitIdentifier per la Form
-                                PickPanelTypeIdentifier(uiapp, pickedObject);
-                                modelessForm.valuePanelTypeIdentifierFromCaptureButton();
+                                modelessForm.ValueUnitIdentifierFromCaptureButton();
                                 // Chiama il metodo che seleziona il parametro stringa della famiglia scelta e riempie il PictureBox
                                 GetTypeParameterOfFamily(uiapp, pickedObject);
                                 modelessForm.SetModifyPicture();
@@ -209,18 +236,39 @@ namespace ModelessForm_ExternalEvent
                                 _dimensionsList = GetParameters(uiapp, pickedObject);
                                 modelessForm.ShowListBox1();
                                 // Chiama il metodo che seleziona la Distinta corretta nella ComboBox e riempie la DataGrid
-                                modelessForm.SetComboBox(_valueDistinta);                                
+                                modelessForm.SetComboBox(_valueTypologieCode);
+                                // Imposta la ModelessFrom come attiva
+                                _modForm = true;
                             }
                             else
                             {
-                                MessageBox.Show("Questo elemento non ha un valore BOLDDistinta. Aggiungilo.");
+                                MessageBox.Show("Questo elemento non ha un Codice Tipologia. Aggiungilo.");
                                 modelessForm.CleanAll();
                             }                            
                             break;
                         }                   
                     case RequestId.ComboBox:
                         {
-                            count = 2;
+                            countInt = 2;
+                            break;
+                        }
+                    case RequestId.Code:
+                        {
+                            // Cattura tutti i parametri di un Curtain Panel
+                            _allParameters = GetAllParameters(uiapp);
+                            // Riempie le ComboBoxes del CodexDefinition
+                            _codeDefinition = CodeDefinition.thisCodeDef;
+                            _codeDefinition.FillTheComboBoxes(_allParameters);
+                            _modForm = false;
+                            break;
+                        }
+                    case RequestId.ChangeCode:
+                        {
+                            // Imposta il cambiamento dei codici
+                            modelessForm = App.thisApp.RetriveForm();
+                            modelessForm.CodesChanges();
+                            // Chiude la Form CodeDefinition
+                            modelessForm.CloseCodeDefinition();
                             break;
                         }
                     default:
@@ -232,8 +280,11 @@ namespace ModelessForm_ExternalEvent
             }
             finally
             {
-                App.thisApp.WakeFormUp();
-                App.thisApp.ShowFormTop();
+                if(_modForm)
+                {
+                    App.thisApp.WakeFormUp();
+                    App.thisApp.ShowFormTop();
+                }
             }
 
             return;
@@ -259,13 +310,13 @@ namespace ModelessForm_ExternalEvent
         }
 
         /// <summary>
-        ///   La subroutine di selezione di un elemento che torna il valore stringa di BOLD_Distinta
+        ///   La subroutine di selezione di un elemento che torna il valore stringa del Codice Tipologia
         /// </summary>
         /// <remarks>
         /// </remarks>
         /// <param name="uiapp">L'oggetto Applicazione di Revit</param>m>
         /// 
-        private string PickBOLD_distinta(UIApplication uiapp, Reference reference)
+        private string PickTypologieCode(UIApplication uiapp, Reference reference)
         {
             // Chiamo la vista attiva e seleziono gli elementi che mi servono
             UIDocument uidoc = uiapp.ActiveUIDocument;
@@ -273,15 +324,119 @@ namespace ModelessForm_ExternalEvent
             Element ele = uidoc.Document.GetElement(eleId);
 
             // Restituisce il valore del parametro
-            if (ele.LookupParameter("BOLDDistinta") != null)
+            if (ele.LookupParameter(_typologieCode) != null)
             {
-                Parameter pardistinta = ele.LookupParameter("BOLDDistinta");
-                return pardistinta.AsString();               
+                Parameter code = ele.LookupParameter(_typologieCode);
+                return code.AsString();               
             }
             else
             {
                 return "Nessun valore";
             }            
+        }
+
+        /// <summary>
+        ///   La subroutine di selezione di un elemento che torna il valore stringa del Codice Cellula
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <param name="uiapp">L'oggetto Applicazione di Revit</param>m>
+        /// 
+        private void PickCellCode(UIApplication uiapp, Reference reference)
+        {
+            // Chiamo la vista attiva e seleziono gli elementi che mi servono
+            UIDocument uidoc = uiapp.ActiveUIDocument;
+            ElementId eleId = reference.ElementId;
+            Element ele = uidoc.Document.GetElement(eleId);
+
+            // Restituisce il valore del parametro
+            if (ele.LookupParameter(_cellCode) != null)
+            {
+                Parameter code = ele.LookupParameter(_cellCode);
+                _valueCellCode = code.AsString();
+            }
+        }
+
+        /// <summary>
+        ///   La subroutine di selezione di un elemento che torna il valore stringa del Panel Type Identifier
+        /// </summary>
+        /// <remarks>
+        /// Il valore del Panel Type Identifier e' composto dai Parametri dell'elemento PNT-ItemCategory, 
+        /// PNT-ProjectAbbreviation, PNT-WallType e PNT-PanelType        
+        /// </remarks>
+        /// <param name="uiapp">L'oggetto Applicazione di Revit</param>m>
+        /// 
+        private void PickPanelTypeIdentifier(UIApplication uiapp, Reference reference)
+        {
+            // Chiamo la vista attiva e seleziono gli elementi che mi servono
+            UIDocument uidoc = uiapp.ActiveUIDocument;
+            ElementId eleId = reference.ElementId;
+            Element ele = uidoc.Document.GetElement(eleId);
+            ElementType eleType = uidoc.Document.GetElement(ele.GetTypeId()) as ElementType;
+
+            // Restituisce il valore del parametro PNT-ItemCategory
+            string strPNTItemCategory = "";
+            if (eleType.LookupParameter("PNT-ItemCategory") != null)
+            {
+                Parameter par = eleType.LookupParameter("PNT-ItemCategory");
+                strPNTItemCategory = par.AsString();
+            }
+            else { strPNTItemCategory = "xxx"; }
+
+            // Restituisce il valore del parametro PNT-ProjectAbbreviation
+            string strPNTProjectAbbreviation = "";
+            if (eleType.LookupParameter("PNT-ProjectAbbreviation") != null)
+            {
+                Parameter par = eleType.LookupParameter("PNT-ProjectAbbreviation");
+                strPNTProjectAbbreviation = par.AsString();
+            }
+            else { strPNTProjectAbbreviation = "xxx"; }
+
+            // Restituisce il valore del parametro PNT-WallType
+            string strPNTWallType = "";
+            if (eleType.LookupParameter("PNT-WallType") != null)
+            {
+                Parameter par = eleType.LookupParameter("PNT-WallType");
+                strPNTWallType = par.AsString();
+            }
+            else { strPNTWallType = "xxxx"; }
+
+            // Restituisce il valore del parametro PNT-PanelType
+            string strPNTPanelType = "";
+            if (ele.LookupParameter("PNT-PanelType") != null)
+            {
+                Parameter par = ele.LookupParameter("PNT-PanelType");
+                strPNTPanelType = par.AsString();
+            }
+            else { strPNTPanelType = "xx"; }
+
+            _valueCellCode =
+                strPNTItemCategory + "-" +
+                strPNTProjectAbbreviation + "-" +
+                strPNTWallType + "-" +
+                strPNTPanelType;
+        }
+
+        /// <summary>
+        ///   La subroutine di selezione di un elemento che torna il valore stringa del Codice Posizionale
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <param name="uiapp">L'oggetto Applicazione di Revit</param>m>
+        /// 
+        private void PickPositionalCode(UIApplication uiapp, Reference reference)
+        {
+            // Chiamo la vista attiva e seleziono gli elementi che mi servono
+            UIDocument uidoc = uiapp.ActiveUIDocument;
+            ElementId eleId = reference.ElementId;
+            Element ele = uidoc.Document.GetElement(eleId);
+
+            // Restituisce il valore del parametro
+            if (ele.LookupParameter(_positionalCode) != null)
+            {
+                Parameter code = ele.LookupParameter(_positionalCode);
+                _valuePositionalCode = code.AsString();
+            }
         }
 
         /// <summary>
@@ -347,72 +502,12 @@ namespace ModelessForm_ExternalEvent
             else { strUIUnitNumber = "xxx"; }
 
             // Imposta la stringa finale
-            _unitIdentifier = 
+            _valuePositionalCode = 
                 strUIItemCategory + "-" +
                 strUIProjectAbbreviation + "-" +
                 strUIQuadrant + "-" +
                 strUIFloorNumber + "-" +
                 strUIUnitNumber;
-        }
-
-        /// <summary>
-        ///   La subroutine di selezione di un elemento che torna il valore stringa del Panel Type Identifier
-        /// </summary>
-        /// <remarks>
-        /// Il valore del Panel Type Identifier e' composto dai Parametri dell'elemento PNT-ItemCategory, 
-        /// PNT-ProjectAbbreviation, PNT-WallType e PNT-PanelType        
-        /// </remarks>
-        /// <param name="uiapp">L'oggetto Applicazione di Revit</param>m>
-        /// 
-        private void PickPanelTypeIdentifier(UIApplication uiapp, Reference reference)
-        {
-            // Chiamo la vista attiva e seleziono gli elementi che mi servono
-            UIDocument uidoc = uiapp.ActiveUIDocument;
-            ElementId eleId = reference.ElementId;
-            Element ele = uidoc.Document.GetElement(eleId);
-            ElementType eleType = uidoc.Document.GetElement(ele.GetTypeId()) as ElementType;
-
-            // Restituisce il valore del parametro PNT-ItemCategory
-            string strPNTItemCategory = "";
-            if (eleType.LookupParameter("PNT-ItemCategory") != null)
-            {
-                Parameter par = eleType.LookupParameter("PNT-ItemCategory");
-                strPNTItemCategory = par.AsString();
-            }
-            else { strPNTItemCategory = "xxx"; }
-
-            // Restituisce il valore del parametro PNT-ProjectAbbreviation
-            string strPNTProjectAbbreviation = "";
-            if (eleType.LookupParameter("PNT-ProjectAbbreviation") != null)
-            {
-                Parameter par = eleType.LookupParameter("PNT-ProjectAbbreviation");
-                strPNTProjectAbbreviation = par.AsString();
-            }
-            else { strPNTProjectAbbreviation = "xxx"; }
-
-            // Restituisce il valore del parametro PNT-WallType
-            string strPNTWallType = "";
-            if (eleType.LookupParameter("PNT-WallType") != null)
-            {
-                Parameter par = eleType.LookupParameter("PNT-WallType");
-                strPNTWallType = par.AsString();
-            }
-            else { strPNTWallType = "xxxx"; }
-
-            // Restituisce il valore del parametro PNT-PanelType
-            string strPNTPanelType = "";
-            if (ele.LookupParameter("PNT-PanelType") != null)
-            {
-                Parameter par = ele.LookupParameter("PNT-PanelType");
-                strPNTPanelType = par.AsString();
-            }
-            else { strPNTPanelType = "xx"; }
-
-            _panelTypeIdentifier =
-                strPNTItemCategory + "-" +
-                strPNTProjectAbbreviation + "-" +
-                strPNTWallType + "-" +
-                strPNTPanelType;
         }
 
         /// <summary>
@@ -460,24 +555,29 @@ namespace ModelessForm_ExternalEvent
             string ctrl = "";
             foreach (Parameter par in pListOrdered)
             {
-                // Se il nome del parametro è già presente o uguale a BOLD_Distinta, salta a quello dopo
-                if (par.Definition.Name != ctrl && par.Definition.Name != "BOLDDistinta")
+                // Se il nome del parametro è già presente o uguale al Codice Tipologia, salta a quello dopo
+                if (par.Definition.Name != ctrl && par.Definition.Name != _typologieCode)
                 {
                     _dimensionsList.Add(par.Definition.Name + ":");
                     if (par.AsValueString() == null)
                     {
                         _dimensionsList.Add("-----");
                     }
-                    else if (par.Definition.Name == "Area")
+                    else if (par.Definition.Name == "Area" || par.Definition.Name == "Surface")
                     {
                         // Converte il valore in modo che sia corretto
-                        double MyString = par.AsDouble();
-                        double newvalueMyString = UnitUtils.ConvertFromInternalUnits(MyString, DisplayUnitType.DUT_SQUARE_METERS);
-                        _dimensionsList.Add(newvalueMyString + " m^2");
+                        //double MyString = par.AsDouble();
+                        //double newvalueMyString = UnitUtils.ConvertFromInternalUnits(MyString, DisplayUnitType.DUT_SQUARE_METERS);
+                        _dimensionsList.Add(ParameterToString(par) + " mm^2");
+                    }
+                    else if (par.Definition.Name == "Volume")
+                    {
+                        // Converte il valore in modo che sia corretto
+                        _dimensionsList.Add(ParameterToString(par) + " mm^3");
                     }
                     else
                     {
-                        _dimensionsList.Add(par.AsValueString());
+                        _dimensionsList.Add(par.AsValueString() + " ( = " + ParameterToString(par) + " mm)");
                     }
                     _dimensionsList.Add("");
 
@@ -539,6 +639,50 @@ namespace ModelessForm_ExternalEvent
             return dict;
         }
 
+        // Helper function: return a string from a given parameter
+        public static string ParameterToString(Parameter param)
+        {
+            string val = "none";
+
+            if (param == null)
+            {
+                return val;
+            }
+
+            // to get to the parameter value, we need to pause it depending
+            // on its storage type
+            switch (param.StorageType)
+            {
+                case StorageType.Double:
+                    double dVal = param.AsDouble();
+                    val = Math.Round(dVal, 2).ToString();
+                    break;
+
+                case StorageType.Integer:
+                    int iVal = param.AsInteger();
+                    val = iVal.ToString();
+                    break;
+
+                case StorageType.String:
+                    string sVal = param.AsString();
+                    val = sVal;
+                    break;
+
+                case StorageType.ElementId:
+                    ElementId idVal = param.AsElementId();
+                    val = idVal.IntegerValue.ToString();
+                    break;
+
+                case StorageType.None:
+                    break;
+
+                default:
+                    break;
+            }
+
+            return val;
+        }
+
         /// <summary>
         ///   La subroutine che cattura il parametro TYPE PROPERTIES della FAMIGLIA scelta in formato lista di parametri
         /// </summary>
@@ -597,6 +741,89 @@ namespace ModelessForm_ExternalEvent
                     singleString = param.AsValueString();
             }
             return singleString;
+        }
+
+        /// <summary>
+        ///   La subroutine che cattura TUTTI I PARAMETRI di un elemento casuale
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <param name="uiapp">L'oggetto Applicazione di Revit</param>m>
+        /// 
+        private List<string> GetAllParameters(UIApplication uiapp)
+        {
+            List<string> parameters = new List<string>();
+            // Chiamo la vista attiva e seleziono gli elementi che mi servono
+            UIDocument uidoc = uiapp.ActiveUIDocument;
+            Document doc = uidoc.Document;
+
+            // Metodo per catturare i Curtain Panels del Document
+            FilteredElementCollector collector = new FilteredElementCollector(doc);
+            ElementCategoryFilter categoryFilter = new ElementCategoryFilter(BuiltInCategory.OST_CurtainWallPanels);
+            collector.WherePasses(categoryFilter);
+
+            // Cattura il primo elemento della collezione
+            Element ele = collector.FirstOrDefault(p =>
+                p.get_Parameter(BuiltInParameter.HOST_VOLUME_COMPUTED) != null &&
+                p.get_Parameter(BuiltInParameter.HOST_VOLUME_COMPUTED).Definition.Name == "Volume");
+            parameters = GetAllParameterValues(doc, ele);
+            return parameters;
+        }
+
+        /// <summary>
+        /// Restituisce tutti i valori dei parametri
+        /// </summary>
+        private List<string> GetAllParameterValues(Document doc, Element e)
+        {
+            ArrayList allParams = new ArrayList();
+
+            // (1) Cattura tutti i parametri scelti tramite un METODO
+            IList<Parameter> psM = e.GetOrderedParameters();
+
+            foreach (Parameter p in psM)
+            {
+                // AsValueString visualizza il valore così come lo vede l'utente. 
+                // In alcuni casi, il valore del database sottostante 
+                // restituito da AsInteger, AsDouble, ecc., potrebbe essere più rilevante.
+                allParams.Add(string.Format("{0}", p.Definition.Name));
+            }
+
+            // (2) Ottiene il ParameterSet tramite la PROPRIETA' dell'elemento
+            ParameterSet psP = e.Parameters;
+
+            foreach (Parameter p in psP)
+            {
+                allParams.Add(string.Format("{0}", p.Definition.Name));
+            }
+
+            // (3) Ottiene il ParameterSet tramite la FAMIGLIA dell'elemento
+            ElementType eleType = doc.GetElement(e.GetTypeId()) as ElementType;
+            if (eleType != null)
+            {
+                ParameterSet psF = eleType.Parameters;
+
+                foreach (Parameter p in psF)
+                {
+                    allParams.Add(string.Format("{0}", p.Definition.Name));
+                }
+            }
+
+            // Dichiara una List<string> temporanea e la riempio 
+            List<string> temp = new List<string>();
+            foreach (var item in allParams)
+            {
+                temp.Add((string)item);
+            }
+            // Crea un IOrderedEnumerable per ordinare la List<string>
+            var ordered = temp.OrderBy(x => x).Distinct();
+            // Dichiara e riempie una nuova ArrayList per il risultato finale
+            List<string> stringsResult = new List<string>();
+            foreach (var item in ordered)
+            {
+                stringsResult.Add(item);
+            }
+
+            return stringsResult;
         }
 
     }  // class

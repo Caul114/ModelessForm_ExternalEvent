@@ -31,11 +31,12 @@ namespace ModelessForm_ExternalEvent.Config
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConfigPanel));
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.configInitialButton = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.label2 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -60,6 +61,16 @@ namespace ModelessForm_ExternalEvent.Config
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Impostazioni";
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(113, 61);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(100, 17);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "(.../Config.xlsx)";
+            // 
             // configInitialButton
             // 
             this.configInitialButton.Location = new System.Drawing.Point(90, 101);
@@ -74,17 +85,8 @@ namespace ModelessForm_ExternalEvent.Config
             // 
             this.openFileDialog1.FileName = "Config.xlsx";
             this.openFileDialog1.Filter = "File Excel (*.xlsx)|*.xlsx|All files (*.*)|*.*";
-            this.openFileDialog1.InitialDirectory = "C:\\Users\\Bold\\Documents\\Bold Software\\Config";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(113, 61);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(100, 17);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "(.../Config.xlsx)";
+            this.openFileDialog1.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) +
+                "\\Bold Software\\Config";
             // 
             // ConfigPanel
             // 
@@ -92,6 +94,7 @@ namespace ModelessForm_ExternalEvent.Config
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(364, 246);
             this.Controls.Add(this.groupBox1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ConfigPanel";

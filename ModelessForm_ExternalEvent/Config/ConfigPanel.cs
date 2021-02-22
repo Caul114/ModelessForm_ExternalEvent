@@ -108,7 +108,7 @@ namespace ModelessForm_ExternalEvent.Config
                         if (traduction.Any(x => x.Id == 2))
                         {
                             Data singleItem = traduction.FirstOrDefault(x => x.Id == 2);
-                            if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + singleItem.Path))
+                            if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + singleItem.Value))
                             {
                                 // Apre il pannello DataCellPaths
                                 ShowDataCellPaths();
@@ -117,14 +117,14 @@ namespace ModelessForm_ExternalEvent.Config
                             {
                                 // Ottiene il path di DataCell                              
                                 Data itemDataCell= traduction.FirstOrDefault(x => x.Id == 2);
-                                _pathDataCell = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + itemDataCell.Path;
+                                _pathDataCell = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + itemDataCell.Value;
 
                                 // Ottiene il path di AbacoCells
                                 Data itemAbacoCells = traduction.FirstOrDefault(x => x.Id == 3);
-                                _pathConfig = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + itemAbacoCells.Path;
+                                _pathConfig = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + itemAbacoCells.Value;
 
                                 // Ottiene i path di AbacoCells.xlsm e di Images
-                                exportValueToExcel.ExportExcelAndChangeValue(_pathConfig, _pathDataCell, _rawCommessa, _colDataCell);
+                                exportValueToExcel.ExportExcelAndChangeValue(_pathConfig, _pathDataCell, "", "", _rawCommessa, _colDataCell);
 
                                 // Chiude la Form
                                 this.Close();
@@ -167,14 +167,14 @@ namespace ModelessForm_ExternalEvent.Config
         }
 
         /// <summary>
-        ///   Forza la chiusura del ConfigPanel
+        ///   Forza la chiusura della Form DataCellPaths
         /// </summary>
         /// 
         public void CloseDataCellPaths()
         {
             if (dataCellPaths != null && dataCellPaths.Visible)
             {
-                // Chiudo la form ConfigPanel
+                // Chiudo la Form DataCellPaths
                 dataCellPaths.Close();
             }
         }   

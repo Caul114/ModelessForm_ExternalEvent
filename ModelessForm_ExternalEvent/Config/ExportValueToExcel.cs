@@ -16,7 +16,7 @@ namespace ModelessForm_ExternalEvent.Config
         ///   Metodo che Esporta in Excel i cambiamenti effettuati in alcune sue celle
         /// </summary>
         /// 
-        public void ExportExcelAndChangeValue(string pathExcel, string _pathDataCell, int raw, int col)
+        public void ExportExcelAndChangeValue(string pathExcel, string value, string value2, string value3, int raw, int col)
         {
 
             Excel.Application excelApp = new Excel.Application();
@@ -58,12 +58,12 @@ namespace ModelessForm_ExternalEvent.Config
 
             // Imposta il numero della riga e della colonna che si vuole ottenere
             int rawCommessa = raw;
-            int colDataCell = col;
+            int colValue = col;
 
             //used_range.Cells[rawCommessa, colDataCell] = _newPathDataCell;
 
             // Imposta il path della Distinta
-            SetCellContent(worksheet,  _pathDataCell, max_row, max_col, rawCommessa, colDataCell);
+            SetCellContent(worksheet, value, value2, value3, max_row, max_col, rawCommessa, colValue);
 
             worksheet.Columns.EntireColumn.AutoFit();
 
@@ -88,7 +88,6 @@ namespace ModelessForm_ExternalEvent.Config
             File.Delete(pathExcel);
             File.Move(tmpName, pathExcel);
 
-
             // Chiude tutti i processi Excel ancora attivi
             KillExcel();
 
@@ -101,7 +100,7 @@ namespace ModelessForm_ExternalEvent.Config
         ///   Metodo che imposta il contenuto della cella specifica
         /// </summary>
         /// 
-        private void SetCellContent(Excel.Worksheet worksheet, string _pathDataCell, int max_row, int max_col, int recordRaw, int recordCol)
+        private void SetCellContent(Excel.Worksheet worksheet, string value, string value2, string value3, int max_row, int max_col, int recordRaw, int recordCol)
         {
             // Copia i valori nella griglia.
             for (int row = 2; row <= max_row; row++)
@@ -110,25 +109,39 @@ namespace ModelessForm_ExternalEvent.Config
                 {
                     if (row == recordRaw && col == recordCol && recordCol == 3)
                     {
-                        worksheet.Cells[row, col] = _pathDataCell;
+                        worksheet.Cells[row, col] = value;
                     }
                     else if (row == recordRaw && col == (recordCol + 1) && (recordCol + 1) == 4)
                     {
-                        worksheet.Cells[row, col] = _pathDataCell + @"\AbacoCells.xlsm";
+                        worksheet.Cells[row, col] = value + @"\AbacoCells.xlsm";
                     }
                     else if (row == recordRaw && col == (recordCol + 2) && (recordCol + 2) == 5)
                     {
-                        worksheet.Cells[row, col] = _pathDataCell + @"\Images";
+                        worksheet.Cells[row, col] = value + @"\Images";
+                    }
+                    else if (row == recordRaw && col == recordCol && recordCol == 6)
+                    {
+                        worksheet.Cells[row, col] = value;
+                    }
+                    else if (row == recordRaw && col == (recordCol + 1) && (recordCol + 1) == 7)
+                    {
+                        worksheet.Cells[row, col] = value2;
+                    }
+                    else if (row == recordRaw && col == (recordCol + 2) && (recordCol + 2) == 8)
+                    {
+                        worksheet.Cells[row, col] = value3;
                     }
                 }
             }
+
+            string control = value;
         }
 
         /// <summary>
         ///   Metodo che chiude tutti i processi Excel attivi
         /// </summary>
         ///        
-        static void KillExcel()
+        public void KillExcel()
         {
             Process[] AllProcesses = Process.GetProcessesByName("excel");
 
