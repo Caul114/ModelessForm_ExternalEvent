@@ -90,6 +90,25 @@ namespace ModelessForm_ExternalEvent.Config
                 cellCodeComboBox.Items.Add(item);
                 positionalCodeComboBox.Items.Add(item);
             }
+
+            // Assegna al Text delle ComboBox il valore attivo, se presente
+            _modelessForm = App.thisApp.RetriveForm();
+            _typologieCode = _modelessForm.TypologieCode;
+            _cellCode = _modelessForm.CellCode;
+            _positionalCode = _modelessForm.PositionalCode;
+
+            if(_typologieCode != string.Empty)
+            {
+                typologieCodeComboBox.Text = _typologieCode;
+            }
+            if(_cellCode != string.Empty)
+            {
+                cellCodeComboBox.Text = _cellCode;
+            }
+            if(_positionalCode != string.Empty)
+            {
+                positionalCodeComboBox.Text = _positionalCode;
+            }
         }
 
         /// <summary>
@@ -135,8 +154,8 @@ namespace ModelessForm_ExternalEvent.Config
                 string pathExcelConfig = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + singleItem.Value;
 
                 // Esporta le modifiche su foglio Excel, del pathDataCell, di AbacoCells.xlsm e di Images
-                //exportValueToExcel.KillExcel();
-                 _colValue = 6;
+                exportValueToExcel.KillExcel();
+                _colValue = 6;
                 exportValueToExcel.ExportExcelAndChangeValue(pathExcelConfig, _typologieCode, _cellCode, _positionalCode, _rawCommessa, _colValue);
                 //_colValue = 7;
                 //exportValueToExcel.ExportExcelAndChangeValue(pathExcelConfig, _cellCode, _rawCommessa, _colValue);
