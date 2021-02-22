@@ -31,11 +31,26 @@ namespace ModelessForm_ExternalEvent.Config
         // Metodo per MODIFICARE o AGGIUNGERE un oggetto del file .json
         public void UpdateJson(int id, int index, string name, string value)
         {
-            string jsonText = File.ReadAllText(ModelessForm.thisModForm.PathFileTxt);
+            string pathFileConfig = ModelessForm.thisModForm.PathFileTxt;
+            string jsonText = string.Empty;
+            if (!File.Exists(pathFileConfig))
+            {
+                _data.Add(new Data()
+                {
+                    Id = id,
+                    Name = name,
+                    Value = value
+                });
+                jsonText = JsonConvert.SerializeObject(_data.ToArray());
+            }
+            else
+            {
+                jsonText = File.ReadAllText(pathFileConfig);
+            }
             IList<Data> traduction = JsonConvert.DeserializeObject<IList<Data>>(jsonText);
             dynamic jsonObj = JsonConvert.DeserializeObject(jsonText);
             // Se l'oggetto .json esiste già...
-            if (traduction.Any(x => x.Id == id))
+            if (traduction != null && traduction.Any(x => x.Id == id))
             {
                 jsonObj[index]["Value"] = value;
                 string output = JsonConvert.SerializeObject(jsonObj, Formatting.Indented);
@@ -43,6 +58,10 @@ namespace ModelessForm_ExternalEvent.Config
             }
             else // ... altrimenti lo crea
             {
+                if(traduction == null)
+                {
+                    traduction = new List<Data>();
+                }
                 traduction.Add(new Data { Id = id, Name = name, Value = value });
                 jsonText = JsonConvert.SerializeObject(traduction);
                 File.WriteAllText(ModelessForm.thisModForm.PathFileTxt, jsonText);

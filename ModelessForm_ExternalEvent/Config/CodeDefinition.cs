@@ -97,17 +97,21 @@ namespace ModelessForm_ExternalEvent.Config
             _cellCode = _modelessForm.CellCode;
             _positionalCode = _modelessForm.PositionalCode;
 
-            if(_typologieCode != string.Empty)
+            // Verifica che il valore contenuto nei codici sia uno dei parametri
+            foreach (string param in stringList)
             {
-                typologieCodeComboBox.Text = _typologieCode;
-            }
-            if(_cellCode != string.Empty)
-            {
-                cellCodeComboBox.Text = _cellCode;
-            }
-            if(_positionalCode != string.Empty)
-            {
-                positionalCodeComboBox.Text = _positionalCode;
+                if (_typologieCode == param)
+                {
+                    typologieCodeComboBox.Text = _typologieCode;
+                }
+                if (_cellCode == param)
+                {
+                    cellCodeComboBox.Text = _cellCode;
+                }
+                if (_positionalCode == param)
+                {
+                    positionalCodeComboBox.Text = _positionalCode;
+                }
             }
         }
 

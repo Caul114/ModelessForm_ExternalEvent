@@ -466,17 +466,17 @@ namespace ModelessForm_ExternalEvent
                 {
                     var traduction = JsonConvert.DeserializeObject<IList<Data>>(jsonText);
                     Data singleItem1 = traduction.FirstOrDefault(x => x.Id == 5);
-                    if (singleItem1.Value != string.Empty)
+                    if (singleItem1 != null && singleItem1.Value != string.Empty)
                     {
                         _typologieCode = singleItem1.Value;
                     }
                     Data singleItem2 = traduction.FirstOrDefault(x => x.Id == 6);
-                    if (singleItem2.Value != string.Empty)
+                    if (singleItem2 != null && singleItem2.Value != string.Empty)
                     {
                         _cellCode = singleItem2.Value;
                     }
                     Data singleItem3 = traduction.FirstOrDefault(x => x.Id == 7);
-                    if (singleItem3.Value != string.Empty)
+                    if (singleItem3 != null && singleItem3.Value != string.Empty)
                     {
                         _positionalCode = singleItem3.Value;
                     }
