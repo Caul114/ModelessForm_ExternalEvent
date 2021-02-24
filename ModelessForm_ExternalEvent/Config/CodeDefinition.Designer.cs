@@ -65,6 +65,8 @@ namespace ModelessForm_ExternalEvent.Config
             this.positionalCodeComboBox.Size = new System.Drawing.Size(222, 24);
             this.positionalCodeComboBox.TabIndex = 6;
             this.positionalCodeComboBox.Text = "<- Scegli il parametro ->";
+            this.positionalCodeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.positionalCodeComboBox.Enabled = false;
             // 
             // cellCodeComboBox
             // 
@@ -74,6 +76,8 @@ namespace ModelessForm_ExternalEvent.Config
             this.cellCodeComboBox.Size = new System.Drawing.Size(222, 24);
             this.cellCodeComboBox.TabIndex = 5;
             this.cellCodeComboBox.Text = "<- Scegli il parametro ->";
+            this.cellCodeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cellCodeComboBox.Enabled = false;
             // 
             // typologieCodeComboBox
             // 
@@ -83,7 +87,8 @@ namespace ModelessForm_ExternalEvent.Config
             this.typologieCodeComboBox.Size = new System.Drawing.Size(222, 24);
             this.typologieCodeComboBox.TabIndex = 4;
             this.typologieCodeComboBox.Text = "<- Scegli il parametro ->";
-
+            this.typologieCodeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.typologieCodeComboBox.Enabled = false;
             // 
             // label3
             // 

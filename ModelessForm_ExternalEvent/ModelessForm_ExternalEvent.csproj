@@ -137,6 +137,11 @@
     </Compile>
     <Compile Include="Request.cs" />
     <Compile Include="RequestHandler.cs" />
+    <Compile Include="ToggleSwitch\ExtensionMethod.cs" />
+    <Compile Include="ToggleSwitch\MyRectangle.cs" />
+    <Compile Include="ToggleSwitch\Toggle_Switch.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>

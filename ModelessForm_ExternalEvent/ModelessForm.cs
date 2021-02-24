@@ -97,7 +97,7 @@ namespace ModelessForm_ExternalEvent
         private string valueDistintaActive;
 
         // Valore di default della ComboBox Distinta
-        private string defaultTextComboBox = "<- Scegli una pagina del documento Excel ->";
+        private string _defaultTextComboBox = "<- Scegli una pagina del documento Excel ->";
 
         // Valore booleano di errore
         bool error = false;
@@ -606,7 +606,8 @@ namespace ModelessForm_ExternalEvent
             dataGridView1.Refresh();
             listBox1.DataSource = null;
             listBox1.Items.Clear();
-            comboBox1.Text = defaultTextComboBox;
+            comboBox1.Text = _defaultTextComboBox;
+            typologyTextBox.Text = null;
             unitIdentifierTextBox.Text = null;
             panelTypeIdentifierTextBox.Text = null;
             error = true;
@@ -626,7 +627,7 @@ namespace ModelessForm_ExternalEvent
             dataGridView1.Refresh();
             listBox1.DataSource = null;
             listBox1.Items.Clear();
-            comboBox1.Text = defaultTextComboBox;
+            comboBox1.Text = _defaultTextComboBox;
             unitIdentifierTextBox.Text = null;
             panelTypeIdentifierTextBox.Text = null;
             error = true;
@@ -681,7 +682,7 @@ namespace ModelessForm_ExternalEvent
 
                     // Cancella il contenuto della ComboBox e della DataGrid
                     comboBox1.Items.Clear();
-                    comboBox1.Text = defaultTextComboBox;
+                    comboBox1.Text = _defaultTextComboBox;
                     dataGridView1.DataSource = null;
                     dataGridView1.Rows.Clear();
                     dataGridView1.Columns.Clear();
@@ -1479,6 +1480,16 @@ namespace ModelessForm_ExternalEvent
         public void exitButton_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void toggle_Switch_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void toggle_Switch1_Click(object sender, EventArgs e)
+        {
+
         }
     }  // class
 }

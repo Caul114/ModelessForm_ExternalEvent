@@ -80,6 +80,9 @@ namespace ModelessForm_ExternalEvent
         // La lista di stringhe che restituirà i valori da inserire in ListBox
         private ArrayList _dimensionsList;
 
+        // La lista dei valori della ListBox impostati in formato List<string[]>
+        private List<string[]> _dimensionsListString;
+
         // Un instanza di DataTable per riempire il DataGridView
         private DataTable _table;
 
@@ -137,6 +140,14 @@ namespace ModelessForm_ExternalEvent
         }
 
         /// <summary>
+        /// Proprietà pubblica per accedere ai valori della ListBox
+        /// </summary>
+        public List<string[]> GetListBoxStrings
+        {
+            get { return _dimensionsListString; }
+        }
+        
+        /// <summary>
         /// Proprietà pubblica per accedere ai valori della DataTable
         /// </summary>
         public DataTable GetTable
@@ -164,6 +175,7 @@ namespace ModelessForm_ExternalEvent
             _listXlSh = new List<string>();
             _table = new DataTable();
             _allParameters = new List<string>();
+            _dimensionsListString = new List<string[]>();
         }
         #endregion
 
@@ -558,7 +570,8 @@ namespace ModelessForm_ExternalEvent
                 // Se il nome del parametro è già presente o uguale al Codice Tipologia, salta a quello dopo
                 if (par.Definition.Name != ctrl && par.Definition.Name != _typologieCode)
                 {
-                    _dimensionsList.Add(par.Definition.Name + ":");
+                    _dimensionsList.Add(par.Definition.Name + ":");                    
+
                     if (par.AsValueString() == null)
                     {
                         _dimensionsList.Add("-----");
@@ -569,15 +582,18 @@ namespace ModelessForm_ExternalEvent
                         //double MyString = par.AsDouble();
                         //double newvalueMyString = UnitUtils.ConvertFromInternalUnits(MyString, DisplayUnitType.DUT_SQUARE_METERS);
                         _dimensionsList.Add(ParameterToString(par) + " mm^2");
+                        _dimensionsListString.Add(new string[2] {par.Definition.Name, ParameterToString(par)});
                     }
                     else if (par.Definition.Name == "Volume")
                     {
                         // Converte il valore in modo che sia corretto
                         _dimensionsList.Add(ParameterToString(par) + " mm^3");
+                        _dimensionsListString.Add(new string[2] { par.Definition.Name, ParameterToString(par) });
                     }
                     else
                     {
                         _dimensionsList.Add(par.AsValueString() + " ( = " + ParameterToString(par) + " mm)");
+                        _dimensionsListString.Add(new string[2] { par.Definition.Name, ParameterToString(par) });
                     }
                     _dimensionsList.Add("");
 
