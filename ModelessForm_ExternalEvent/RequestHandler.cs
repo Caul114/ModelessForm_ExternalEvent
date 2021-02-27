@@ -238,8 +238,8 @@ namespace ModelessForm_ExternalEvent
                                 // Imposta il valore del Codice Cellula (Panel Type Identifier) per la Form
                                 modelessForm.ValuePanelTypeIdentifierFromCaptureButton();
                                 // Imposta il valore del Codice Posizionale (UnitIdentifier) per la Form
-                                //PickPositionalCode(uiapp, pickedObject);
-                                PickUnitIdentifier(uiapp, pickedObject);
+                                PickPositionalCode(uiapp, pickedObject);
+                                //PickUnitIdentifier(uiapp, pickedObject);
                                 modelessForm.ValueUnitIdentifierFromCaptureButton();
                                 // Chiama il metodo che seleziona il parametro stringa della famiglia scelta e riempie il PictureBox
                                 GetTypeParameterOfFamily(uiapp, pickedObject);
@@ -671,7 +671,8 @@ namespace ModelessForm_ExternalEvent
             {
                 case StorageType.Double:
                     double dVal = param.AsDouble();
-                    val = Math.Round(dVal, 2).ToString();
+                    double feetToMm = Constant.FeetToMm(dVal);                    
+                    val = Math.Round(feetToMm, 2).ToString();
                     break;
 
                 case StorageType.Integer:

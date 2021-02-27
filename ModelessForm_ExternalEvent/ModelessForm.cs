@@ -108,6 +108,14 @@ namespace ModelessForm_ExternalEvent
         // Valore booleano per usare o meno la Lente d'ingrandimento
         private bool _activeMagnifyngGlass = false;
 
+        // Variabile in cui viene salvato il dataGridView attualmente visualizzato
+        private DataGridView _dataGridViewOriginal;
+
+        // Variabile in cui viene salvato il dataGridView che verrà visualizzato dopo le modifiche
+        private DataGridView _dataGridViewToNumbers;
+
+        // Variabile Booleana per il cambio di DataGridView
+        private bool FirstTime = false;
         #endregion
 
         #region Class public property
@@ -196,6 +204,10 @@ namespace ModelessForm_ExternalEvent
 
             // Riempie l'istanza di questa classe con la Form
             thisModForm = this;
+
+            // Inizializza i DataGridView di visualizzazione
+            _dataGridViewOriginal = new DataGridView();
+            _dataGridViewToNumbers = new DataGridView();
 
             double FeetToInc = Constant.FeetToInc(21, 9);
             double feetToMm = Constant.FeetToMm(FeetToInc);
@@ -550,6 +562,10 @@ namespace ModelessForm_ExternalEvent
                 dataGridView1.Rows.Clear();
                 dataGridView1.Columns.Clear();
                 dataGridView1.Refresh();
+                _dataGridViewOriginal.Rows.Clear();
+                _dataGridViewOriginal.Columns.Clear();
+                _dataGridViewToNumbers.Rows.Clear();
+                _dataGridViewToNumbers.Columns.Clear();
             }
             MakeRequest(RequestId.Id);
         }
@@ -604,6 +620,10 @@ namespace ModelessForm_ExternalEvent
             dataGridView1.Rows.Clear();
             dataGridView1.Columns.Clear();
             dataGridView1.Refresh();
+            _dataGridViewOriginal.Rows.Clear();
+            _dataGridViewOriginal.Columns.Clear();
+            _dataGridViewToNumbers.Rows.Clear();
+            _dataGridViewToNumbers.Columns.Clear();
             listBox1.DataSource = null;
             listBox1.Items.Clear();
             comboBox1.Text = _defaultTextComboBox;
@@ -625,9 +645,14 @@ namespace ModelessForm_ExternalEvent
             dataGridView1.Rows.Clear();
             dataGridView1.Columns.Clear();
             dataGridView1.Refresh();
+            _dataGridViewOriginal.Rows.Clear();
+            _dataGridViewOriginal.Columns.Clear();
+            _dataGridViewToNumbers.Rows.Clear();
+            _dataGridViewToNumbers.Columns.Clear();
             listBox1.DataSource = null;
             listBox1.Items.Clear();
             comboBox1.Text = _defaultTextComboBox;
+            typologyTextBox.Text = null;
             unitIdentifierTextBox.Text = null;
             panelTypeIdentifierTextBox.Text = null;
             error = true;
@@ -665,7 +690,7 @@ namespace ModelessForm_ExternalEvent
 
         #endregion
 
-        #region ComboBox and Excel
+        #region ComboBox and Excel/DataGridView
 
         /// <summary>
         ///   Metodo che permette di scegliere il file Excel da caricare nella ComboBox
@@ -687,6 +712,10 @@ namespace ModelessForm_ExternalEvent
                     dataGridView1.Rows.Clear();
                     dataGridView1.Columns.Clear();
                     dataGridView1.Refresh();
+                    _dataGridViewOriginal.Rows.Clear();
+                    _dataGridViewOriginal.Columns.Clear();
+                    _dataGridViewToNumbers.Rows.Clear();
+                    _dataGridViewToNumbers.Columns.Clear();
 
                     // Imposta l'origine dati della Combobox e la riempie con il nuovo documento Excel
                     ImportData newData = new ImportData();
@@ -771,7 +800,7 @@ namespace ModelessForm_ExternalEvent
             object[,] values = (object[,])used_range.Value2;
 
             // Ottieni i titoli delle colonne.
-            SetGridColumns(dataGridView1, values, max_col);
+            SetGridColumns(dataGridView1, values, max_col); 
 
             // Recupera i dati.
             SetGridContents(dataGridView1, values, max_row, max_col);
@@ -790,7 +819,7 @@ namespace ModelessForm_ExternalEvent
         }
 
         /// <summary>
-        ///   Metodo che imposta i nomi delle colonne della griglia dalla riga 1
+        ///   Metodo che imposta il DataGridView: i nomi delle colonne della griglia dalla riga 1
         /// </summary>
         /// 
         private void SetGridColumns(DataGridView dgv, object[,] values, int max_col)
@@ -806,7 +835,7 @@ namespace ModelessForm_ExternalEvent
         }
 
         /// <summary>
-        ///   Metodo che imposta il contenuto della griglia
+        ///   Metodo che imposta il DataGridView: il contenuto della griglia
         /// </summary>
         /// 
         private void SetGridContents(DataGridView dgv, object[,] values, int max_row, int max_col)
@@ -995,8 +1024,7 @@ namespace ModelessForm_ExternalEvent
                     ExcelProcess.Kill();
             }
             AllProcesses = null;
-        }
-   
+        }   
 
         /// <summary>
         ///   Valore attivo nella ComboBox in formato stringa
@@ -1005,6 +1033,291 @@ namespace ModelessForm_ExternalEvent
         public string ValueSelectedComboBox()
         {
             return valueActive;
+        }
+
+        /// <summary>
+        ///   Metodo che permette la odifica della visualizzazione tramite il TOGGLE SWITCH
+        /// </summary>
+        /// 
+        private void toggle_Switch_Click(object sender, EventArgs e)
+        {
+            if(dataGridView1.ColumnCount == 0)
+            {
+                toggle_Switch1.IsOn = false;
+            }
+            else
+            {
+                // Ottieni il numero massimo di righe e colonne del nuovo DatagridView
+                int max_row = dataGridView1.Rows.Count;
+                int max_col = dataGridView1.Columns.Count;
+
+                if (_dataGridViewOriginal.ColumnCount == 0)
+                { 
+                    // Crea un oggetto con i valori vuoti del foglio.
+                    string value = string.Empty;
+                    object[,] values = new object[max_row, max_col];
+                    for (int i = 0; i < max_row; i++)
+                    {
+                        for (int j = 0; j < max_col; j++)
+                        {
+                            values[i, j] = value;
+                        }
+                    }
+
+                    // Ottieni i titoli delle colonne.
+                    SetGridColumns2(_dataGridViewOriginal, values, max_col);
+                    SetGridColumns2(_dataGridViewToNumbers, values, max_col);
+
+                    // Imposta i DatagridView delle stesse dimensioni del Datagrid originale
+                    SetGridContents2(_dataGridViewOriginal, values, max_row, max_col);
+                    SetGridContents2(_dataGridViewToNumbers, values, max_row, max_col);
+
+                    // Imposta il Datagridview Originale da
+                    for (int i = 0; i < dataGridView1.ColumnCount; i++)
+                    {
+                        _dataGridViewOriginal.Columns[i].HeaderText = dataGridView1.Columns[i].HeaderText;
+                    }
+
+                    for (int r = 0; r < dataGridView1.Rows.Count; r++)
+                    {
+                        for (int i = 0; i < dataGridView1.ColumnCount; i++)
+                        {
+                            _dataGridViewOriginal.Rows[r].Cells[i].Value = dataGridView1.Rows[r].Cells[i].Value;                            
+                        }
+                    }
+                }
+
+                if (toggle_Switch1.IsOn)
+                {
+                    for (int i = 0; i < dataGridView1.ColumnCount; i++)
+                    {
+                        _dataGridViewToNumbers.Columns[i].HeaderText = dataGridView1.Columns[i].HeaderText;
+                    }
+
+                    for (int r = 0; r < dataGridView1.Rows.Count; r++)
+                    {
+                        for (int i = 0; i < dataGridView1.ColumnCount; i++)
+                        {
+                            if (r >= 0 && r < (max_row - 1) && i == 2)
+                            {
+                                //_dataGridViewToNumbers.Rows[r].Cells[i].Value = "CIAOOOOOOOO";
+                                string value = dataGridView1.Rows[r].Cells[i].Value.ToString();                                
+                                _dataGridViewToNumbers.Rows[r].Cells[i].Value = ConvertToStringTheValue(value);
+                                if(_dataGridViewToNumbers.Rows[r].Cells[i].Value != dataGridView1.Rows[r].Cells[i].Value)
+                                {
+                                    //_dataGridViewToNumbers.RowsDefaultCellStyle.BackColor = System.Drawing.SystemColors.Highlight;
+                                    _dataGridViewToNumbers.Rows[r].Cells[i].Style.BackColor = System.Drawing.Color.LightSkyBlue;
+                                }
+                            }
+                            else
+                            {
+                                _dataGridViewToNumbers.Rows[r].Cells[i].Value = dataGridView1.Rows[r].Cells[i].Value;
+                            }
+                        }
+                    }
+
+                    // Assegna il DataGridView modificato al DataGrid
+                    for (int i = 0; i < _dataGridViewToNumbers.ColumnCount; i++)
+                    {
+                        dataGridView1.Columns[i].HeaderText = _dataGridViewToNumbers.Columns[i].HeaderText;
+                    }
+
+                    for (int r = 0; r < _dataGridViewToNumbers.Rows.Count; r++)
+                    {
+                        for (int i = 0; i < _dataGridViewToNumbers.ColumnCount; i++)
+                        {
+                            dataGridView1.Rows[r].Cells[i].Value = _dataGridViewToNumbers.Rows[r].Cells[i].Value;
+                            dataGridView1.Rows[r].Cells[i].Style.BackColor = _dataGridViewToNumbers.Rows[r].Cells[i].Style.BackColor;
+                        }
+                                               
+                    }
+                }
+                else
+                {
+                    // Assegna il DataGridView originale al DataGrid
+                    for (int i = 0; i < _dataGridViewOriginal.ColumnCount; i++)
+                    {
+                        dataGridView1.Columns[i].HeaderText = _dataGridViewOriginal.Columns[i].HeaderText;
+                    }
+
+                    for (int r = 0; r < _dataGridViewOriginal.Rows.Count; r++)
+                    {
+                        for (int i = 0; i < _dataGridViewOriginal.ColumnCount; i++)
+                        {
+                            dataGridView1.Rows[r].Cells[i].Value = _dataGridViewOriginal.Rows[r].Cells[i].Value;
+                            dataGridView1.Rows[r].Cells[i].Style.BackColor = _dataGridViewOriginal.Rows[r].Cells[i].Style.BackColor;
+                        }
+                    }
+                }
+            } 
+        }
+
+        /// <summary>
+        ///   Metodo che converte i valori del DataGridView 
+        /// </summary>
+        /// 
+        private string ConvertToStringTheValue(string value)
+        {
+            // Importa tutti i valori dei parametri dell'elemento scelto
+            List<string[]> dimensionList = m_Handler.GetListBoxStrings;
+
+            // Se i valori del parametro non sono stati prelevati, esce
+            if(dimensionList.Count > 0)
+            {
+                // Variabile bool di controllo
+                bool control = false;
+                // Spezza la stringa in due stringhe con i valori e con gli operatori
+                char[] separators = new char[] { '#', '-', '+' };
+                string[] values = value.Split(separators, StringSplitOptions.RemoveEmptyEntries);
+                int count = values.Count();
+                string operatorString = value;
+                string resultOper = string.Empty;
+                for (int i = 0; i < count; i++)
+                {
+                    resultOper = operatorString.Replace(values[i], " ");
+                    operatorString = resultOper;
+                }
+                operatorString = resultOper.Trim(' ');
+                string[] operators = operatorString.Split(' ');
+
+                double num1 = GetTheValueOfTheListBoxDimension(values, 0, dimensionList);                
+
+                // Se il valore numerico è uguale a zero, esce
+                if(num1 > 0)
+                {
+                    
+                    // Fa le operazioni previste dalla formula
+                    int rif = 1;
+                    double resultFinal = num1;
+                    while (count > 1)
+                    {                        
+                        if (values[rif].Contains("H") || values[rif].Contains("L"))
+                        {
+                            double num2 = GetTheValueOfTheListBoxDimension(values, 1 , dimensionList);
+
+                            if(num2 == 0)
+                            {
+                                control = true;
+                                break;
+                            }
+
+                            switch (operators[rif])
+                            {
+                                case "+":
+                                    resultFinal += num2;
+                                    break;
+                                case "-":
+                                    resultFinal -= num2;
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            switch (operators[rif])
+                            {
+                                case "+":
+                                    resultFinal += Convert.ToDouble(values[rif]);
+                                    break;
+                                case "-":
+                                    resultFinal -= Convert.ToDouble(values[rif]);
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+
+                        rif++;
+                        if (rif == count)
+                        {
+                            break;
+                        }
+                    }
+
+                    if(!control)
+                    {
+                        //Converte il risultato finale in una stringa
+                        value = Convert.ToString(resultFinal) + " mm";
+                    }
+                }
+            }
+
+            return value;
+        }
+
+        /// <summary>
+        ///   Metodo che calcola il valore della vareabile dimensioanle contenuta nel Datagrid
+        /// </summary>
+        /// 
+        private double GetTheValueOfTheListBoxDimension(string[] values, int index, List<string[]> dimensionList)
+        {
+            // Se contiene valori diversi da quelli contenuti nelle Dimensioni, li trasforma
+            string param = string.Empty;
+            switch (values[index])
+            {
+                case "H1":
+                case "CellH1":
+                    param = "CellH1";
+                    break;
+                case "H2":
+                case "H3":
+                case "H4":
+                case "CellH2":
+                    param = "CellH2";
+                    break;
+                case "L1":
+                case "L2":
+                case "L3":
+                case "CellL":
+                    param = "CellL";
+                    break;
+                default:
+                    break;
+            }
+
+            // Comverte la variabile iniziale in un numero double
+            double num = 0D;
+            foreach (string[] item in dimensionList)
+            {
+                if (item[0] == param)
+                {
+                    num = Convert.ToDouble(item[1]);
+                }
+            }
+            return num;
+        }
+
+        /// <summary>
+        ///   Metodo che imposta il DataGridView: i nomi delle colonne della griglia dalla riga 1
+        /// </summary>
+        /// 
+        private void SetGridColumns2(DataGridView dgv, object[,] values, int max_col)
+        {
+            //dataGridView1.Columns.Clear();
+
+            // Ottieni i valori del titolo.
+            for (int col = 0; col < max_col; col++)
+            {
+                string title = (string)values[1, col];
+                dgv.Columns.Add("col_" + title, title);
+            }
+        }
+
+        /// <summary>
+        ///   Metodo che imposta il DataGridView: il contenuto della griglia
+        /// </summary>
+        /// 
+        private void SetGridContents2(DataGridView dgv, object[,] values, int max_row, int max_col)
+        {
+            // Copia i valori nella griglia.
+            for (int row = 1; row < max_row; row++)
+            {
+                object[] row_values = new object[max_col];
+                for (int col = 0; col < max_col; col++)
+                    row_values[col] = values[row, col];
+                dgv.Rows.Add(row_values);
+            }
         }
         #endregion
 
@@ -1482,14 +1795,7 @@ namespace ModelessForm_ExternalEvent
             Close();
         }
 
-        private void toggle_Switch_Click(object sender, EventArgs e)
-        {
 
-        }
 
-        private void toggle_Switch1_Click(object sender, EventArgs e)
-        {
-
-        }
     }  // class
 }

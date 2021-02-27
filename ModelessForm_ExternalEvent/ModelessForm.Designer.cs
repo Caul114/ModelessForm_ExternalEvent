@@ -35,6 +35,8 @@ namespace ModelessForm_ExternalEvent
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ModelessForm));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.functionGroupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -68,6 +70,7 @@ namespace ModelessForm_ExternalEvent
             this.cleanButton = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.functionGroupBox2 = new System.Windows.Forms.GroupBox();
+            this.toggle_Switch1 = new ModelessForm_ExternalEvent.ToggleSwitch.Toggle_Switch();
             this.label11 = new System.Windows.Forms.Label();
             this.settingsGroupBox = new System.Windows.Forms.GroupBox();
             this.settingsButton = new System.Windows.Forms.Button();
@@ -82,7 +85,6 @@ namespace ModelessForm_ExternalEvent
             this.label6 = new System.Windows.Forms.Label();
             this.uploadExcelOpenFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.toggle_Switch1 = new ModelessForm_ExternalEvent.ToggleSwitch.Toggle_Switch();
             this.functionGroupBox1.SuspendLayout();
             this.groupBox7.SuspendLayout();
             this.imageFamilyGroupBox.SuspendLayout();
@@ -445,15 +447,34 @@ namespace ModelessForm_ExternalEvent
             this.functionGroupBox2.TabStop = false;
             this.functionGroupBox2.Text = "Parametri della Distinta";
             // 
+            // toggle_Switch1
+            // 
+            this.toggle_Switch1.BorderColor = System.Drawing.Color.LightGray;
+            this.toggle_Switch1.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.toggle_Switch1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.toggle_Switch1.ForeColor = System.Drawing.Color.Black;
+            this.toggle_Switch1.IsOn = false;
+            this.toggle_Switch1.Location = new System.Drawing.Point(628, 11);
+            this.toggle_Switch1.Name = "toggle_Switch1";
+            this.toggle_Switch1.OffColor = System.Drawing.Color.DarkGray;
+            this.toggle_Switch1.OffText = "OFF";
+            this.toggle_Switch1.OnColor = System.Drawing.SystemColors.Highlight;
+            this.toggle_Switch1.OnText = "ON";
+            this.toggle_Switch1.Size = new System.Drawing.Size(62, 33);
+            this.toggle_Switch1.TabIndex = 11;
+            this.toggle_Switch1.Text = "toggle_Switch1";
+            this.toggle_Switch1.TextEnabled = true;
+            this.toggle_Switch1.Click += new System.EventHandler(this.toggle_Switch_Click);
+            // 
             // label11
             // 
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(309, 18);
+            this.label11.Location = new System.Drawing.Point(324, 18);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(326, 17);
+            this.label11.Size = new System.Drawing.Size(322, 17);
             this.label11.TabIndex = 10;
-            this.label11.Text = "Clicca per visualizzare i valori in formato numerico:";
+            this.label11.Text = "Clicca per visualizzare i valori in formato numerico";
             // 
             // settingsGroupBox
             // 
@@ -541,16 +562,18 @@ namespace ModelessForm_ExternalEvent
             // 
             // dataGridView1
             // 
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Lavender;
+            this.dataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridView1.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCellsExceptHeaders;
             this.dataGridView1.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Navy;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.Navy;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Gray;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.GridColor = System.Drawing.Color.Black;
             this.dataGridView1.Location = new System.Drawing.Point(13, 47);
@@ -558,6 +581,8 @@ namespace ModelessForm_ExternalEvent
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.RowHeadersWidth = 51;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.MintCream;
+            this.dataGridView1.RowsDefaultCellStyle = dataGridViewCellStyle3;
             this.dataGridView1.RowTemplate.Height = 24;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView1.Size = new System.Drawing.Size(683, 857);
@@ -594,25 +619,6 @@ namespace ModelessForm_ExternalEvent
             // 
             this.folderBrowserDialog1.Description = "Scegli la Directory da cui vuoi prendere le immagini.";
             this.folderBrowserDialog1.SelectedPath = "C:\\Users\\Bold\\DocumentsC:\\BOLD Software\\DataCell\\Images";
-            // 
-            // toggle_Switch1
-            // 
-            this.toggle_Switch1.BorderColor = System.Drawing.Color.LightGray;
-            this.toggle_Switch1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.toggle_Switch1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.toggle_Switch1.ForeColor = System.Drawing.Color.Black;
-            this.toggle_Switch1.IsOn = false;
-            this.toggle_Switch1.Location = new System.Drawing.Point(633, 10);
-            this.toggle_Switch1.Name = "toggle_Switch1";
-            this.toggle_Switch1.OffColor = System.Drawing.Color.DarkGray;
-            this.toggle_Switch1.OffText = "OFF";
-            this.toggle_Switch1.OnColor = System.Drawing.SystemColors.Highlight;
-            this.toggle_Switch1.OnText = "ON";
-            this.toggle_Switch1.Size = new System.Drawing.Size(62, 33);
-            this.toggle_Switch1.TabIndex = 11;
-            this.toggle_Switch1.Text = "toggle_Switch1";
-            this.toggle_Switch1.TextEnabled = true;
-            this.toggle_Switch1.Click += new System.EventHandler(this.toggle_Switch_Click);
             // 
             // ModelessForm
             // 
