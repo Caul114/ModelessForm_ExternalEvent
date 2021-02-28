@@ -71,6 +71,9 @@ namespace ModelessForm_ExternalEvent
         // Il valore del Codice Posizionale
         private string _valuePositionalCode = string.Empty;
 
+        // Variabile che raccoglie il numero di pannelli presenti
+        private int[] _nrCodes;
+
         // Variabile che raccoglie tutti i parametri dell'elemento
         private List<string> _allParameters;
 
@@ -121,6 +124,14 @@ namespace ModelessForm_ExternalEvent
         public string GetValuePositionalCode
         {
             get { return _valuePositionalCode; }
+        }
+
+        /// <summary>
+        /// Proprietà pubblica per accedere ai valori della DataTable
+        /// </summary>
+        public int[] NrCodesPanels
+        {
+            get { return _nrCodes; }
         }
 
         /// <summary>
@@ -241,6 +252,9 @@ namespace ModelessForm_ExternalEvent
                                 PickPositionalCode(uiapp, pickedObject);
                                 //PickUnitIdentifier(uiapp, pickedObject);
                                 modelessForm.ValueUnitIdentifierFromCaptureButton();
+                                // Metodo che conta il numero di pannelli presenti
+                                GetNumberOfPanels(uiapp);
+                                modelessForm.NrCodes();
                                 // Chiama il metodo che seleziona il parametro stringa della famiglia scelta e riempie il PictureBox
                                 GetTypeParameterOfFamily(uiapp, pickedObject);
                                 modelessForm.SetModifyPicture();
@@ -520,6 +534,53 @@ namespace ModelessForm_ExternalEvent
                 strUIQuadrant + "-" +
                 strUIFloorNumber + "-" +
                 strUIUnitNumber;
+        }
+
+        /// <summary>
+        ///   La subroutine che calcola il NUMERO dei pannelli per CODICE
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <param name="uiapp">L'oggetto Applicazione di Revit</param>m>
+        /// 
+        private void GetNumberOfPanels(UIApplication uiapp)
+        {
+            // Cattura tutti i Curtain Panels presenti
+            UIDocument uidoc = uiapp.ActiveUIDocument;
+            Document doc = uidoc.Document;
+
+            // Metodo per catturare i Curtain Panels del Document
+            FilteredElementCollector collector = new FilteredElementCollector(doc);
+            ElementCategoryFilter categoryFilter = new ElementCategoryFilter(BuiltInCategory.OST_CurtainWallPanels);
+            collector.WherePasses(categoryFilter);
+
+            int countT = 0;
+            int countC = 0;
+            int countP = 0;
+
+            // Filtra tutti gli elementi e conta quanti pannelli con quel nome ci sono
+            foreach (Element elem in collector)
+            {
+                Parameter par = elem.LookupParameter(_typologieCode);
+                if(par != null && par.AsString() == _valueTypologieCode)
+                {
+                    countT++;
+                }
+
+                par = elem.LookupParameter(_cellCode);
+                if (par != null && par.AsString() == _valueCellCode)
+                {
+                    countC++;
+                }                
+
+                par = elem.LookupParameter(_positionalCode);
+                if (par != null && par.AsString() == _valuePositionalCode)
+                {
+                    countP++;
+                }
+            }
+            // Salva il numero di pannelli in una variabile
+            _nrCodes = new int[] { countT, countC, countP };
         }
 
         /// <summary>

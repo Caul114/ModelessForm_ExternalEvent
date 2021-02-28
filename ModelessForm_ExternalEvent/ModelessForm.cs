@@ -113,9 +113,6 @@ namespace ModelessForm_ExternalEvent
 
         // Variabile in cui viene salvato il dataGridView che verrà visualizzato dopo le modifiche
         private DataGridView _dataGridViewToNumbers;
-
-        // Variabile Booleana per il cambio di DataGridView
-        private bool FirstTime = false;
         #endregion
 
         #region Class public property
@@ -547,6 +544,20 @@ namespace ModelessForm_ExternalEvent
         }
         #endregion
 
+        #region NrPanels
+        /// <summary>
+        ///   Metodo che permette di contare i PanelCurtain di ciascun Codice
+        /// </summary>
+        /// 
+        public void NrCodes()
+        {
+            int[] nrcodes = m_Handler.NrCodesPanels;
+            nrTypologiePanelsTextBox.Text = nrcodes[0].ToString();
+            nrCellPanelsTextBox.Text = nrcodes[1].ToString();
+            nrPositionalPanelsTextBox.Text = nrcodes[2].ToString();
+        }
+        #endregion
+
         #region Capture Button
 
         /// <summary>
@@ -554,58 +565,59 @@ namespace ModelessForm_ExternalEvent
         /// </summary>
         /// 
         private void captureButton_Click(object sender, EventArgs e)
-        {
+    {
 
-            if (dataGridView1.Columns.Count > 0)
-            {
-                dataGridView1.DataSource = null;
-                dataGridView1.Rows.Clear();
-                dataGridView1.Columns.Clear();
-                dataGridView1.Refresh();
-                _dataGridViewOriginal.Rows.Clear();
-                _dataGridViewOriginal.Columns.Clear();
-                _dataGridViewToNumbers.Rows.Clear();
-                _dataGridViewToNumbers.Columns.Clear();
-            }
-            MakeRequest(RequestId.Id);
-        }
-
-        /// <summary>
-        ///   Metodo che imposta il valore della distinta presente nella ComboBox del DataGrid in base alla selezione del Button
-        /// </summary>
-        /// 
-        public void ValueDistintaFromCaptureButton()
+        if (dataGridView1.Columns.Count > 0)
         {
-            valueDistintaActive = m_Handler.GetValueTypologieCode;
+            dataGridView1.DataSource = null;
+            dataGridView1.Rows.Clear();
+            dataGridView1.Columns.Clear();
+            dataGridView1.Refresh();
+            _dataGridViewOriginal.Rows.Clear();
+            _dataGridViewOriginal.Columns.Clear();
+            _dataGridViewToNumbers.Rows.Clear();
+            _dataGridViewToNumbers.Columns.Clear();
+            ToggleSwitchToOff();
         }
+        MakeRequest(RequestId.Id);
+    }
 
-        /// <summary>
-        ///   Metodo che imposta il valore del CODICE TIPOLOGIA in base alla selezione del Button
-        /// </summary>
-        /// 
-        public void ValueTypologyCodex()
-        {
-            typologyTextBox.Text = m_Handler.GetValueTypologieCode;
-        }
+    /// <summary>
+    ///   Metodo che imposta il valore della distinta presente nella ComboBox del DataGrid in base alla selezione del Button
+    /// </summary>
+    /// 
+    public void ValueDistintaFromCaptureButton()
+    {
+        valueDistintaActive = m_Handler.GetValueTypologieCode;
+    }
 
-        /// <summary>
-        ///   Metodo che imposta il valore del CODICE CELLULCA (Panel Type Identifier) in base alla selezione del Button
-        /// </summary>
-        /// 
-        public void ValuePanelTypeIdentifierFromCaptureButton()
-        {
-            panelTypeIdentifierTextBox.Text = m_Handler.GetValueCellCode;
-        }
+    /// <summary>
+    ///   Metodo che imposta il valore del CODICE TIPOLOGIA in base alla selezione del Button
+    /// </summary>
+    /// 
+    public void ValueTypologyCodex()
+    {
+        typologyTextBox.Text = m_Handler.GetValueTypologieCode;
+    }
 
-        /// <summary>
-        ///   Metodo che imposta il valore dell'Unit Identifier in base alla selezione del Button
-        /// </summary>
-        /// 
-        public void ValueUnitIdentifierFromCaptureButton()
-        {
-            unitIdentifierTextBox.Text = m_Handler.GetValuePositionalCode;
-        }
-        #endregion
+    /// <summary>
+    ///   Metodo che imposta il valore del CODICE CELLULCA (Panel Type Identifier) in base alla selezione del Button
+    /// </summary>
+    /// 
+    public void ValuePanelTypeIdentifierFromCaptureButton()
+    {
+        panelTypeIdentifierTextBox.Text = m_Handler.GetValueCellCode;
+    }
+
+    /// <summary>
+    ///   Metodo che imposta il valore dell'Unit Identifier in base alla selezione del Button
+    /// </summary>
+    /// 
+    public void ValueUnitIdentifierFromCaptureButton()
+    {
+        unitIdentifierTextBox.Text = m_Handler.GetValuePositionalCode;
+    }
+    #endregion
 
         #region Cancel
 
@@ -624,12 +636,16 @@ namespace ModelessForm_ExternalEvent
             _dataGridViewOriginal.Columns.Clear();
             _dataGridViewToNumbers.Rows.Clear();
             _dataGridViewToNumbers.Columns.Clear();
+            ToggleSwitchToOff();
             listBox1.DataSource = null;
             listBox1.Items.Clear();
             comboBox1.Text = _defaultTextComboBox;
             typologyTextBox.Text = null;
             unitIdentifierTextBox.Text = null;
             panelTypeIdentifierTextBox.Text = null;
+            nrTypologiePanelsTextBox.Text = null;
+            nrCellPanelsTextBox.Text = null;
+            nrPositionalPanelsTextBox.Text = null;
             error = true;
             SetModifyPicture();
         }
@@ -649,12 +665,16 @@ namespace ModelessForm_ExternalEvent
             _dataGridViewOriginal.Columns.Clear();
             _dataGridViewToNumbers.Rows.Clear();
             _dataGridViewToNumbers.Columns.Clear();
+            ToggleSwitchToOff();
             listBox1.DataSource = null;
             listBox1.Items.Clear();
             comboBox1.Text = _defaultTextComboBox;
             typologyTextBox.Text = null;
             unitIdentifierTextBox.Text = null;
             panelTypeIdentifierTextBox.Text = null;
+            nrTypologiePanelsTextBox.Text = null;
+            nrCellPanelsTextBox.Text = null;
+            nrPositionalPanelsTextBox.Text = null;
             error = true;
             SetModifyPicture();
         }
@@ -716,6 +736,7 @@ namespace ModelessForm_ExternalEvent
                     _dataGridViewOriginal.Columns.Clear();
                     _dataGridViewToNumbers.Rows.Clear();
                     _dataGridViewToNumbers.Columns.Clear();
+                    ToggleSwitchToOff();
 
                     // Imposta l'origine dati della Combobox e la riempie con il nuovo documento Excel
                     ImportData newData = new ImportData();
@@ -774,6 +795,12 @@ namespace ModelessForm_ExternalEvent
                 dataGridView1.Rows.Clear();
                 dataGridView1.Columns.Clear();
                 dataGridView1.Refresh();
+                _dataGridViewOriginal.Rows.Clear();
+                _dataGridViewOriginal.Columns.Clear();
+                _dataGridViewToNumbers.Rows.Clear();
+                _dataGridViewToNumbers.Columns.Clear();
+                ToggleSwitchToOff();
+
             }
 
             // Ottieni l'oggetto dell'applicazione Excel.
@@ -1036,18 +1063,31 @@ namespace ModelessForm_ExternalEvent
         }
 
         /// <summary>
-        ///   Metodo che permette la odifica della visualizzazione tramite il TOGGLE SWITCH
+        ///   Metodo che riporta il TOGGLE SWITCH a OFF
+        /// </summary>
+        /// 
+        private void ToggleSwitchToOff()
+        {
+            if(toggle_Switch1.IsOn == true)
+            {
+                toggle_Switch1.IsOn = false;
+            }
+        }
+
+        /// <summary>
+        ///   Metodo che permette la modifica della visualizzazione tramite il TOGGLE SWITCH
         /// </summary>
         /// 
         private void toggle_Switch_Click(object sender, EventArgs e)
         {
-            if(dataGridView1.ColumnCount == 0)
+            if(dataGridView1.ColumnCount == 0 || 
+                m_Handler.GetValueTypologieCode != comboBox1.SelectedItem.ToString())
             {
                 toggle_Switch1.IsOn = false;
             }
             else
             {
-                // Ottieni il numero massimo di righe e colonne del nuovo DatagridView
+                // Ottieni il numero massimo di righe e colonne del nuovo DataGridView
                 int max_row = dataGridView1.Rows.Count;
                 int max_col = dataGridView1.Columns.Count;
 
@@ -1100,13 +1140,18 @@ namespace ModelessForm_ExternalEvent
                         {
                             if (r >= 0 && r < (max_row - 1) && i == 2)
                             {
-                                //_dataGridViewToNumbers.Rows[r].Cells[i].Value = "CIAOOOOOOOO";
-                                string value = dataGridView1.Rows[r].Cells[i].Value.ToString();                                
-                                _dataGridViewToNumbers.Rows[r].Cells[i].Value = ConvertToStringTheValue(value);
-                                if(_dataGridViewToNumbers.Rows[r].Cells[i].Value != dataGridView1.Rows[r].Cells[i].Value)
+                                if(dataGridView1.Rows[r].Cells[i].Value != null)
                                 {
-                                    //_dataGridViewToNumbers.RowsDefaultCellStyle.BackColor = System.Drawing.SystemColors.Highlight;
-                                    _dataGridViewToNumbers.Rows[r].Cells[i].Style.BackColor = System.Drawing.Color.LightSkyBlue;
+                                    string value = dataGridView1.Rows[r].Cells[i].Value.ToString();
+                                    _dataGridViewToNumbers.Rows[r].Cells[i].Value = ConvertToStringTheValue(value);
+                                    if (_dataGridViewToNumbers.Rows[r].Cells[i].Value != dataGridView1.Rows[r].Cells[i].Value)
+                                    {
+                                        _dataGridViewToNumbers.Rows[r].Cells[i].Style.BackColor = System.Drawing.Color.LightSkyBlue;
+                                    }
+                                }
+                                else
+                                {
+                                    _dataGridViewToNumbers.Rows[r].Cells[i].Value = dataGridView1.Rows[r].Cells[i].Value;
                                 }
                             }
                             else
@@ -1168,9 +1213,10 @@ namespace ModelessForm_ExternalEvent
                 bool control = false;
                 // Spezza la stringa in due stringhe con i valori e con gli operatori
                 char[] separators = new char[] { '#', '-', '+' };
-                string[] values = value.Split(separators, StringSplitOptions.RemoveEmptyEntries);
+                string valueReplaced = value.Replace("(", string.Empty).Replace(")", string.Empty);
+                string[] values = valueReplaced.Split(separators, StringSplitOptions.RemoveEmptyEntries);
                 int count = values.Count();
-                string operatorString = value;
+                string operatorString = valueReplaced;
                 string resultOper = string.Empty;
                 for (int i = 0; i < count; i++)
                 {

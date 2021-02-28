@@ -39,6 +39,12 @@ namespace ModelessForm_ExternalEvent
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.functionGroupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.nrPositionalPanelsTextBox = new System.Windows.Forms.TextBox();
+            this.nrCellPanelsTextBox = new System.Windows.Forms.TextBox();
+            this.nrTypologiePanelsTextBox = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.typologyTextBox = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
@@ -70,7 +76,6 @@ namespace ModelessForm_ExternalEvent
             this.cleanButton = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.functionGroupBox2 = new System.Windows.Forms.GroupBox();
-            this.toggle_Switch1 = new ModelessForm_ExternalEvent.ToggleSwitch.Toggle_Switch();
             this.label11 = new System.Windows.Forms.Label();
             this.settingsGroupBox = new System.Windows.Forms.GroupBox();
             this.settingsButton = new System.Windows.Forms.Button();
@@ -85,6 +90,7 @@ namespace ModelessForm_ExternalEvent
             this.label6 = new System.Windows.Forms.Label();
             this.uploadExcelOpenFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.toggle_Switch1 = new ModelessForm_ExternalEvent.ToggleSwitch.Toggle_Switch();
             this.functionGroupBox1.SuspendLayout();
             this.groupBox7.SuspendLayout();
             this.imageFamilyGroupBox.SuspendLayout();
@@ -121,22 +127,79 @@ namespace ModelessForm_ExternalEvent
             // 
             // groupBox7
             // 
+            this.groupBox7.Controls.Add(this.label14);
+            this.groupBox7.Controls.Add(this.label13);
+            this.groupBox7.Controls.Add(this.label12);
+            this.groupBox7.Controls.Add(this.nrPositionalPanelsTextBox);
+            this.groupBox7.Controls.Add(this.nrCellPanelsTextBox);
+            this.groupBox7.Controls.Add(this.nrTypologiePanelsTextBox);
             this.groupBox7.Controls.Add(this.label7);
             this.groupBox7.Controls.Add(this.typologyTextBox);
             this.groupBox7.Controls.Add(this.label8);
             this.groupBox7.Controls.Add(this.unitIdentifierTextBox);
             this.groupBox7.Controls.Add(this.panelTypeIdentifierTextBox);
             this.groupBox7.Controls.Add(this.label9);
-            this.groupBox7.Location = new System.Drawing.Point(571, 8);
+            this.groupBox7.Location = new System.Drawing.Point(536, 11);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(389, 104);
+            this.groupBox7.Size = new System.Drawing.Size(450, 104);
             this.groupBox7.TabIndex = 27;
             this.groupBox7.TabStop = false;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(330, 75);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(80, 17);
+            this.label14.TabIndex = 32;
+            this.label14.Text = "Nr pannelli:";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(330, 48);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(80, 17);
+            this.label13.TabIndex = 31;
+            this.label13.Text = "Nr pannelli:";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(330, 19);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(80, 17);
+            this.label12.TabIndex = 30;
+            this.label12.Text = "Nr pannelli:";
+            // 
+            // nrPositionalPanelsTextBox
+            // 
+            this.nrPositionalPanelsTextBox.Location = new System.Drawing.Point(410, 72);
+            this.nrPositionalPanelsTextBox.Name = "nrPositionalPanelsTextBox";
+            this.nrPositionalPanelsTextBox.ReadOnly = true;
+            this.nrPositionalPanelsTextBox.Size = new System.Drawing.Size(30, 22);
+            this.nrPositionalPanelsTextBox.TabIndex = 29;
+            // 
+            // nrCellPanelsTextBox
+            // 
+            this.nrCellPanelsTextBox.Location = new System.Drawing.Point(410, 45);
+            this.nrCellPanelsTextBox.Name = "nrCellPanelsTextBox";
+            this.nrCellPanelsTextBox.ReadOnly = true;
+            this.nrCellPanelsTextBox.Size = new System.Drawing.Size(30, 22);
+            this.nrCellPanelsTextBox.TabIndex = 28;
+            // 
+            // nrTypologiePanelsTextBox
+            // 
+            this.nrTypologiePanelsTextBox.Location = new System.Drawing.Point(410, 16);
+            this.nrTypologiePanelsTextBox.Name = "nrTypologiePanelsTextBox";
+            this.nrTypologiePanelsTextBox.ReadOnly = true;
+            this.nrTypologiePanelsTextBox.Size = new System.Drawing.Size(30, 22);
+            this.nrTypologiePanelsTextBox.TabIndex = 27;
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(25, 19);
+            this.label7.Location = new System.Drawing.Point(24, 19);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(117, 17);
             this.label7.TabIndex = 26;
@@ -144,16 +207,16 @@ namespace ModelessForm_ExternalEvent
             // 
             // typologyTextBox
             // 
-            this.typologyTextBox.Location = new System.Drawing.Point(158, 16);
+            this.typologyTextBox.Location = new System.Drawing.Point(156, 16);
             this.typologyTextBox.Name = "typologyTextBox";
             this.typologyTextBox.ReadOnly = true;
-            this.typologyTextBox.Size = new System.Drawing.Size(212, 22);
+            this.typologyTextBox.Size = new System.Drawing.Size(164, 22);
             this.typologyTextBox.TabIndex = 25;
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(13, 75);
+            this.label8.Location = new System.Drawing.Point(11, 75);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(131, 17);
             this.label8.TabIndex = 22;
@@ -161,24 +224,24 @@ namespace ModelessForm_ExternalEvent
             // 
             // unitIdentifierTextBox
             // 
-            this.unitIdentifierTextBox.Location = new System.Drawing.Point(158, 72);
+            this.unitIdentifierTextBox.Location = new System.Drawing.Point(156, 72);
             this.unitIdentifierTextBox.Name = "unitIdentifierTextBox";
             this.unitIdentifierTextBox.ReadOnly = true;
-            this.unitIdentifierTextBox.Size = new System.Drawing.Size(212, 22);
+            this.unitIdentifierTextBox.Size = new System.Drawing.Size(164, 22);
             this.unitIdentifierTextBox.TabIndex = 21;
             // 
             // panelTypeIdentifierTextBox
             // 
-            this.panelTypeIdentifierTextBox.Location = new System.Drawing.Point(158, 44);
+            this.panelTypeIdentifierTextBox.Location = new System.Drawing.Point(156, 44);
             this.panelTypeIdentifierTextBox.Name = "panelTypeIdentifierTextBox";
             this.panelTypeIdentifierTextBox.ReadOnly = true;
-            this.panelTypeIdentifierTextBox.Size = new System.Drawing.Size(212, 22);
+            this.panelTypeIdentifierTextBox.Size = new System.Drawing.Size(164, 22);
             this.panelTypeIdentifierTextBox.TabIndex = 23;
             // 
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(41, 47);
+            this.label9.Location = new System.Drawing.Point(39, 47);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(101, 17);
             this.label9.TabIndex = 24;
@@ -409,6 +472,7 @@ namespace ModelessForm_ExternalEvent
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(164, 820);
             this.listBox1.TabIndex = 2;
+            this.listBox1.HorizontalScrollbar = true;
             // 
             // cleanButton
             // 
@@ -446,25 +510,6 @@ namespace ModelessForm_ExternalEvent
             this.functionGroupBox2.TabIndex = 1;
             this.functionGroupBox2.TabStop = false;
             this.functionGroupBox2.Text = "Parametri della Distinta";
-            // 
-            // toggle_Switch1
-            // 
-            this.toggle_Switch1.BorderColor = System.Drawing.Color.LightGray;
-            this.toggle_Switch1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.toggle_Switch1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.toggle_Switch1.ForeColor = System.Drawing.Color.Black;
-            this.toggle_Switch1.IsOn = false;
-            this.toggle_Switch1.Location = new System.Drawing.Point(628, 11);
-            this.toggle_Switch1.Name = "toggle_Switch1";
-            this.toggle_Switch1.OffColor = System.Drawing.Color.DarkGray;
-            this.toggle_Switch1.OffText = "OFF";
-            this.toggle_Switch1.OnColor = System.Drawing.SystemColors.Highlight;
-            this.toggle_Switch1.OnText = "ON";
-            this.toggle_Switch1.Size = new System.Drawing.Size(62, 33);
-            this.toggle_Switch1.TabIndex = 11;
-            this.toggle_Switch1.Text = "toggle_Switch1";
-            this.toggle_Switch1.TextEnabled = true;
-            this.toggle_Switch1.Click += new System.EventHandler(this.toggle_Switch_Click);
             // 
             // label11
             // 
@@ -620,6 +665,25 @@ namespace ModelessForm_ExternalEvent
             this.folderBrowserDialog1.Description = "Scegli la Directory da cui vuoi prendere le immagini.";
             this.folderBrowserDialog1.SelectedPath = "C:\\Users\\Bold\\DocumentsC:\\BOLD Software\\DataCell\\Images";
             // 
+            // toggle_Switch1
+            // 
+            this.toggle_Switch1.BorderColor = System.Drawing.Color.LightGray;
+            this.toggle_Switch1.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.toggle_Switch1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.toggle_Switch1.ForeColor = System.Drawing.Color.Black;
+            this.toggle_Switch1.IsOn = false;
+            this.toggle_Switch1.Location = new System.Drawing.Point(628, 11);
+            this.toggle_Switch1.Name = "toggle_Switch1";
+            this.toggle_Switch1.OffColor = System.Drawing.Color.DarkGray;
+            this.toggle_Switch1.OffText = "OFF";
+            this.toggle_Switch1.OnColor = System.Drawing.SystemColors.Highlight;
+            this.toggle_Switch1.OnText = "ON";
+            this.toggle_Switch1.Size = new System.Drawing.Size(62, 33);
+            this.toggle_Switch1.TabIndex = 11;
+            this.toggle_Switch1.Text = "toggle_Switch1";
+            this.toggle_Switch1.TextEnabled = true;
+            this.toggle_Switch1.Click += new System.EventHandler(this.toggle_Switch_Click);
+            // 
             // ModelessForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -714,5 +778,11 @@ namespace ModelessForm_ExternalEvent
         private GroupBox groupBox7;
         private Label label11;
         private ToggleSwitch.Toggle_Switch toggle_Switch1;
+        private Label label14;
+        private Label label13;
+        private Label label12;
+        private TextBox nrPositionalPanelsTextBox;
+        private TextBox nrCellPanelsTextBox;
+        private TextBox nrTypologiePanelsTextBox;
     }
 }
