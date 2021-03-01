@@ -113,6 +113,9 @@ namespace ModelessForm_ExternalEvent
 
         // Variabile in cui viene salvato il dataGridView che verrà visualizzato dopo le modifiche
         private DataGridView _dataGridViewToNumbers;
+
+        // Valore booleano che ice se c'è stato un cambiamento nel fogli Excel
+        private bool _excelChanged = false;
         #endregion
 
         #region Class public property
@@ -954,8 +957,16 @@ namespace ModelessForm_ExternalEvent
         /// 
         private void saveExcelDistintabutton_Click(object sender, EventArgs e)
         {
-            string sheet = valueDistintaActive;
-            ExportExcel(_pathExcel, sheet, dataGridView1);
+            if (toggle_Switch1.IsOn == false)
+            {
+                string sheet = valueDistintaActive;
+                ExportExcel(_pathExcel, sheet, dataGridView1);
+                _excelChanged = true;
+            }
+            else
+            {
+                MessageBox.Show("Non puoi salvare il file Excel fino a che stai visualizzando i Valori della Distinta in formato numerico.");
+            }
         }
 
         /// <summary>
@@ -964,6 +975,7 @@ namespace ModelessForm_ExternalEvent
         /// 
         public void ExportExcel(string fileName, string sheetDistinta, DataGridView myDGV)
         {
+
             if (myDGV.Rows.Count > 0)
             {
                 Excel.Application xlApp = new Excel.Application();
@@ -1018,6 +1030,7 @@ namespace ModelessForm_ExternalEvent
             {
                 MessageBox.Show("Non hai caricato alcun file.\nSalvataggio non riuscito.", "Avviso", MessageBoxButtons.OK);
             }
+                      
         }
 
         /// <summary>
@@ -1091,8 +1104,15 @@ namespace ModelessForm_ExternalEvent
                 int max_row = dataGridView1.Rows.Count;
                 int max_col = dataGridView1.Columns.Count;
 
-                if (_dataGridViewOriginal.ColumnCount == 0)
+                if (_dataGridViewOriginal.ColumnCount == 0 || _excelChanged )
                 { 
+                    if(_dataGridViewOriginal.ColumnCount > 0 || _dataGridViewToNumbers.ColumnCount > 0)
+                    {
+                        _dataGridViewOriginal.Rows.Clear();
+                        _dataGridViewOriginal.Columns.Clear();
+                        _dataGridViewToNumbers.Rows.Clear();
+                        _dataGridViewToNumbers.Columns.Clear();
+                    }
                     // Crea un oggetto con i valori vuoti del foglio.
                     string value = string.Empty;
                     object[,] values = new object[max_row, max_col];
@@ -1129,6 +1149,7 @@ namespace ModelessForm_ExternalEvent
 
                 if (toggle_Switch1.IsOn)
                 {
+                    bool alert = false;
                     for (int i = 0; i < dataGridView1.ColumnCount; i++)
                     {
                         _dataGridViewToNumbers.Columns[i].HeaderText = dataGridView1.Columns[i].HeaderText;
@@ -1138,7 +1159,7 @@ namespace ModelessForm_ExternalEvent
                     {
                         for (int i = 0; i < dataGridView1.ColumnCount; i++)
                         {
-                            if (r >= 0 && r < (max_row - 1) && i == 2)
+                            if (r >= 0 && r < (max_row - 1) && i >= 2 && i <= 3)
                             {
                                 if(dataGridView1.Rows[r].Cells[i].Value != null)
                                 {
@@ -1146,7 +1167,12 @@ namespace ModelessForm_ExternalEvent
                                     _dataGridViewToNumbers.Rows[r].Cells[i].Value = ConvertToStringTheValue(value);
                                     if (_dataGridViewToNumbers.Rows[r].Cells[i].Value != dataGridView1.Rows[r].Cells[i].Value)
                                     {
-                                        _dataGridViewToNumbers.Rows[r].Cells[i].Style.BackColor = System.Drawing.Color.LightSkyBlue;
+                                        _dataGridViewToNumbers.Rows[r].Cells[i].Style.BackColor = System.Drawing.Color.LightGreen;
+                                    }
+                                    else
+                                    {
+                                        alert = true;
+                                        _dataGridViewToNumbers.Rows[r].Cells[i].Style.BackColor = System.Drawing.Color.Crimson;
                                     }
                                 }
                                 else
@@ -1159,6 +1185,11 @@ namespace ModelessForm_ExternalEvent
                                 _dataGridViewToNumbers.Rows[r].Cells[i].Value = dataGridView1.Rows[r].Cells[i].Value;
                             }
                         }
+                    }
+                    if(alert)
+                    {
+                        MessageBox.Show("Alcuni valori nel foglio Excel non corrispondono al progetto.\nModificali.", "Attenzione!");
+                        alert = false;
                     }
 
                     // Assegna il DataGridView modificato al DataGrid
@@ -1194,6 +1225,9 @@ namespace ModelessForm_ExternalEvent
                         }
                     }
                 }
+
+                // Impedisce di rimpostare i vari DataGridView
+                _excelChanged = false;
             } 
         }
 
@@ -1212,8 +1246,8 @@ namespace ModelessForm_ExternalEvent
                 // Variabile bool di controllo
                 bool control = false;
                 // Spezza la stringa in due stringhe con i valori e con gli operatori
-                char[] separators = new char[] { '#', '-', '+' };
-                string valueReplaced = value.Replace("(", string.Empty).Replace(")", string.Empty);
+                char[] separators = new char[] {'-', '+' };
+                string valueReplaced = value.Replace("#", string.Empty).Replace("(", string.Empty).Replace(")", string.Empty);
                 string[] values = valueReplaced.Split(separators, StringSplitOptions.RemoveEmptyEntries);
                 int count = values.Count();
                 string operatorString = valueReplaced;
@@ -1247,7 +1281,7 @@ namespace ModelessForm_ExternalEvent
                                 break;
                             }
 
-                            switch (operators[rif])
+                            switch (operators[rif - 1])
                             {
                                 case "+":
                                     resultFinal += num2;
@@ -1261,7 +1295,7 @@ namespace ModelessForm_ExternalEvent
                         }
                         else
                         {
-                            switch (operators[rif])
+                            switch (operators[rif - 1])
                             {
                                 case "+":
                                     resultFinal += Convert.ToDouble(values[rif]);
@@ -1302,6 +1336,10 @@ namespace ModelessForm_ExternalEvent
             string param = string.Empty;
             switch (values[index])
             {
+                case "H":
+                case "CellH":
+                    param = "CellH";
+                    break;
                 case "H1":
                 case "CellH1":
                     param = "CellH1";
