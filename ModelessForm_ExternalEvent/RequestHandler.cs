@@ -50,8 +50,14 @@ namespace ModelessForm_ExternalEvent
         // Un'istanza della Form del CodeDefinition
         private CodeDefinition _codeDefinition;
 
+        // Un'istanza della Form del SetProjectName
+        private SetProjectName _setProjectName;
+
         // Il Riferimento all'oggetto selezionato
         Reference pickedObject;
+
+        // Il nome del Progetto
+        private string _projectName = string.Empty;
 
         // Il nome del Codice Tipologia
         private string _typologieCode = string.Empty;
@@ -100,6 +106,14 @@ namespace ModelessForm_ExternalEvent
         public Request Request
         {
             get { return m_request; }
+        }
+
+        /// <summary>
+        /// Proprietà pubblica per accedere al valore della richiesta corrente
+        /// </summary>
+        public string ProjectName
+        {
+            get { return _projectName; }
         }
 
         /// <summary>
@@ -297,6 +311,38 @@ namespace ModelessForm_ExternalEvent
                             modelessForm.CloseCodeDefinition();
                             break;
                         }
+                    case RequestId.ProjectName:
+                        {
+                            // Ottiene il nome del Progetto
+                            _projectName = GetTheNameOfTheProject(uiapp);
+                            // Imposta il nome del Progetto nel TextBox
+                            modelessForm = App.thisApp.RetriveForm();
+                            modelessForm.SetNameProject();
+                            // Verifico se la Form SetProjectName sia attiva o meno
+                            _setProjectName = SetProjectName.thisApp;
+                            if (_setProjectName != null)
+                            {
+                                _setProjectName.FillProjectName(_projectName);
+                                _modForm = false;
+                            }
+                            break;
+                        }
+                    case RequestId.SetProjectName:
+                        {
+                            // Ottiene il nome del Progetto
+                            _setProjectName = SetProjectName.thisApp;
+                            _projectName = _setProjectName.NewProjectName;
+                            // Imposta il nuovo nome del Progetto nel Progetto
+                            SetTheNameOfTheProject(uiapp, _projectName);
+                            // Imposta il nuovo nome del Progetto nel DataCell
+                            modelessForm = App.thisApp.RetriveForm();
+                            modelessForm.SetNameProject();
+                            // Chiama il metodo che chiude la Form SeTProjectName e riattiva la Form ModelessForm
+                            modelessForm.CloseSetProjectName();
+                            _setProjectName.SetProjectNameNull();
+                            _modForm = true;
+                            break;
+                        }
                     default:
                         {
                             // Una sorta di avviso qui dovrebbe informarci di una richiesta imprevista
@@ -314,6 +360,47 @@ namespace ModelessForm_ExternalEvent
             }
 
             return;
+        }
+
+        /// <summary>
+        ///   La subroutine che ottiene il nome del Progetto
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <param name="uiapp">L'oggetto Applicazione di Revit</param>m>
+        /// 
+        private string GetTheNameOfTheProject(UIApplication uiapp)
+        {
+            UIDocument uidoc = uiapp.ActiveUIDocument;
+            Document doc = uidoc.Document;
+
+            // Ottiene il nome memorizzato nel progetto
+            string nameProject = doc.ProjectInformation.Name;
+
+            return nameProject;
+        }
+
+        /// <summary>
+        ///   La subroutine che ottiene il nome del Progetto
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <param name="uiapp">L'oggetto Applicazione di Revit</param>m>
+        /// 
+        private string SetTheNameOfTheProject(UIApplication uiapp, string name)
+        {
+            UIDocument uidoc = uiapp.ActiveUIDocument;
+            Document doc = uidoc.Document;
+
+            // Imposta il nome memorizzandolo nel Progetto
+            using(Transaction trans = new Transaction(doc))
+            {
+                trans.Start("Change Project Name");
+                doc.ProjectInformation.get_Parameter(BuiltInParameter.PROJECT_NAME).Set(name);
+                trans.Commit();
+            }
+
+            return name;
         }
 
         /// <summary>

@@ -47,6 +47,9 @@ namespace ModelessForm_ExternalEvent
         // Dichiara la Form per il file di Configurazione
         private ConfigPanel configPanel = new ConfigPanel();
 
+        // Dichiara la Form per l'assegnazione del Nome del Progetto
+        private SetProjectName setProjectName;
+
         // Dichiara la Form della lente d'ingrandimento
         private MagnifyingGlass magnifyingGlass;
 
@@ -214,6 +217,9 @@ namespace ModelessForm_ExternalEvent
             double mmToFeet = Constant.MmToFeet(feetToMm);
             int[] intToFeet = Constant.IncToFeet(mmToFeet);
 
+            // Metodo che cattura il nome del progetto e lo visualizza nel suo TextBox
+            GetNameProjectButton();
+
             // Verifica se il _pathConfig ed il _pathDataCell esistano o meno
             GetFileTxt();
             if(_pathConfig.Length > 1)
@@ -313,7 +319,7 @@ namespace ModelessForm_ExternalEvent
         ///   riattivi anche la finestra di dialogo dopo aver terminato l'esecuzione.
         /// </remarks>
         ///
-        private void MakeRequest(RequestId request)
+        public void MakeRequest(RequestId request)
         {
             ModelessForm_ExternalEvent.App.thisApp.DontShowFormTop();
             m_Handler.Request.Make(request);
@@ -545,6 +551,55 @@ namespace ModelessForm_ExternalEvent
                 _codeDefinition.Close();
             }
         }
+        #endregion
+
+        #region Name Project
+        /// <summary>
+        ///   Metodo che cattura il nome del progetto memorizzato nel foglio Excel
+        /// </summary>
+        /// 
+        private void GetNameProjectButton()
+        {
+            MakeRequest(RequestId.ProjectName);
+        }
+
+        /// <summary>
+        ///   Metodo che imposta il nome del Progetto nel TextBox
+        /// </summary>
+        /// 
+        public void SetNameProject()
+        {
+            nameProjectTextBox.Text = m_Handler.ProjectName;
+        }
+
+        /// <summary>
+        ///   Cambia il nome del Progetto
+        /// </summary>
+        /// 
+        private void nameProjectButton_Click(object sender, EventArgs e)
+        {
+            setProjectName = new SetProjectName();
+            setProjectName.Show();
+            this.DozeOff();
+            this.SendToBack();
+            setProjectName.TopMost = true;
+        }
+
+        /// <summary>
+        ///   Forza la chiusura del ConfigPanel
+        /// </summary>
+        /// 
+        public void CloseSetProjectName()
+        {
+            if (setProjectName != null && setProjectName.Visible)
+            {
+                // Chiudo la form ConfigPanel
+                this.WakeUp();
+                this.BringToFront();
+                setProjectName.Close();
+            }
+        }
+
         #endregion
 
         #region NrPanels
@@ -965,7 +1020,7 @@ namespace ModelessForm_ExternalEvent
             }
             else
             {
-                MessageBox.Show("Non puoi salvare il file Excel fino a che stai visualizzando i Valori della Distinta in formato numerico.");
+                MessageBox.Show("Non puoi salvare il file Excel fino a che stai visualizzando\ni Valori della Distinta in formato numerico.");
             }
         }
 
@@ -1878,8 +1933,6 @@ namespace ModelessForm_ExternalEvent
         {
             Close();
         }
-
-
 
     }  // class
 }

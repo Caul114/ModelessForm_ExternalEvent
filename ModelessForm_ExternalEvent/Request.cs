@@ -49,6 +49,14 @@ namespace ModelessForm_ExternalEvent
         /// "ChangeCode" request
         /// </summary>
         ChangeCode = 4,
+        /// <summary>
+        /// "Project Name" request
+        /// </summary>
+        ProjectName = 5,
+        /// <summary>
+        /// "Set the Project Name" request
+        /// </summary>
+        SetProjectName = 6,
     }
 
     /// <summary>

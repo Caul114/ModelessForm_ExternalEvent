@@ -115,6 +115,12 @@
     </Compile>
     <Compile Include="Config\ExportValueToExcel.cs" />
     <Compile Include="Config\Json.cs" />
+    <Compile Include="Config\SetProjectName.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Config\SetProjectName.Designer.cs">
+      <DependentUpon>SetProjectName.cs</DependentUpon>
+    </Compile>
     <Compile Include="Constant.cs" />
     <Compile Include="DataFromExcel\ImportData.cs" />
     <Compile Include="MagnifyingGlass.cs">
@@ -150,6 +156,9 @@
     </Content>
     <EmbeddedResource Include="Config\CodeDefinition.resx">
       <DependentUpon>CodeDefinition.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Config\SetProjectName.resx">
+      <DependentUpon>SetProjectName.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\BOLDsft_16.ico" />
     <EmbeddedResource Include="Resources\BOLDsft_16.png" />
