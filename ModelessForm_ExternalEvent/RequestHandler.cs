@@ -209,7 +209,7 @@ namespace ModelessForm_ExternalEvent
         /// </summary>
         public String GetName()
         {
-            return "R2021 External Event DataCell";
+            return "R2021 External Event DataQuery";
         }
 
         /// <summary>
@@ -334,7 +334,7 @@ namespace ModelessForm_ExternalEvent
                             _projectName = _setProjectName.NewProjectName;
                             // Imposta il nuovo nome del Progetto nel Progetto
                             SetTheNameOfTheProject(uiapp, _projectName);
-                            // Imposta il nuovo nome del Progetto nel DataCell
+                            // Imposta il nuovo nome del Progetto nel DataQuery
                             modelessForm = App.thisApp.RetriveForm();
                             modelessForm.SetNameProject();
                             // Chiama il metodo che chiude la Form SeTProjectName e riattiva la Form ModelessForm
@@ -803,7 +803,10 @@ namespace ModelessForm_ExternalEvent
             return dict;
         }
 
-        // Helper function: return a string from a given parameter
+        /// <summary>
+        /// Helper function: return a string from a given parameter
+        /// </summary>
+        /// 
         public static string ParameterToString(Parameter param)
         {
             string val = "none";

@@ -68,7 +68,7 @@ namespace ModelessForm_ExternalEvent
 
             // Creazione del Button da inserire nel Tab
             if(ribbonPanel.AddItem(
-                new PushButtonData("DataCell", "DataCell", thisAssemblyPath, "ModelessForm_ExternalEvent.Command"))
+                new PushButtonData("DataQuery", "DataQuery", thisAssemblyPath, "ModelessForm_ExternalEvent.Command"))
                 is PushButton button)
             {
                 // ToolTip mostrato
@@ -210,7 +210,7 @@ namespace ModelessForm_ExternalEvent
             // Prova a creare un RibbonPanel
             try
             {
-                RibbonPanel panel = uiapp.CreateRibbonPanel(tab, "Tools");
+                RibbonPanel panel = uiapp.CreateRibbonPanel(tab, "Object Tools");
             }
             catch (Exception ex)
             {
@@ -219,7 +219,7 @@ namespace ModelessForm_ExternalEvent
 
             // Verifica se il tab del Panel esiste gia'
             List<RibbonPanel> panels = uiapp.GetRibbonPanels(tab);
-            foreach (RibbonPanel p in panels.Where(x => x.Name == "Tools"))
+            foreach (RibbonPanel p in panels.Where(x => x.Name == "Object Tools"))
             {
                 ribbonPanel = p;
             }

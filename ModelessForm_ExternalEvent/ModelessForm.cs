@@ -57,7 +57,7 @@ namespace ModelessForm_ExternalEvent
         private CodeDefinition _codeDefinition;
 
         // Percorso del singolo file .json da importare di default
-        private string _pathFileConfig = @"\BOLD Software\DataCell\ConfigPath.json";
+        private string _pathFileConfig = @"\BOLD Software\DataQuery\ConfigPath.json";
         private string _pathFileTxt = string.Empty;
         private string _pathConfig = string.Empty;
 
@@ -247,10 +247,10 @@ namespace ModelessForm_ExternalEvent
             }
             else
             {
-                // Esporta le modifiche su foglio Excel, del pathDataCell, di AbacoCells.xlsm e di Images
+                // Esporta le modifiche su foglio Excel, del pathDataCell, di DataSheets.xlsm e di Images
                 exportValueToExcel.ExportExcelAndChangeValue(_pathConfig, _pathDataCell, "", "", _rawCommessa, _colDataCell);
 
-                _pathExcel = _pathDataCell + @"\AbacoCells.xlsm";
+                _pathExcel = _pathDataCell + @"\DataSheets.xlsm";
                 _folderImageSkeleton = _pathDataCell + @"\Images_Skeleton";
                 _folderImageDefault = _pathDataCell + @"\Images";
 
