@@ -34,7 +34,7 @@ namespace ModelessForm_ExternalEvent.Config
         // Valore del Path del file Configuration
         private string _pathConfig = "";
 
-        // Valore del path DATACELL 
+        // Valore del path DataQuery 
         private string _pathDataCell = "";
 
         // Valore del path BOLD_Distinta 
@@ -84,17 +84,17 @@ namespace ModelessForm_ExternalEvent.Config
                 {
                     // Ottiene il nuovo Path del File di configurazione
                     _pathDataCell = folderBrowserDialog1.SelectedPath;
-                    if (_pathDataCell.Contains("\\DataCell") && !_pathDataCell.Contains("\\Images"))
+                    if (_pathDataCell.Contains("\\DataQuery") && !_pathDataCell.Contains("\\Images"))
                     {
-                        string pathReplaced = _pathDataCell.Replace(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "");
+                        //string pathReplaced = _pathDataCell.Replace(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "");
 
                         // Imposta i Path degli altri due valori 
-                        _pathBOLD_Distinta = pathReplaced + @"\AbacoCells.xlsm";
-                        _pathImages = pathReplaced + @"\Images";
+                        _pathBOLD_Distinta = _pathDataCell + @"\DataSheets.xlsm";
+                        _pathImages = _pathDataCell + @"\Images";
 
                         // Lo scrive in un file esterno Json
                         Json fileJson = new Json();
-                        fileJson.UpdateJson(2, 1, "DataCellPath", pathReplaced);
+                        fileJson.UpdateJson(2, 1, "DataCellPath", _pathDataCell);
                         fileJson.UpdateJson(3, 2, "AbacoCellPath", _pathBOLD_Distinta);
                         fileJson.UpdateJson(4, 3, "ImagesPath", _pathImages);
 
@@ -102,7 +102,7 @@ namespace ModelessForm_ExternalEvent.Config
                         string jsonText = File.ReadAllText(ModelessForm.thisModForm.PathFileTxt);
                         IList<Data> traduction = JsonConvert.DeserializeObject<IList<Data>>(jsonText);
                         Data singleItem = traduction.FirstOrDefault(x => x.Id == 3);
-                        _pathConfig = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + singleItem.Value;
+                        _pathConfig = singleItem.Value;
 
                         // Esporta le modifiche su foglio Excel, del pathDataCell, di AbacoCells.xlsm e di Images
                         exportValueToExcel.ExportExcelAndChangeValue(_pathConfig, _pathDataCell, "", "", _rawCommessa, _colDataCell);
@@ -110,17 +110,17 @@ namespace ModelessForm_ExternalEvent.Config
                         // Chiude la Form
                         this.Close();
 
-                        // Avvisa che per far funziona reil DataCell bisogna riaccenderlo
+                        // Avvisa che per far funzionare il DataQuery bisogna riaccenderlo
                         MessageBox.Show("Hai concluso correttamente la Configurazione. " +
-                            "\nRientra cliccando nuovamente sul Plugin DataCell che trovi nel Pannello BOLD");
+                            "\nRientra cliccando nuovamente sul Plugin DataQuery che trovi nel Pannello BOLD");
 
-                        // Chiude il DataCell 
+                        // Chiude il DataQuery 
                         ModelessForm.thisModForm.Close();
                     }
                     else
                     {
                         MessageBox.Show("Non hai inserito un percorso corretto." +
-                            "\nClicca nuovamente il pulsante Inserisci e cerca il percorso corretto della cartella DataCell.");
+                            "\nClicca nuovamente il pulsante Inserisci e cerca il percorso corretto della cartella DataQuery.");
                     }                    
                 }
                 catch (SecurityException ex)

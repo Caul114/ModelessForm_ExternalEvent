@@ -167,7 +167,7 @@ namespace ModelessForm_ExternalEvent.Config
 
                 // Avvisa che per far funziona reil DataCell bisogna riaccenderlo
                 MessageBox.Show("Hai concluso correttamente la Configurazione. " +
-                    "\nRientra cliccando nuovamente sul Plugin DataCell che trovi nel Pannello BOLD");
+                    "\nRientra cliccando nuovamente sul Plugin DataQuery che trovi nel Pannello BOLD");
 
                 // Chiude il DataCell 
                 ModelessForm.thisModForm.Close();

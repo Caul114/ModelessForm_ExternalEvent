@@ -59,63 +59,60 @@ namespace ModelessForm_ExternalEvent.Config
             // 
             // positionalCodeComboBox
             // 
+            this.positionalCodeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.positionalCodeComboBox.Enabled = false;
             this.positionalCodeComboBox.FormattingEnabled = true;
             this.positionalCodeComboBox.Location = new System.Drawing.Point(214, 248);
             this.positionalCodeComboBox.Name = "positionalCodeComboBox";
             this.positionalCodeComboBox.Size = new System.Drawing.Size(222, 24);
             this.positionalCodeComboBox.TabIndex = 6;
-            this.positionalCodeComboBox.Text = "<- Scegli il parametro ->";
-            this.positionalCodeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.positionalCodeComboBox.Enabled = false;
             // 
             // cellCodeComboBox
             // 
+            this.cellCodeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cellCodeComboBox.Enabled = false;
             this.cellCodeComboBox.FormattingEnabled = true;
             this.cellCodeComboBox.Location = new System.Drawing.Point(214, 157);
             this.cellCodeComboBox.Name = "cellCodeComboBox";
             this.cellCodeComboBox.Size = new System.Drawing.Size(222, 24);
             this.cellCodeComboBox.TabIndex = 5;
-            this.cellCodeComboBox.Text = "<- Scegli il parametro ->";
-            this.cellCodeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cellCodeComboBox.Enabled = false;
             // 
             // typologieCodeComboBox
             // 
+            this.typologieCodeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.typologieCodeComboBox.Enabled = false;
             this.typologieCodeComboBox.FormattingEnabled = true;
             this.typologieCodeComboBox.Location = new System.Drawing.Point(214, 69);
             this.typologieCodeComboBox.Name = "typologieCodeComboBox";
             this.typologieCodeComboBox.Size = new System.Drawing.Size(222, 24);
             this.typologieCodeComboBox.TabIndex = 4;
-            this.typologieCodeComboBox.Text = "<- Scegli il parametro ->";
-            this.typologieCodeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.typologieCodeComboBox.Enabled = false;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(30, 251);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(127, 17);
+            this.label3.Size = new System.Drawing.Size(114, 17);
             this.label3.TabIndex = 3;
-            this.label3.Text = "Codice Posizionale";
+            this.label3.Text = "Codice Elemento";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(30, 160);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(97, 17);
+            this.label2.Size = new System.Drawing.Size(106, 17);
             this.label2.TabIndex = 2;
-            this.label2.Text = "Codice Cellula";
+            this.label2.Text = "Codice Oggetto";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(30, 72);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(113, 17);
+            this.label1.Size = new System.Drawing.Size(103, 17);
             this.label1.TabIndex = 1;
-            this.label1.Text = "Codice Tipologia";
+            this.label1.Text = "Codice Gruppo";
             // 
             // saveButton
             // 
@@ -128,7 +125,7 @@ namespace ModelessForm_ExternalEvent.Config
             this.saveButton.UseVisualStyleBackColor = false;
             this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
             // 
-            // CodexDefinition
+            // CodeDefinition
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -137,7 +134,7 @@ namespace ModelessForm_ExternalEvent.Config
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "CodexDefinition";
+            this.Name = "CodeDefinition";
             this.Text = "Tabella di impostazione dei Codici";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

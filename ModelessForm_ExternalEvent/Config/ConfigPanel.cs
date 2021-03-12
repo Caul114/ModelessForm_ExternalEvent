@@ -108,7 +108,7 @@ namespace ModelessForm_ExternalEvent.Config
                         if (traduction.Any(x => x.Id == 2))
                         {
                             Data singleItem = traduction.FirstOrDefault(x => x.Id == 2);
-                            if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + singleItem.Value))
+                            if (!Directory.Exists(singleItem.Value))
                             {
                                 // Apre il pannello DataCellPaths
                                 ShowDataCellPaths();
@@ -117,11 +117,11 @@ namespace ModelessForm_ExternalEvent.Config
                             {
                                 // Ottiene il path di DataCell                              
                                 Data itemDataCell= traduction.FirstOrDefault(x => x.Id == 2);
-                                _pathDataCell = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + itemDataCell.Value;
+                                _pathDataCell = itemDataCell.Value;
 
                                 // Ottiene il path di AbacoCells
                                 Data itemAbacoCells = traduction.FirstOrDefault(x => x.Id == 3);
-                                _pathConfig = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + itemAbacoCells.Value;
+                                _pathConfig = itemAbacoCells.Value;
 
                                 // Ottiene i path di AbacoCells.xlsm e di Images
                                 exportValueToExcel.ExportExcelAndChangeValue(_pathConfig, _pathDataCell, "", "", _rawCommessa, _colDataCell);
@@ -131,7 +131,7 @@ namespace ModelessForm_ExternalEvent.Config
 
                                 // Avvisa che per far funziona reil DataCell bisogna riaccenderlo
                                 MessageBox.Show("Hai concluso correttamente la Configurazione. " +
-                                    "\nRientra cliccando nuovamente sul Plugin DataCell che trovi nel Pannello BOLD");
+                                    "\nRientra cliccando nuovamente sul Plugin DataQuery che trovi nel Pannello BOLD");
 
                                 // Chiude il DataCell 
                                 ModelessForm.thisModForm.Close();

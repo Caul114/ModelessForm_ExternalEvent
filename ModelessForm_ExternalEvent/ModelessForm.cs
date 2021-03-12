@@ -408,9 +408,9 @@ namespace ModelessForm_ExternalEvent
             if (traduction.Any(x => x.Id == 2))
             {
                 Data singleItem = traduction.FirstOrDefault(x => x.Id == 2);
-                if(Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + singleItem.Value))
+                if(Directory.Exists(singleItem.Value))
                 {
-                    _pathDataCell = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + singleItem.Value;
+                    _pathDataCell = singleItem.Value;
                 }
             }
             else
@@ -864,7 +864,8 @@ namespace ModelessForm_ExternalEvent
             // Ottieni l'oggetto dell'applicazione Excel.
             Excel.Application excel_app = new Excel.Application();
 
-            // Apri la cartella di lavoro in sola lettura (per aprirlo e basta, inserire solo il path del file Excel)
+            // Apri la cartella di lavoro in sola lettura
+            // (per aprirlo e basta, inserire solo il path del file Excel)
             Excel.Workbook workbook = excel_app.Workbooks.Open(
                 path,
                 Type.Missing, true, Type.Missing, Type.Missing,

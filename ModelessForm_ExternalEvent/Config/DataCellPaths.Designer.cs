@@ -56,9 +56,9 @@ namespace ModelessForm_ExternalEvent.Config
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(163, 74);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(87, 17);
+            this.label2.Size = new System.Drawing.Size(129, 21);
             this.label2.TabIndex = 3;
-            this.label2.Text = "(.../DataCell)";
+            this.label2.Text = "(.../DataQuery)";
             // 
             // settingsDataCellButton
             // 
@@ -75,9 +75,9 @@ namespace ModelessForm_ExternalEvent.Config
             this.settingsDataCellLabel.AutoSize = true;
             this.settingsDataCellLabel.Location = new System.Drawing.Point(81, 53);
             this.settingsDataCellLabel.Name = "settingsDataCellLabel";
-            this.settingsDataCellLabel.Size = new System.Drawing.Size(268, 17);
+            this.settingsDataCellLabel.Size = new System.Drawing.Size(350, 21);
             this.settingsDataCellLabel.TabIndex = 0;
-            this.settingsDataCellLabel.Text = "Inserisci l\'indirizzo della Cartella DataCell.\r\n";
+            this.settingsDataCellLabel.Text = "Inserisci l\'indirizzo della Cartella DataQuery\r\n";
             // 
             // DataCellPaths
             // 

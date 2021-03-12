@@ -282,7 +282,7 @@ namespace ModelessForm_ExternalEvent
                             }
                             else
                             {
-                                MessageBox.Show("Questo elemento non ha un Codice Tipologia. Aggiungilo.");
+                                MessageBox.Show("Questo elemento non ha un Codice Gruppo. Aggiungilo.");
                                 modelessForm.CleanAll();
                             }                            
                             break;
